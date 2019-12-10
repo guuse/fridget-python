@@ -1,5 +1,3 @@
-import json
-
 import requests
 
 from .models.product import Product
