@@ -1,6 +1,7 @@
 import settings
-from upc_database_wrapper.upc_database_wrapper import UpcDatabaseWrapper
+from datakick_wrapper.datakick_wrapper import DatakickWrapper
 
-wrapper = UpcDatabaseWrapper(api_key=settings.UPC_DATABASE_API_KEY)
-x = wrapper.get_product("810012050821")
+wrapper = DatakickWrapper()
+x = wrapper.get_product("5000112544602")
 print(x.product_name)
+print(x.category)

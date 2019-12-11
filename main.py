@@ -1,8 +1,10 @@
 import sys
+from datetime import timedelta
 
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtWidgets import QTableWidgetItem
 
+from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 
@@ -11,11 +13,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     products = Products()
 
-    def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
+    def __init__(self, platform_api: PlatformWrapper, datakick_api, *args, **kwargs):
         super().__init__(*args, **kwargs)
         uic.loadUi("resources/ui/stackedTest.ui", self)
 
         self.platform_api = platform_api
+        self.datakick_api = datakick_api
 
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
         self.stacked_widget.setCurrentIndex(0)
@@ -55,7 +58,17 @@ class MainWindow(QtWidgets.QMainWindow):
         from platform_wrapper.models.product import Product
 
         import datetime
-        product = Product(product_name="Coca Cola 1L", product_desc="Vles Coca Cola van 1 liter", product_amount=1, product_amount_unit="liters", product_exp=datetime.datetime(2020, 5, 17).date())
+
+        # 1. Scan code
+        # 2. Get code from DB (if available)
+        # TODO: HANDLE NOT FOUND?
+        datakick_product = datakick_api.get_product("5000112544602")
+
+        product = Product(product_name=datakick_product.product_name,
+                          product_desc=datakick_product.desc,
+                          product_amount=datakick_product.amount,
+                          product_amount_unit=datakick_product.unit,
+                          product_exp=(datetime.datetime.now() + timedelta(datakick_product.expiration_time)).date())
         self.products.add_product(product)
 
         rowPosition = self.table.rowCount()
@@ -66,10 +79,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def send_products_to_box(self):
         self.platform_api.add_products(self.products)
 
+
 platform_api = PlatformWrapper(api_key="")
+datakick_api = DatakickWrapper()
 
 app = QtWidgets.QApplication(sys.argv)
-window = MainWindow(platform_api)
+window = MainWindow(platform_api, datakick_api)
 # window.showFullScreen()
 sys._excepthook = sys.excepthook
 def exception_hook(exctype, value, traceback):
