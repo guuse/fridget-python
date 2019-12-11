@@ -1,20 +1,32 @@
 import sys
+import threading
 from datetime import timedelta
 
+import keyboard
 from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QTableWidgetItem
 
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
+from utils.worker import Worker
 
 
 class MainWindow(QtWidgets.QMainWindow):
 
     products = Products()
+    scanning = False
+
+    scanned = ""
+    product_ean = ""
 
     def __init__(self, platform_api: PlatformWrapper, datakick_api, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.threadpool = QThreadPool()
+        self.event_stop = threading.Event()
+
         uic.loadUi("resources/ui/stackedTest.ui", self)
 
         self.platform_api = platform_api
@@ -28,10 +40,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button.clicked.connect(self.switch_to_second_screen)
         self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'changeImgButton')
         self.button2.clicked.connect(self.change_image)
+        self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'randomTestButton')
+        self.button2.clicked.connect(self.testLoop)
         self.label = self.p1.findChild(QtWidgets.QLabel, 'label1')
         self.table = self.p2.findChild(QtWidgets.QTableWidget, 'tableWidget')
         self.button39 = self.p2.findChild(QtWidgets.QPushButton, 'pushButton39')
         self.button39.clicked.connect(self.add_to_table)
+        self.backButton = self.p2.findChild(QtWidgets.QPushButton, 'backButton')
+        self.backButton.clicked.connect(self.switch_to_first_screen)
         self.sendProductsButton = self.p2.findChild(QtWidgets.QPushButton, 'sendProductsButton')
         self.sendProductsButton.clicked.connect(self.send_products_to_box)
 
@@ -40,6 +56,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def switch_to_second_screen(self):
         self.stacked_widget.setCurrentIndex(1)
+
+        self.worker = Worker(self.testLoop)
+        self.threadpool.start(self.worker)
+
+        self.event_stop.clear()
+
+    def switch_to_first_screen(self):
+        self.event_stop.set()
+        self.stacked_widget.setCurrentIndex(0)
 
     def change_image(self):
         pixmap = QtGui.QPixmap("077G.png")
@@ -54,7 +79,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.label.setPixmap(QtGui.QPixmap(image))
 
-    def add_to_table(self):
+    def add_to_table(self, product_ean):
+        self.event_stop.set()
         from platform_wrapper.models.product import Product
 
         import datetime
@@ -62,7 +88,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # 1. Scan code
         # 2. Get code from DB (if available)
         # TODO: HANDLE NOT FOUND?
-        datakick_product = datakick_api.get_product("5000112544602")
+        datakick_product = datakick_api.get_product(product_ean)
 
         product = Product(product_name=datakick_product.product_name,
                           product_desc=datakick_product.desc,
@@ -76,8 +102,36 @@ class MainWindow(QtWidgets.QMainWindow):
         self.table.setItem(rowPosition, 0, QTableWidgetItem(product.product_name))
         self.table.scrollToBottom()
 
+        self.product_ean = ""
+        self.scanned = ""
+        self.event_stop.clear()
+
     def send_products_to_box(self):
+        self.event_stop.set()
         self.platform_api.add_products(self.products)
+
+    def testLoop(self):
+
+        while not self.event_stop.is_set():
+
+            scanned = ""
+            product_ean = ""
+
+            while True:
+                if keyboard.is_pressed('enter'):
+                    break
+
+                scanned += keyboard.read_key()
+
+            for i in range(0, len(scanned)):
+                if i % 2 == 0:
+                    if not scanned[i].isalpha():
+                        product_ean += scanned[i]
+
+            self.add_to_table(product_ean)
+
+
+
 
 
 platform_api = PlatformWrapper(api_key="")

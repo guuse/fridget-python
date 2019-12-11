@@ -23,3 +23,6 @@ class Products(object):
         serialized_dict["products"] = products_serialized_array
 
         return serialized_dict
+
+    def products_length(self):
+        return len(self.products)

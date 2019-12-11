@@ -35,5 +35,7 @@ class DatakickWrapper(object):
         # Raise exception if one occurs
         response.raise_for_status()
 
+        print(response.json())
+
         return self.parse_response_to_object(response, Product)
 
