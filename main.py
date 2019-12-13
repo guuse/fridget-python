@@ -4,7 +4,7 @@ from datetime import timedelta
 
 import keyboard
 from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import QThreadPool, Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
@@ -50,6 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.backButton.clicked.connect(self.switch_to_first_screen)
         self.sendProductsButton = self.p2.findChild(QtWidgets.QPushButton, 'sendProductsButton')
         self.sendProductsButton.clicked.connect(self.send_products_to_box)
+        self.inputLabel = self.p2.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
 
         #self.showFullScreen()
         self.show()
@@ -88,22 +89,25 @@ class MainWindow(QtWidgets.QMainWindow):
         # 1. Scan code
         # 2. Get code from DB (if available)
         # TODO: HANDLE NOT FOUND?
-        datakick_product = datakick_api.get_product(product_ean)
+        #datakick_product = datakick_api.get_product(product_ean)
+        #
+        # product = Product(product_name=datakick_product.product_name,
+        #                   product_desc=datakick_product.desc,
+        #                   product_amount=datakick_product.amount,
+        #                   product_amount_unit=datakick_product.unit,
+        #                   product_exp=(datetime.datetime.now() + timedelta(datakick_product.expiration_time)).date())
+        # self.products.add_product(product)
 
-        product = Product(product_name=datakick_product.product_name,
-                          product_desc=datakick_product.desc,
-                          product_amount=datakick_product.amount,
-                          product_amount_unit=datakick_product.unit,
-                          product_exp=(datetime.datetime.now() + timedelta(datakick_product.expiration_time)).date())
-        self.products.add_product(product)
+        print(self.inputLabel.text())
 
         rowPosition = self.table.rowCount()
         self.table.insertRow(rowPosition)
-        self.table.setItem(rowPosition, 0, QTableWidgetItem(product.product_name))
+        self.table.setItem(rowPosition, 0, QTableWidgetItem(""))
         self.table.scrollToBottom()
 
-        self.product_ean = ""
-        self.scanned = ""
+        print(self.inputLabel.text())
+        print(len(self.inputLabel.text()))
+        self.inputLabel.clear()
         self.event_stop.clear()
 
     def send_products_to_box(self):
@@ -112,23 +116,29 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def testLoop(self):
 
+
         while not self.event_stop.is_set():
+
+            self.inputLabel.setFocus()
 
             scanned = ""
             product_ean = ""
 
-            while True:
-                if keyboard.is_pressed('enter'):
-                    break
+            # while True:
+                # if keyboard.is_pressed('enter'):
+                #     break
+                #
+                # scanned += keyboard.read_key()
 
-                scanned += keyboard.read_key()
 
-            for i in range(0, len(scanned)):
-                if i % 2 == 0:
-                    if not scanned[i].isalpha():
-                        product_ean += scanned[i]
+            # for i in range(0, len(scanned)):
+            #     if i % 2 == 0:
+            #         if not scanned[i].isalpha():
+            #             product_ean += scanned[i]
 
-            self.add_to_table(product_ean)
+
+            if len(self.inputLabel.text()) == 13:
+                self.add_to_table(product_ean)
 
 
 

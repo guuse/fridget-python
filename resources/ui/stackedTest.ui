@@ -138,16 +138,6 @@
      <property name="styleSheet">
       <string notr="true">background-color: green;</string>
      </property>
-     <widget class="QCalendarWidget" name="calendarWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>312</width>
-        <height>183</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QTableWidget" name="tableWidget">
       <property name="enabled">
        <bool>false</bool>
@@ -222,6 +212,32 @@
        <string>BACK</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="hiddenLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>150</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>IBeamCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(0,0,0,0);
+border: 0px solid rgba(0,0,0,0);
+color: rgba(0,0,0,0);</string>
+      </property>
+      <property name="cursorPosition">
+       <number>0</number>
+      </property>
+     </widget>
+     <zorder>hiddenLineEdit</zorder>
+     <zorder>tableWidget</zorder>
+     <zorder>pushButton39</zorder>
+     <zorder>sendProductsButton</zorder>
+     <zorder>backButton</zorder>
     </widget>
    </widget>
   </widget>
