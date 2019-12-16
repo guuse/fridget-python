@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.products.add_product(product)
 
-        #QListWidgetItem(product.product_name, self.productListView)
+        QListWidgetItem(product.product_name, self.productListView)
 
         print("Added to widget")
 
