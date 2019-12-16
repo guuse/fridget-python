@@ -2,10 +2,12 @@ import sys
 import threading
 from datetime import timedelta
 
+import fridgetresources_rc
+
 import keyboard
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtCore import QThreadPool, Qt
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem
 
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.products import Products
@@ -34,29 +36,44 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
         self.stacked_widget.setCurrentIndex(0)
+        self.unlock_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
+        self.unlock_button = self.unlock_screen.findChild(QtWidgets.QPushButton, 'unlockScreenButton')
+        self.unlock_button.clicked.connect(self.unlock_device)
+
+        self.main_menu_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'mainMenuPage')
+        self.scan_products_button = self.main_menu_screen.findChild(QtWidgets.QPushButton, 'scanProductsButton')
+        self.scan_products_button.clicked.connect(self.switch_to_scan_page)
+
         self.p1 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p1')
-        self.p2 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p2')
+        self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scanPage')
         self.button = self.p1.findChild(QtWidgets.QPushButton, 'p1ChangePage2Button')
-        self.button.clicked.connect(self.switch_to_second_screen)
+        self.button.clicked.connect(self.switch_to_scan_page)
         self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'changeImgButton')
         self.button2.clicked.connect(self.change_image)
         self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'randomTestButton')
         self.button2.clicked.connect(self.testLoop)
         self.label = self.p1.findChild(QtWidgets.QLabel, 'label1')
-        self.table = self.p2.findChild(QtWidgets.QTableWidget, 'tableWidget')
-        self.button39 = self.p2.findChild(QtWidgets.QPushButton, 'pushButton39')
-        self.button39.clicked.connect(self.add_to_table)
-        self.backButton = self.p2.findChild(QtWidgets.QPushButton, 'backButton')
+        self.table = self.scan_page.findChild(QtWidgets.QTableWidget, 'tableWidget')
+        self.button39 = self.scan_page.findChild(QtWidgets.QPushButton, 'pushButton39')
+        self.button39.clicked.connect(self.addItem)
+        self.backButton = self.scan_page.findChild(QtWidgets.QPushButton, 'backButton')
         self.backButton.clicked.connect(self.switch_to_first_screen)
-        self.sendProductsButton = self.p2.findChild(QtWidgets.QPushButton, 'sendProductsButton')
+        self.sendProductsButton = self.scan_page.findChild(QtWidgets.QPushButton, 'sendProductsButton')
         self.sendProductsButton.clicked.connect(self.send_products_to_box)
-        self.inputLabel = self.p2.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
+        self.inputLabel = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
+
+        # List View Trials
+        self.productListView = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
+        self.productListView.itemDoubleClicked.connect(self.deleteItem)
 
         #self.showFullScreen()
         self.show()
 
-    def switch_to_second_screen(self):
+    def unlock_device(self):
         self.stacked_widget.setCurrentIndex(1)
+
+    def switch_to_scan_page(self):
+        self.stacked_widget.setCurrentIndex(3)
 
         self.worker = Worker(self.testLoop)
         self.threadpool.start(self.worker)
@@ -65,7 +82,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def switch_to_first_screen(self):
         self.event_stop.set()
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(1)
 
     def change_image(self):
         pixmap = QtGui.QPixmap("077G.png")
@@ -80,8 +97,36 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.label.setPixmap(QtGui.QPixmap(image))
 
+    def add_to_list(self, product_ean):
+        pass
+
+    def deleteItem(self, item):
+        print(item.text())
+        id = self.productListView.currentRow()
+        self.productListView.takeItem(id)
+
+    def addItem(self):
+        products = Products()
+
+        from platform_wrapper.models.product import Product
+        products.add_product(Product(product_name="Milk", product_amount=1, product_exp=1, product_category="Zuivel"))
+        products.add_product(Product(product_name="Cola", product_amount=2, product_exp=1))
+        products.add_product(Product(product_name="Fanta", product_amount=1, product_exp=1))
+        products.add_product(Product(product_name="Sprite", product_amount=1, product_exp=1))
+
+        x = products.filter_category("Zuivel")
+
+        for e in x:
+            print(e.product_name)
+
+        print("Done")
+
+
+
     def add_to_table(self, product_ean):
         self.event_stop.set()
+
+        print(product_ean)
         from platform_wrapper.models.product import Product
 
         import datetime
@@ -100,10 +145,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         print(self.inputLabel.text())
 
-        rowPosition = self.table.rowCount()
-        self.table.insertRow(rowPosition)
-        self.table.setItem(rowPosition, 0, QTableWidgetItem(""))
-        self.table.scrollToBottom()
+        QListWidgetItem(self.inputLabel.text(), self.productListView)
+
+        # rowPosition = self.table.rowCount()
+        # self.table.insertRow(rowPosition)
+        # self.table.setItem(rowPosition, 0, QTableWidgetItem(self.inputLabel.text()))
+        # self.table.scrollToBottom()
 
         print(self.inputLabel.text())
         print(len(self.inputLabel.text()))
@@ -115,8 +162,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.platform_api.add_products(self.products)
 
     def testLoop(self):
-
-
         while not self.event_stop.is_set():
 
             self.inputLabel.setFocus()
@@ -138,6 +183,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
             if len(self.inputLabel.text()) == 13:
+                print("Valid")
                 self.add_to_table(product_ean)
 
 

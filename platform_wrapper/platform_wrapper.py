@@ -1,5 +1,6 @@
 import requests
 
+from utils.products_factory import create_products_from_json
 from . import platform_paths
 from .models.products import Products
 
@@ -21,10 +22,16 @@ class PlatformWrapper(object):
         return self.api_key
 
     def parse_object_response(self, response, object):
-        """"
-        Function handles a response which returns an object
-        """
-        raise NotImplementedError()
+
+        if response.status_code != 200:
+            if object is Products:
+
+                return create_products_from_json(response.json())
+
+        else:
+            raise Exception(response.status_code)
+
+
 
     def parse_response(self, response) -> bool:
         """"
@@ -47,3 +54,28 @@ class PlatformWrapper(object):
 
         return self.parse_response(response)
 
+    def get_products(self, box_id: int, category: str = None) -> Products:
+        """Retrieves products from the fridge box
+
+        :param box_id: The id of the box (int)
+        :param category: A category (string, optional)
+
+        :returns: List of all products inside the box
+        """
+        products_get_path = platform_paths.PRODUCTS_GET_PATH.format(box_id)
+        url = self.host + products_get_path
+
+        params = {
+            'category': category
+        }
+
+        response = requests.get(
+            url=url,
+            params=params,
+            headers=self.default_headers
+        )
+
+        # Raise Exceptions if they occur
+        response.raise_for_status()
+
+        return self.parse_object_response(response, Products)

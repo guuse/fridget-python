@@ -1,0 +1,1878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background: #C4C4C4;</string>
+   </property>
+   <widget class="QStackedWidget" name="ontgrendelscherm">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>480</width>
+      <height>800</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="currentIndex">
+     <number>24</number>
+    </property>
+    <widget class="QWidget" name="Ontgrendelscherm">
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/images/Background_1unlock.png);
+</string>
+     </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Userscreen">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QPushButton" name="user1">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen2_userscreen.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="user2">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>190</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="newuser">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>410</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>label</zorder>
+     <zorder>user1</zorder>
+     <zorder>user2</zorder>
+     <zorder>newuser</zorder>
+    </widget>
+    <widget class="QWidget" name="fruit">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/Screen5.1_Fruit.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>720</y>
+        <width>71</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>320</y>
+        <width>361</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="mainpage">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen3_main menu_colour.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="inventory">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="expiration">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>180</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="scanproducts">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>400</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="inventorypage">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen4_inventory_colour.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="fruitinv">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>50</y>
+        <width>131</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="vegetablesinv">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>50</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="dairyinv">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>220</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="meatfishinv">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>220</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="spreadsinv">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>390</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="sauceinv">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>390</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="drinkinv">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>550</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="otherinv">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>550</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="vegetables">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/Screen5.2_vegetables.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="dairy">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen5.3_dairy.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="meatfish">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen5.4_meatfish.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_6">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="spreads">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen5.5_spreads.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_7">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="sauce">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen5.6_sauce.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="drinks">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen5.7_drinks.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_9">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="other">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen5.8_other.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_10">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="expirationpage">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/expiration.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_11">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Scanningpage">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen7_scanproducts_Tekengebied 1.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_12">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addtofrigde">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>740</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="productzonderbarcode">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>20</y>
+        <width>261</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="scanninginventory">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QPushButton" name="dairyinv_2">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>220</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen4_inventory_colour.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="fruitinv_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>60</y>
+        <width>131</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="vegetablesinv_2">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>50</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="meatfishinv_2">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>220</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="spreadsinv_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>390</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="otherinv_2">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>560</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="sauceinv_2">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>380</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="drinkinv_2">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>550</y>
+        <width>141</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_13">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>label_14</zorder>
+     <zorder>dairyinv_2</zorder>
+     <zorder>fruitinv_2</zorder>
+     <zorder>vegetablesinv_2</zorder>
+     <zorder>meatfishinv_2</zorder>
+     <zorder>spreadsinv_2</zorder>
+     <zorder>otherinv_2</zorder>
+     <zorder>sauceinv_2</zorder>
+     <zorder>drinkinv_2</zorder>
+     <zorder>terug1_13</zorder>
+    </widget>
+    <widget class="QWidget" name="addfruit">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_15">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen9_fruitzc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_14">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addbanana">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addorange">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addstrawberry">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addvegetables">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_vegetableszc_Tekengebied 1.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_15">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addbrocoli">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addpaprika">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addleek">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>121</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="adddairy">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: url(:/images/screen9_dairyzc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_16">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addbutter">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addcheese">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addmilk">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>310</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="meatfishadd">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_meatfishzc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_17">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addchicken">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addbacon">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addsalmon">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addspread">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_spreads_Tekengebied 1.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_18">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addjam">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addspread_2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addspread_3">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addsauce">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_20">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_saucezc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_19">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addsauce_1">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addsauce_2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addsauce_3">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="adddrinks">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_21">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_drinkszc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_20">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="adddrink_1">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="adddrink_2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="adddrink_3">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addothers">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(33, 194, 16, 1)</string>
+     </property>
+     <widget class="QLabel" name="label_22">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image:url(:/images/screen9_otherszc.png)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="terug1_21">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addother_1">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addother_2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addother_3">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-image: rgba(54, 235, 166, 1)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="fridgetresources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
