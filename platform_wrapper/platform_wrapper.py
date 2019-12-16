@@ -2,6 +2,7 @@ import requests
 
 from utils.products_factory import create_products_from_json
 from . import platform_paths
+from .models.product import Product
 from .models.products import Products
 
 
@@ -27,6 +28,15 @@ class PlatformWrapper(object):
             if object is Products:
 
                 return create_products_from_json(response.json())
+            if object is Product:
+                import json
+                product_data = json.loads(response.json())
+                return Product(
+                    product_name=product_data['name'],
+                    product_category=product_data['category'],
+                    product_exp=product_data['expires'],
+                    product_amount_unit=product_data['unit']
+                )
 
         else:
             raise Exception(response.status_code)
@@ -79,3 +89,33 @@ class PlatformWrapper(object):
         response.raise_for_status()
 
         return self.parse_object_response(response, Products)
+
+    def get_product_from_ean(self, ean: str) -> Product:
+        """Retrieves products from the fridge box
+
+        :param box_id: The id of the box (int)
+        :param category: A category (string, optional)
+
+        :returns: List of all products inside the box
+        """
+        products_get_path = platform_paths.PRODUCTS_GET_PATH.format(ean)
+        url = self.host + products_get_path
+
+        return Product(
+            product_name="Melk",
+            product_category="Zuivel",
+            product_exp=7,
+            product_amount_unit="1L",
+            product_desc="Lekker pakje melk! :)"
+        )
+
+
+        # response = requests.get(
+        #     url=url,
+        #     headers=self.default_headers
+        # )
+        #
+        # # Raise Exceptions if they occur
+        # response.raise_for_status()
+
+        #return self.parse_object_response(response, Product)

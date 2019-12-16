@@ -1,8 +1,9 @@
 class Product(object):
-    def __init__(self, product_name: str,
+    def __init__(self,
+                 product_name: str,
                  product_exp,
-                 product_amount: int,
                  product_category: str = "Overig",
+                 product_amount: int = 1,
                  product_desc: str = None,
                  product_amount_unit: str = None):
 

@@ -54,7 +54,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -194,7 +194,7 @@ border-image: url(:/images/Background_1unlock.png);
       <property name="geometry">
        <rect>
         <x>360</x>
-        <y>100</y>
+        <y>130</y>
         <width>75</width>
         <height>23</height>
        </rect>

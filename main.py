@@ -13,6 +13,7 @@ from PyQt5.QtCore import QThreadPool, Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem
 
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
+from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
@@ -98,9 +99,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def unlock_device(self, event):
 
-        print(event.source())
-        print(event.sender())
-
         self.stacked_widget.setCurrentIndex(1)
 
     def switch_to_scan_page(self):
@@ -130,7 +128,6 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def deleteItem(self, item):
-        print(item.text())
         id = self.productListView.currentRow()
         self.productListView.takeItem(id)
 
@@ -150,39 +147,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
         print("Done")
 
-
-
-    def add_to_table(self, product_ean):
+    def add_to_table(self, product: Product):
         self.event_stop.set()
 
-        print(product_ean)
-        from platform_wrapper.models.product import Product
+        self.products.add_product(product)
 
-        import datetime
+        #QListWidgetItem(product.product_name, self.productListView)
 
-        # 1. Scan code
-        # 2. Get code from DB (if available)
-        # TODO: HANDLE NOT FOUND?
-        #datakick_product = datakick_api.get_product(product_ean)
-        #
-        # product = Product(product_name=datakick_product.product_name,
-        #                   product_desc=datakick_product.desc,
-        #                   product_amount=datakick_product.amount,
-        #                   product_amount_unit=datakick_product.unit,
-        #                   product_exp=(datetime.datetime.now() + timedelta(datakick_product.expiration_time)).date())
-        # self.products.add_product(product)
-
-        print(self.inputLabel.text())
-
-        QListWidgetItem(self.inputLabel.text(), self.productListView)
+        print("Added to widget")
 
         # rowPosition = self.table.rowCount()
         # self.table.insertRow(rowPosition)
         # self.table.setItem(rowPosition, 0, QTableWidgetItem(self.inputLabel.text()))
         # self.table.scrollToBottom()
 
-        print(self.inputLabel.text())
-        print(len(self.inputLabel.text()))
         self.inputLabel.clear()
         self.event_stop.clear()
 
@@ -193,32 +171,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def testLoop(self):
         while not self.event_stop.is_set():
 
-            print("Started")
-
             self.inputLabel.setFocus()
-
-            scanned = ""
-            product_ean = ""
-
-            # while True:
-                # if keyboard.is_pressed('enter'):
-                #     break
-                #
-                # scanned += keyboard.read_key()
-
-
-            # for i in range(0, len(scanned)):
-            #     if i % 2 == 0:
-            #         if not scanned[i].isalpha():
-            #             product_ean += scanned[i]
-
+            ean = ""
 
             if len(self.inputLabel.text()) == 13:
-                print("Valid")
-                self.add_to_table(product_ean)
 
+                ean = self.inputLabel.text()
 
-
+                self.add_to_table(self.platform_api.get_product_from_ean(ean))
 
 
 platform_api = PlatformWrapper(api_key="")
