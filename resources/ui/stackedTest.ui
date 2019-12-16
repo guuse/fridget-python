@@ -58,10 +58,11 @@
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
-      <string notr="true">border-image:url(:/images/Background_1unlock.png);
-</string>
+      <string notr="true">QWidget#unlockPage {
+border-image: url(:/images/Background_1unlock.png);
+}</string>
      </property>
-     <widget class="QPushButton" name="unlockScreenButton">
+     <widget class="QWidget" name="unlockWidget" native="true">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -83,13 +84,7 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgba(255,255,255,0);
-border-image: rgba(255,255,255,0);
-background: rgba(255,255,255,0);
-</string>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
+       <string notr="true"/>
       </property>
      </widget>
     </widget>

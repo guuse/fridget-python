@@ -1,6 +1,9 @@
 import sys
 import threading
 from datetime import timedelta
+from functools import partial
+
+from PyQt5.QtGui import QMouseEvent
 
 import fridgetresources_rc
 
@@ -12,6 +15,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
+from settings import PAGE_INDEXES
 from utils.worker import Worker
 
 
@@ -37,12 +41,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
         self.stacked_widget.setCurrentIndex(0)
         self.unlock_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
-        self.unlock_button = self.unlock_screen.findChild(QtWidgets.QPushButton, 'unlockScreenButton')
-        self.unlock_button.clicked.connect(self.unlock_device)
+        self.unlock_widget = self.unlock_screen.findChild(QtWidgets.QWidget, 'unlockWidget')
+        self.unlock_widget.mouseReleaseEvent=partial(self.switch_page, dest="main_page")
 
         self.main_menu_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'mainMenuPage')
         self.scan_products_button = self.main_menu_screen.findChild(QtWidgets.QPushButton, 'scanProductsButton')
-        self.scan_products_button.clicked.connect(self.switch_to_scan_page)
+        self.scan_products_button.mouseReleaseEvent=partial(self.switch_page,
+                                                            dest="scan_page")
 
         self.p1 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p1')
         self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scanPage')
@@ -56,8 +61,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.table = self.scan_page.findChild(QtWidgets.QTableWidget, 'tableWidget')
         self.button39 = self.scan_page.findChild(QtWidgets.QPushButton, 'pushButton39')
         self.button39.clicked.connect(self.addItem)
-        self.backButton = self.scan_page.findChild(QtWidgets.QPushButton, 'backButton')
-        self.backButton.clicked.connect(self.switch_to_first_screen)
+
+        self.scan_page_return_main_page_button = self.scan_page.findChild(QtWidgets.QPushButton, 'backButton')
+        self.scan_page_return_main_page_button.mouseReleaseEvent=partial(self.switch_page,
+                                                                         dest="main_page",
+                                                                         disable_worker=True)
+
         self.sendProductsButton = self.scan_page.findChild(QtWidgets.QPushButton, 'sendProductsButton')
         self.sendProductsButton.clicked.connect(self.send_products_to_box)
         self.inputLabel = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
@@ -69,15 +78,28 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.showFullScreen()
         self.show()
 
-    def unlock_device(self):
+    def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
+
+        if PAGE_INDEXES[dest] == 3:
+            self.worker = Worker(self.testLoop)
+            self.threadpool.start(self.worker)
+            self.event_stop.clear()
+        elif PAGE_INDEXES[dest] == 1 and disable_worker:
+            self.event_stop.set()
+
+        self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
+
+    def unlock_device(self, event):
+
+        print(event.source())
+        print(event.sender())
+
         self.stacked_widget.setCurrentIndex(1)
 
     def switch_to_scan_page(self):
         self.stacked_widget.setCurrentIndex(3)
-
         self.worker = Worker(self.testLoop)
         self.threadpool.start(self.worker)
-
         self.event_stop.clear()
 
     def switch_to_first_screen(self):
@@ -163,6 +185,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def testLoop(self):
         while not self.event_stop.is_set():
+
+            print("Started")
 
             self.inputLabel.setFocus()
 
