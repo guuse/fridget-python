@@ -40,13 +40,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
         self.stacked_widget.setCurrentIndex(0)
+
+        # Unlock Screen
         self.unlock_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
         self.unlock_widget = self.unlock_screen.findChild(QtWidgets.QWidget, 'unlockWidget')
         self.unlock_widget.mouseReleaseEvent=partial(self.switch_page, dest="main_page")
 
-        self.main_menu_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'mainMenuPage')
-        self.scan_products_button = self.main_menu_screen.findChild(QtWidgets.QPushButton, 'scanProductsButton')
-        self.scan_products_button.mouseReleaseEvent=partial(self.switch_page,
+        # Main Screen
+        self.main_menu_screen = self.stacked_widget.findChild(QtWidgets.QWidget,
+                                                              'mainMenuPage')
+        self.scan_products_widget = self.main_menu_screen.findChild(QtWidgets.QWidget,
+                                                                    'scanWidget')
+        self.scan_products_widget.mouseReleaseEvent=partial(self.switch_page,
                                                             dest="scan_page")
 
         self.p1 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p1')
@@ -62,13 +67,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button39 = self.scan_page.findChild(QtWidgets.QPushButton, 'pushButton39')
         self.button39.clicked.connect(self.addItem)
 
-        self.scan_page_return_main_page_button = self.scan_page.findChild(QtWidgets.QPushButton, 'backButton')
+        # Scan Page
+        self.scan_page_return_main_page_button = self.scan_page.findChild(QtWidgets.QWidget, 'mainMenuWidgetSwitch')
         self.scan_page_return_main_page_button.mouseReleaseEvent=partial(self.switch_page,
                                                                          dest="main_page",
                                                                          disable_worker=True)
 
-        self.sendProductsButton = self.scan_page.findChild(QtWidgets.QPushButton, 'sendProductsButton')
-        self.sendProductsButton.clicked.connect(self.send_products_to_box)
+        self.scan_page_send_products = self.scan_page.findChild(QtWidgets.QWidget, 'sendProductsWidgetSwitch')
+        self.scan_page_send_products.mouseReleaseEvent=self.send_products_to_box
+
         self.inputLabel = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
 
         # List View Trials
@@ -179,7 +186,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.inputLabel.clear()
         self.event_stop.clear()
 
-    def send_products_to_box(self):
+    def send_products_to_box(self, event=None):
         self.event_stop.set()
         self.platform_api.add_products(self.products)
 

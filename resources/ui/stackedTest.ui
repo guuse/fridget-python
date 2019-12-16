@@ -54,7 +54,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -90,25 +90,18 @@ border-image: url(:/images/Background_1unlock.png);
     </widget>
     <widget class="QWidget" name="mainMenuPage">
      <property name="styleSheet">
-      <string notr="true">border-image: url(:/images/screen3_main menu_colour.png);</string>
+      <string notr="true">QWidget#mainMenuPage {
+	border-image: url(:/images/screen3_main menu_colour.png);
+}</string>
      </property>
-     <widget class="QPushButton" name="scanProductsButton">
+     <widget class="QWidget" name="scanWidget" native="true">
       <property name="geometry">
        <rect>
-        <x>134</x>
-        <y>392</y>
-        <width>211</width>
-        <height>231</height>
+        <x>130</x>
+        <y>389</y>
+        <width>221</width>
+        <height>241</height>
        </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgba(0,0,0,0);
-border-image: rgba(0,0,0,0);
-background: rgba(0,0,0,0);
-</string>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
       </property>
      </widget>
     </widget>
@@ -210,35 +203,6 @@ background: rgba(0,0,0,0);
        <string>PushButton</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="sendProductsButton">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>770</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: red;</string>
-      </property>
-      <property name="text">
-       <string>Send</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="backButton">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>780</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>BACK</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="hiddenLineEdit">
       <property name="geometry">
        <rect>
@@ -273,11 +237,31 @@ color: rgba(0,0,0,0);</string>
        <string notr="true">background-color: rgba(0,0,0,0);</string>
       </property>
      </widget>
+     <widget class="QWidget" name="mainMenuWidgetSwitch" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="sendProductsWidgetSwitch" native="true">
+      <property name="geometry">
+       <rect>
+        <x>339</x>
+        <y>739</y>
+        <width>121</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
      <zorder>hiddenLineEdit</zorder>
      <zorder>pushButton39</zorder>
-     <zorder>sendProductsButton</zorder>
-     <zorder>backButton</zorder>
      <zorder>productListWidget</zorder>
+     <zorder>mainMenuWidgetSwitch</zorder>
+     <zorder>sendProductsWidgetSwitch</zorder>
     </widget>
    </widget>
   </widget>
