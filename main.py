@@ -6,31 +6,31 @@ from functools import partial
 import fridgetresources_rc
 
 from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtCore import QThreadPool, Qt
+from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject
 from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
 
+import settings
 from customwidget import Ui_productWidget
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
-from utils.product_list_widget import ProductListWidget
 from utils.worker import Worker
 
 class ProductWidget(QWidget, Ui_productWidget):
-    def __init__(self, *args,**kwargs):
+    def __init__(self, product: Product, *args,**kwargs):
         QWidget.__init__(self,*args,**kwargs)
         self.setupUi(self)
+        self.productNameLabel.setText(product.product_name)
 
 
 class MainWindow(QtWidgets.QMainWindow):
 
     products = Products()
-    scanning = False
+    scanning = True
 
-    scanned = ""
-    product_ean = ""
+    scanned = pyqtSignal()
 
     def __init__(self, platform_api: PlatformWrapper, datakick_api, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -45,6 +45,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
         self.stacked_widget.setCurrentIndex(0)
+
+        self.scanned.connect(self.add_to_table)
 
         # Unlock Screen
         self.unlock_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
@@ -82,6 +84,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_send_products.mouseReleaseEvent=self.send_products_to_box
 
         self.inputLabel = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
+        settings.word = self.inputLabel
 
         # List View Trials
         self.productListView = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
@@ -89,15 +92,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         #self.showFullScreen()
         self.show()
+        # self.scanner = Scanner()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
 
         if PAGE_INDEXES[dest] == 3:
+            self.scanning = True
             self.worker = Worker(self.testLoop)
             self.threadpool.start(self.worker)
             self.event_stop.clear()
         elif PAGE_INDEXES[dest] == 1 and disable_worker:
             self.event_stop.set()
+            self.scanning = False
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
@@ -143,18 +149,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.productListView.addItem(item)
         self.productListView.setItemWidget(item, item_widget)
 
-    def add_to_table(self, product: Product):
-        self.event_stop.set()
+    def add_to_table(self):
+
+        product = self.platform_api.get_product_from_ean(self.ean)
 
         self.products.add_product(product)
 
         product_item = QListWidgetItem(self.productListView)
-        product_item_widget = ProductWidget()
+        product_item_widget = ProductWidget(product)
         product_item.setSizeHint(product_item_widget.size())
         self.productListView.addItem(product_item)
         self.productListView.setItemWidget(product_item, product_item_widget)
 
         self.inputLabel.clear()
+
+        self.scanning = True
+        self.worker = Worker(self.testLoop)
+        self.threadpool.start(self.worker)
         self.event_stop.clear()
 
     def send_products_to_box(self, event=None):
@@ -162,15 +173,51 @@ class MainWindow(QtWidgets.QMainWindow):
         self.platform_api.add_products(self.products)
 
     def testLoop(self):
+        while self.scanning:
+            self.event_stop.clear()
+            while not self.event_stop.is_set():
+
+                self.inputLabel.setFocus()
+
+                if len(self.inputLabel.text()) == 13:
+                    self.scanning = False
+                    self.event_stop.set()
+
+                    self.ean = self.inputLabel.text()
+
+                    self.scanned.emit()
+
+
+
+class Scanner(QObject):
+
+    def __init__(self):
+        super().__init__()
+        self.threadpool = QThreadPool()
+        self.event_stop = threading.Event()
+        self.worker = Worker(self.scan_loop())
+        self.threadpool.start(self.worker)
+        self.event_stop.set()
+
+    def start_worker(self):
+        self.event_stop.clear()
+
+    def stop_worker(self):
+        self.event_stop.set()
+
+    def scan_loop(self):
         while not self.event_stop.is_set():
 
-            self.inputLabel.setFocus()
+            print("!!")
 
-            if len(self.inputLabel.text()) == 2:
+            settings.word.setFocus()
 
-                ean = self.inputLabel.text()
+            if len(settings.word.text()) == 2:
+                self.event_stop.set()
 
-                self.add_to_table(self.platform_api.get_product_from_ean("8719987324772"))
+                self.ean = settings.word
+
+                x = self.scanned.emit()
 
 
 platform_api = PlatformWrapper(api_key="")

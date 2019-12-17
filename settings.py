@@ -8,3 +8,5 @@ PAGE_INDEXES = {
     "main_page": 1,
     "scan_page": 3,
 }
+
+word = None
