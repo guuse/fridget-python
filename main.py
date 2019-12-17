@@ -3,21 +3,25 @@ import threading
 from datetime import timedelta
 from functools import partial
 
-from PyQt5.QtGui import QMouseEvent
-
 import fridgetresources_rc
 
-import keyboard
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtCore import QThreadPool, Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
 
+from customwidget import Ui_productWidget
 from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
+from utils.product_list_widget import ProductListWidget
 from utils.worker import Worker
+
+class ProductWidget(QWidget, Ui_productWidget):
+    def __init__(self, *args,**kwargs):
+        QWidget.__init__(self,*args,**kwargs)
+        self.setupUi(self)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -132,34 +136,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.productListView.takeItem(id)
 
     def addItem(self):
-        products = Products()
 
-        from platform_wrapper.models.product import Product
-        products.add_product(Product(product_name="Milk", product_amount=1, product_exp=1, product_category="Zuivel"))
-        products.add_product(Product(product_name="Cola", product_amount=2, product_exp=1))
-        products.add_product(Product(product_name="Fanta", product_amount=1, product_exp=1))
-        products.add_product(Product(product_name="Sprite", product_amount=1, product_exp=1))
-
-        x = products.filter_category("Zuivel")
-
-        for e in x:
-            print(e.product_name)
-
-        print("Done")
+        item = QListWidgetItem(self.productListView)
+        item_widget = ProductWidget()
+        item.setSizeHint(item_widget.size())
+        self.productListView.addItem(item)
+        self.productListView.setItemWidget(item, item_widget)
 
     def add_to_table(self, product: Product):
         self.event_stop.set()
 
         self.products.add_product(product)
 
-        QListWidgetItem(product.product_name, self.productListView)
-
-        print("Added to widget")
-
-        # rowPosition = self.table.rowCount()
-        # self.table.insertRow(rowPosition)
-        # self.table.setItem(rowPosition, 0, QTableWidgetItem(self.inputLabel.text()))
-        # self.table.scrollToBottom()
+        product_item = QListWidgetItem(self.productListView)
+        product_item_widget = ProductWidget()
+        product_item.setSizeHint(product_item_widget.size())
+        self.productListView.addItem(product_item)
+        self.productListView.setItemWidget(product_item, product_item_widget)
 
         self.inputLabel.clear()
         self.event_stop.clear()
@@ -172,13 +165,12 @@ class MainWindow(QtWidgets.QMainWindow):
         while not self.event_stop.is_set():
 
             self.inputLabel.setFocus()
-            ean = ""
 
-            if len(self.inputLabel.text()) == 13:
+            if len(self.inputLabel.text()) == 2:
 
                 ean = self.inputLabel.text()
 
-                self.add_to_table(self.platform_api.get_product_from_ean(ean))
+                self.add_to_table(self.platform_api.get_product_from_ean("8719987324772"))
 
 
 platform_api = PlatformWrapper(api_key="")
