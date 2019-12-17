@@ -18,11 +18,15 @@ from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
 from utils.worker import Worker
 
+
 class ProductWidget(QWidget, Ui_productWidget):
     def __init__(self, product: Product, *args,**kwargs):
         QWidget.__init__(self,*args,**kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
+        self.productDescLabel.setText(product.product_desc)
+        self.productAmountLabel.setText(product.product_amount.__str__())
+        self.productExpInLabel.setText(product.product_exp.__str__())
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -104,6 +108,8 @@ class MainWindow(QtWidgets.QMainWindow):
         elif PAGE_INDEXES[dest] == 1 and disable_worker:
             self.event_stop.set()
             self.scanning = False
+            self.productListView.clear()
+            self.products.products.clear()
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
@@ -171,6 +177,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def send_products_to_box(self, event=None):
         self.event_stop.set()
         self.platform_api.add_products(self.products)
+
+        self.productListView.clear()
+        self.products.products.clear()
 
     def testLoop(self):
         while self.scanning:
