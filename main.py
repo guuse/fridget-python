@@ -19,7 +19,9 @@ from utils.worker import Worker
 
 
 class ProductWidget(QWidget, Ui_productWidget):
-    def __init__(self, product: Product, *args,**kwargs):
+    delete_signal = pyqtSignal(int, int)
+
+    def __init__(self, product: Product, mainWindow, index = None, *args,**kwargs):
         QWidget.__init__(self,*args,**kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
@@ -28,13 +30,18 @@ class ProductWidget(QWidget, Ui_productWidget):
         self.productExpInLabel.setText(product.product_exp.__str__())
         self.product_id = product.product_id
         self.removeButton.clicked.connect(self._delete_item)
+        self.main_window = mainWindow
+        self.delete_signal.connect(mainWindow.delete_inventory_product)
+        self.index = index
 
     def _delete_item(self):
-        settings.PLATFORM_API.delete_product(self.product_id)
+        deleted = settings.PLATFORM_API.delete_product(self.product_id)
+
+        # This doesnt work, (index changes).....
+        self.delete_signal.emit(self.index, self.product_id)
 
 class MainWindow(QtWidgets.QMainWindow):
 
-    products = Products()
     scanning = True
 
     scanned = pyqtSignal()
@@ -108,11 +115,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.inventory_back_widget.mouseReleaseEvent=partial(self.switch_page,
                                                              dest="main_page")
 
-        # TODO: DO THIS ONCE AFTER PICKING BOX, ONLY REFRESH WHEN USER HAS ADDED PRODUCTS?
-        self.inventory = self.platform_api.get_products(411)
+        self.products = Products()
 
-        #self.showFullScreen()
-        self.show()
+        self.showFullScreen()
+        #self.show()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
 
@@ -127,16 +133,26 @@ class MainWindow(QtWidgets.QMainWindow):
             self.productListView.clear()
             self.products.products.clear()
         elif PAGE_INDEXES[dest] == 5:
-            self.fullInventoryListWidget.clear()
-            print(self.inventory.products_length())
-            for product in self.inventory.products:
-                product_item = QListWidgetItem(self.fullInventoryListWidget)
-                product_item_widget = ProductWidget(product)
-                product_item.setSizeHint(product_item_widget.size())
-                self.fullInventoryListWidget.addItem(product_item)
-                self.fullInventoryListWidget.setItemWidget(product_item, product_item_widget)
+            self.inventory = self.platform_api.get_products(411)
+            self.update_inventory()
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
+
+    def update_inventory(self):
+        self.fullInventoryListWidget.clear()
+        i = 0
+        for product in self.inventory.products:
+            product_item = QListWidgetItem(self.fullInventoryListWidget)
+            product_item_widget = ProductWidget(product, self, i)
+            product_item.setSizeHint(product_item_widget.size())
+            self.fullInventoryListWidget.addItem(product_item)
+            self.fullInventoryListWidget.setItemWidget(product_item, product_item_widget)
+            i += 1
+
+    def delete_inventory_product(self, index: int, id: int):
+        self.fullInventoryListWidget.takeItem(index)
+        self.inventory.delete_item(id)
+        self.update_inventory()
 
     def unlock_device(self, event):
 
@@ -187,7 +203,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.add_product(product)
 
         product_item = QListWidgetItem(self.productListView)
-        product_item_widget = ProductWidget(product)
+        product_item_widget = ProductWidget(product, self)
         product_item.setSizeHint(product_item_widget.size())
         self.productListView.addItem(product_item)
         self.productListView.setItemWidget(product_item, product_item_widget)
@@ -201,9 +217,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def send_products_to_box(self, event=None):
         self.event_stop.set()
-
-        print(self.inventory.products_length())
-        print(self.products.products_length())
 
         self.platform_api.add_products(self.products)
 
@@ -245,8 +258,6 @@ class Scanner(QObject):
 
     def scan_loop(self):
         while not self.event_stop.is_set():
-
-            print("!!")
 
             settings.word.setFocus()
 

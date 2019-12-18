@@ -13,8 +13,6 @@ from .models.products import Products
 class PlatformWrapper(object):
 
     host = "https://fridget.chprojecten.nl/api"
-    api_key = None
-
     default_headers = {
         'cache-control': "no-cache",
         'content-type': "application/json"
@@ -34,10 +32,16 @@ class PlatformWrapper(object):
                 return create_products_from_json(response.json())
             elif object is Product:
                 product_data = response.json()
+
+                if product_data['expiresIn'] < 0:
+                    expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
+                else:
+                    expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
+
                 return Product(
                     product_name=product_data['name'],
                     product_category=product_data['category'],
-                    product_exp=(datetime.now() + timedelta(product_data['expiresIn'])).date(),
+                    product_exp=expiresIn,
                     product_amount_unit=product_data['unit'],
                     product_desc=product_data['description']
                 )
@@ -54,11 +58,7 @@ class PlatformWrapper(object):
         """"
         Function handles a response which doesn't return a body
         """
-
-        print(response.status_code)
-        print(response.content)
         if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
-            print("Waarom de fuck ben ik hier")
             # TODO 3: Implement what will happen if the API fails/did not add
             raise NotImplementedError()
         else:
@@ -81,10 +81,6 @@ class PlatformWrapper(object):
             headers=self.default_headers,
             json=json_body
         )
-
-        print(json_body)
-
-        print(response.content)
 
         response.raise_for_status()
 
