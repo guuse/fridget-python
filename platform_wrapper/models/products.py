@@ -1,5 +1,3 @@
-import json
-
 from .product import Product
 
 
@@ -11,6 +9,7 @@ class Products(object):
         self.products.append(product)
 
     def to_json(self):
+        # TODO: Box ID
         serialized_dict = {
             "box": 411
         }

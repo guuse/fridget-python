@@ -54,7 +54,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -268,6 +268,25 @@ QListWidget#productListWidget::item:hover:!active {
      <zorder>pushButton39</zorder>
      <zorder>mainMenuWidgetSwitch</zorder>
      <zorder>sendProductsWidgetSwitch</zorder>
+    </widget>
+    <widget class="QWidget" name="productsCategoryPage">
+     <property name="minimumSize">
+      <size>
+       <width>480</width>
+       <height>800</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>480</width>
+       <height>800</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget#productsCategoryPage {
+border-image: url(:/images/screen4_inventory_colour.png);
+}</string>
+     </property>
     </widget>
    </widget>
   </widget>
