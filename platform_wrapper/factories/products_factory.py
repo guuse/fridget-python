@@ -20,7 +20,8 @@ def create_products_from_json(json_array):
             product_exp=product_json_object['expiresIn'],
             product_amount=product_json_object['amount'],
             product_amount_unit=product_json_object['unit'],
-            product_category=product_json_object['category']
+            product_category=product_json_object['category'],
+            product_id=product_json_object['id']
         )
 
         products.add_product(product_object)

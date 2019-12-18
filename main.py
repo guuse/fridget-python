@@ -1,6 +1,5 @@
 import sys
 import threading
-from datetime import timedelta
 from functools import partial
 
 import fridgetresources_rc
@@ -27,7 +26,11 @@ class ProductWidget(QWidget, Ui_productWidget):
         self.productDescLabel.setText(product.product_desc)
         self.productAmountLabel.setText(product.product_amount.__str__())
         self.productExpInLabel.setText(product.product_exp.__str__())
+        self.product_id = product.product_id
+        self.removeButton.clicked.connect(self._delete_item)
 
+    def _delete_item(self):
+        settings.PLATFORM_API.delete_product(self.product_id)
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -64,6 +67,10 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                     'scanWidget')
         self.scan_products_widget.mouseReleaseEvent=partial(self.switch_page,
                                                             dest="scan_page")
+        self.inventory_widget = self.main_menu_screen.findChild(QtWidgets.QWidget,
+                                                                'inventoryWidget')
+        self.inventory_widget.mouseReleaseEvent=partial(self.switch_page,
+                                                        dest="inventory_page")
 
         self.p1 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p1')
         self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scanPage')
@@ -94,9 +101,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.productListView = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
         self.productListView.itemDoubleClicked.connect(self.deleteItem)
 
+        # Inventory full
+        self.inventory_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'allProductsPage')
+        self.fullInventoryListWidget = self.inventory_screen.findChild(QtWidgets.QListWidget, 'allProductsListWidget')
+        self.inventory_back_widget = self.inventory_screen.findChild(QtWidgets.QWidget, 'allProductsBackWidget')
+        self.inventory_back_widget.mouseReleaseEvent=partial(self.switch_page,
+                                                             dest="main_page")
+
+        # TODO: DO THIS ONCE AFTER PICKING BOX, ONLY REFRESH WHEN USER HAS ADDED PRODUCTS?
+        self.inventory = self.platform_api.get_products(411)
+
         #self.showFullScreen()
         self.show()
-        # self.scanner = Scanner()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
 
@@ -110,6 +126,15 @@ class MainWindow(QtWidgets.QMainWindow):
             self.scanning = False
             self.productListView.clear()
             self.products.products.clear()
+        elif PAGE_INDEXES[dest] == 5:
+            self.fullInventoryListWidget.clear()
+            print(self.inventory.products_length())
+            for product in self.inventory.products:
+                product_item = QListWidgetItem(self.fullInventoryListWidget)
+                product_item_widget = ProductWidget(product)
+                product_item.setSizeHint(product_item_widget.size())
+                self.fullInventoryListWidget.addItem(product_item)
+                self.fullInventoryListWidget.setItemWidget(product_item, product_item_widget)
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
@@ -176,6 +201,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def send_products_to_box(self, event=None):
         self.event_stop.set()
+
+        print(self.inventory.products_length())
+        print(self.products.products_length())
+
         self.platform_api.add_products(self.products)
 
         self.productListView.clear()
@@ -230,10 +259,11 @@ class Scanner(QObject):
 
 
 platform_api = PlatformWrapper(api_key="")
+settings.PLATFORM_API = platform_api
 datakick_api = DatakickWrapper()
 
 app = QtWidgets.QApplication(sys.argv)
-window = MainWindow(platform_api, datakick_api)
+window = MainWindow(settings.PLATFORM_API, datakick_api)
 # window.showFullScreen()
 sys._excepthook = sys.excepthook
 def exception_hook(exctype, value, traceback):

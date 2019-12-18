@@ -54,7 +54,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -101,6 +101,16 @@ border-image: url(:/images/Background_1unlock.png);
         <y>389</y>
         <width>221</width>
         <height>241</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="inventoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>211</width>
+        <height>211</height>
        </rect>
       </property>
      </widget>
@@ -287,6 +297,51 @@ QListWidget#productListWidget::item:hover:!active {
 border-image: url(:/images/screen4_inventory_colour.png);
 }</string>
      </property>
+    </widget>
+    <widget class="QWidget" name="allProductsPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#allProductsPage {
+border-image: url(:/images/screen5.8_other.png);
+}</string>
+     </property>
+     <widget class="QListWidget" name="allProductsListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>290</y>
+        <width>480</width>
+        <height>380</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#allProductsListWidget,
+QListWidget#allProductsListWidget::item:hover,
+QListWidget#allProductsListWidget::item:disabled:hover,
+QListWidget#allProductsListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+     </widget>
+     <widget class="QWidget" name="allProductsBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>19</x>
+        <y>709</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

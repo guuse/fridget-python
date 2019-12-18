@@ -1,7 +1,7 @@
 from .product import Product
 
 
-class Products(object):
+class Products:
 
     products = []
 

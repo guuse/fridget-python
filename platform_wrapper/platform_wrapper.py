@@ -54,9 +54,13 @@ class PlatformWrapper(object):
         """"
         Function handles a response which doesn't return a body
         """
-        if response.status_code != 200 or response.status_code != 201:
+
+        print(response.status_code)
+        print(response.content)
+        if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
+            print("Waarom de fuck ben ik hier")
             # TODO 3: Implement what will happen if the API fails/did not add
-            ...
+            raise NotImplementedError()
         else:
             return True
 
@@ -76,6 +80,20 @@ class PlatformWrapper(object):
             url=url,
             headers=self.default_headers,
             json=json_body
+        )
+
+        print(json_body)
+
+        print(response.content)
+
+        response.raise_for_status()
+
+        return self.parse_response(response)
+
+    def _delete(self, url: str):
+        response = requests.delete(
+            url=url,
+            headers=self.default_headers
         )
 
         response.raise_for_status()
@@ -130,3 +148,10 @@ class PlatformWrapper(object):
         url = self.host + products_get_path
 
         return self._get(url, Boxes)
+
+    def delete_product(self, product_id: int):
+
+        product_delete_path = platform_paths.PRODUCTS_DEL_PATH.format(product_id.__str__())
+        url = self.host + product_delete_path
+
+        return self._delete(url)
