@@ -1,16 +1,16 @@
-import json
-
 from .product import Product
 
 
-class Products(object):
+class Products:
 
-    products = []
+    def __init__(self):
+        self.products = []
 
     def add_product(self, product: Product):
         self.products.append(product)
 
     def to_json(self):
+        # TODO: Box ID
         serialized_dict = {
             "box": 411
         }
@@ -26,3 +26,18 @@ class Products(object):
 
     def products_length(self):
         return len(self.products)
+
+    def filter_category(self, category: str):
+        filtered_products = []
+
+        for product in self.items:
+
+            if product.product_category == category:
+                filtered_products.append(product)
+
+        return filtered_products
+
+    def delete_item(self, id: int):
+        for item in self.products:
+            if id == item.product_id:
+                self.products.pop(self.products.index(item))
