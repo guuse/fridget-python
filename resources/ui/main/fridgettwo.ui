@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="tabletTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="mainStackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>480</width>
+      <height>800</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="currentIndex">
+     <number>12</number>
+    </property>
+    <widget class="QWidget" name="unlockPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#unlockPage {
+	border-image:url(:/images/Background_1unlock.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="unlockWidget" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>480</width>
+        <height>800</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>480</width>
+        <height>800</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>480</width>
+        <height>800</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="usersPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#usersPage {
+border-image: url(:/images/screen2_userscreen.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="userOneWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="mainMenuPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#mainMenuPage {
+border-image: url(:/images/screen3_main menu_colour.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="inventoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="expirationWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>179</y>
+        <width>201</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="scanWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>400</y>
+        <width>201</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="mainMenuToUsersWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="inventoryPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#inventoryPage {
+border-image: url(:/images/screen4_inventory_colour.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="fruitsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="vegetablesWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>69</y>
+        <width>161</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="dairiesWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>240</y>
+        <width>161</width>
+        <height>121</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="meatsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>230</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="spreadsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>400</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="saucesWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>400</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="drinksWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>560</y>
+        <width>161</width>
+        <height>151</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="othersWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>570</y>
+        <width>161</width>
+        <height>151</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="inventoryToMainMenuWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="fruitPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#fruitPage {
+border-image: url(:/images/Screen5.1_Fruit.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="fruitBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>709</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="fruitListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#fruitListWidget,
+QListWidget#fruitListWidget::item:hover,
+QListWidget#fruitListWidget::item:disabled:hover,
+QListWidget#fruitListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="vegetablePage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#vegetablePage {
+border-image: url(:/images/Screen5.2_vegetables.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="vegetableBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="vegetableListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#vegetableListWidget,
+QListWidget#vegetableListWidget::item:hover,
+QListWidget#vegetableListWidget::item:disabled:hover,
+QListWidget#vegetableListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="dairyPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#dairyPage {
+border-image: url(:/images/screen5.3_dairy.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="dairyBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="dairyListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#dairyListWidget,
+QListWidget#dairyListWidget::item:hover,
+QListWidget#dairyListWidget::item:disabled:hover,
+QListWidget#DairyListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="meatPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#meatPage {
+border-image: url(:/images/screen5.4_meatfish.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="meatBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="meatListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#meatListWidget,
+QListWidget#meatListWidget::item:hover,
+QListWidget#meatListWidget::item:disabled:hover,
+QListWidget#meatListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="spreadPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#spreadPage {
+border-image: url(:/images/screen5.5_spreads.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="spreadBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="spreadListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#spreadListWidget,
+QListWidget#spreadListWidget::item:hover,
+QListWidget#spreadListWidget::item:disabled:hover,
+QListWidget#spreadListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="saucePage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#saucePage {
+border-image: url(:/images/screen5.6_sauce.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="sauceBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="sauceListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>290</y>
+        <width>480</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#sauceListWidget,
+QListWidget#sauceListWidget::item:hover,
+QListWidget#sauceListWidget::item:disabled:hover,
+QListWidget#sauceListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="drinkPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#drinkPage {
+border-image: url(:/images/screen5.7_drinks.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="drinkBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="drinkListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#drinkListWidget,
+QListWidget#drinkListWidget::item:hover,
+QListWidget#drinkListWidget::item:disabled:hover,
+QListWidget#drinkListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="otherPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#otherPage {
+border-image: url(:/images/screen5.8_other.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="otherBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="otherListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#otherListWidget,
+QListWidget#otherListWidget::item:hover,
+QListWidget#otherListWidget::item:disabled:hover,
+QListWidget#otherListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="expirationsPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#expirationsPage {
+border-image: url(:/images/expiration.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="expirationBackWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="expListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>300</y>
+        <width>480</width>
+        <height>400</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#expListWidget,
+QListWidget#expListWidget::item:hover,
+QListWidget#expListWidget::item:disabled:hover,
+QListWidget#expListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="scanPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#scanPage {
+border-image: url(:/images/screen7_scanproducts_Tekengebied 1.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="noBarcodeWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>20</y>
+        <width>261</width>
+        <height>61</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="sendToFridgeWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>740</y>
+        <width>121</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="scanToMainMenuWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="hiddenEanLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>120</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(0,0,0,0);
+border: 0px solid rgba(0,0,0,0);
+color: rgba(0,0,0,0);</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="productListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>290</y>
+        <width>480</width>
+        <height>380</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget#productListWidget,
+QListWidget#productListWidget::item:hover,
+QListWidget#productListWidget::item:disabled:hover,
+QListWidget#productListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+}
+</string>
+      </property>
+     </widget>
+     <zorder>hiddenEanLineEdit</zorder>
+     <zorder>noBarcodeWidget</zorder>
+     <zorder>sendToFridgeWidget</zorder>
+     <zorder>scanToMainMenuWidget</zorder>
+     <zorder>productListWidget</zorder>
+    </widget>
+    <widget class="QWidget" name="customProductPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#customProductPage {
+border-image: url(:/images/screen4_inventory_colour.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="customToScanWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomFruitWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>161</width>
+        <height>171</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomVegetableWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>60</y>
+        <width>161</width>
+        <height>151</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomDairyWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>230</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomMeatWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>230</y>
+        <width>171</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomSpreadsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>390</y>
+        <width>161</width>
+        <height>151</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomSaucesWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>400</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomDrinksWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>570</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="toCustomOtherWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>570</y>
+        <width>161</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addFruitPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addFruitsPage {
+border-image: url(:/images/screen9_fruitzc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addFruitsToCustomPage" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addBananaWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>319</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addOrangeWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addStrawberryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addVegetablePage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addVegetablePage {
+border-image: url(:/images/screen9_vegetableszc_Tekengebied 1.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addBroccoliWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addPaprikaWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addLeekWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addVegetableToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addDairyPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addDairyPage {
+border-image: url(:/images/screen9_dairyzc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addButterWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addCheeseWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addMilkWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addDairyToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addMeatPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addMeatPage {
+border-image: url(:/images/screen9_meatfishzc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addChickenWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addPorkWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addFishWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addMeatToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>700</y>
+        <width>71</width>
+        <height>80</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addSpreadPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addSpreadPage {
+border-image: url(:/images/screen9_spreads_Tekengebied 1.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addJamWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addJam2Widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addOnionWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addSpreadToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addSaucePage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addSaucePage {
+border-image: url(:/images/screen9_saucezc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addTomatoSauceWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>320</y>
+        <width>120</width>
+        <height>121</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addBBQSauceWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addSpicySauceWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addSauceToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addDrinkPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addDrinkPage {
+border-image: url(:/images/screen9_drinkszc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addSoftDrinkWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>329</y>
+        <width>120</width>
+        <height>111</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addBeerWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>319</y>
+        <width>120</width>
+        <height>121</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addWineWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addDrinkToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="addOtherPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#addOtherPage {
+border-image: url(:/images/screen9_otherszc.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="addPizzaWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addSushiWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>319</y>
+        <width>111</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addEggsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="addOtherToCustomWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="fridgetresources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

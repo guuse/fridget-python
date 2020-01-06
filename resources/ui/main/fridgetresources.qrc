@@ -1,0 +1,33 @@
+<RCC>
+  <qresource prefix="images">
+    <file>screen9_dairyzc.png</file>
+    <file>screen9_drinkszc.png</file>
+    <file>screen9_fruitzc.png</file>
+    <file>screen2_userscreen.png</file>
+    <file>screen9_meatfishzc.png</file>
+    <file>screen9_otherszc.png</file>
+    <file>screen9_saucezc.png</file>
+    <file>screen9_spreads_Tekengebied 1.png</file>
+    <file>screen9_vegetableszc_Tekengebied 1.png</file>
+    <file>screen9_dairyzc.png</file>
+    <file>screen9_fruitzc.png</file>
+    <file>screen5.3_dairy.png</file>
+    <file>screen9_vegetableszc_Tekengebied 1.png</file>
+    <file>screen9_fruitzc.png</file>
+    <file>screen7_scanproducts_Tekengebied 1.png</file>
+    <file>expiration.png</file>
+    <file>Screen5.2_vegetables.png</file>
+    <file>screen5.4_meatfish.png</file>
+    <file>screen5.5_spreads.png</file>
+    <file>screen5.6_sauce.png</file>
+    <file>screen5.7_drinks.png</file>
+    <file>screen5.8_other.png</file>
+    <file>Test1.rtf</file>
+    <file>Screen5.1_Fruit.png</file>
+    <file>screen4_inventory_colour.png</file>
+    <file>screen3_main menu_colour.png</file>
+    <file>screen4_inventory_colour.png</file>
+    <file>screen2_userscreen.png</file>
+    <file>Background_1unlock.png</file>
+  </qresource>
+</RCC>

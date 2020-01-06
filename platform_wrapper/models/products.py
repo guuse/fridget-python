@@ -30,9 +30,19 @@ class Products:
     def filter_category(self, category: str):
         filtered_products = []
 
-        for product in self.items:
+        for product in self.products:
 
             if product.product_category == category:
+                filtered_products.append(product)
+
+        return filtered_products
+
+    def filter_exp(self, days: int):
+        filtered_products = []
+
+        for product in self.products:
+
+            if product.product_exp <= days:
                 filtered_products.append(product)
 
         return filtered_products

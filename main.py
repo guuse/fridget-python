@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
 
 import settings
 from customwidget import Ui_productWidget
-from datakick_wrapper.datakick_wrapper import DatakickWrapper
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
@@ -21,8 +20,8 @@ from utils.worker import Worker
 class ProductWidget(QWidget, Ui_productWidget):
     delete_signal = pyqtSignal(int, int)
 
-    def __init__(self, product: Product, mainWindow, index = None, *args,**kwargs):
-        QWidget.__init__(self,*args,**kwargs)
+    def __init__(self, product: Product, mainWindow, index=None, *args, **kwargs):
+        QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
         self.productDescLabel.setText(product.product_desc)
@@ -40,108 +39,178 @@ class ProductWidget(QWidget, Ui_productWidget):
         # This doesnt work, (index changes).....
         self.delete_signal.emit(self.index, self.product_id)
 
-class MainWindow(QtWidgets.QMainWindow):
 
+class MainWindow(QtWidgets.QMainWindow):
     scanning = True
 
     scanned = pyqtSignal()
 
-    def __init__(self, platform_api: PlatformWrapper, datakick_api, *args, **kwargs):
+    def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.threadpool = QThreadPool()
         self.event_stop = threading.Event()
 
-        uic.loadUi("resources/ui/stackedTest.ui", self)
+        uic.loadUi("resources/ui/main/fridgettwo.ui", self)
 
         self.platform_api = platform_api
-        self.datakick_api = datakick_api
 
-        self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'stackedWidget')
+        # Grab the main stacked widget, this stacked widget contains our different pages.
+        self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'mainStackedWidget')
         self.stacked_widget.setCurrentIndex(0)
 
+        # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_table)
 
-        # Unlock Screen
-        self.unlock_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
-        self.unlock_widget = self.unlock_screen.findChild(QtWidgets.QWidget, 'unlockWidget')
-        self.unlock_widget.mouseReleaseEvent=partial(self.switch_page, dest="main_page")
+        # unlock_page
+        self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
+        self.unlock_widget = self.unlock_page.findChild(QtWidgets.QWidget, 'unlockWidget')
+        # Switch to the users_page when the unlockWidget is clicked
+        self.unlock_widget.mouseReleaseEvent = partial(self.switch_page, dest="users_page")
 
-        # Main Screen
-        self.main_menu_screen = self.stacked_widget.findChild(QtWidgets.QWidget,
-                                                              'mainMenuPage')
-        self.scan_products_widget = self.main_menu_screen.findChild(QtWidgets.QWidget,
-                                                                    'scanWidget')
-        self.scan_products_widget.mouseReleaseEvent=partial(self.switch_page,
-                                                            dest="scan_page")
-        self.inventory_widget = self.main_menu_screen.findChild(QtWidgets.QWidget,
-                                                                'inventoryWidget')
-        self.inventory_widget.mouseReleaseEvent=partial(self.switch_page,
-                                                        dest="inventory_page")
+        # users_page
+        self.users_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'usersPage')
+        self.user1widget = self.users_page.findChild(QtWidgets.QWidget, 'userOneWidget')
+        # Switch to the main_page when the user1widget is clicked
+        self.user1widget.mouseReleaseEvent = partial(self.switch_page, dest="main_page", load_box=411)
 
-        self.p1 = self.stacked_widget.findChild(QtWidgets.QWidget, 'p1')
+        # main_page
+        self.main_menu_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'mainMenuPage')
+        self.main_menu_switch_scan = self.main_menu_page.findChild(QtWidgets.QWidget, 'scanWidget')
+        # Switch to the scan_page when the scanWidget is clicked
+        self.main_menu_switch_scan.mouseReleaseEvent = partial(self.switch_page, dest="scan_page")
+        self.main_menu_switch_inv = self.main_menu_page.findChild(QtWidgets.QWidget, 'inventoryWidget')
+        # Switch to the inventory_page when the inventoryWidget is clicked
+        self.main_menu_switch_inv.mouseReleaseEvent = partial(self.switch_page, dest="inventory_page")
+        self.main_menu_switch_exp = self.main_menu_page.findChild(QtWidgets.QWidget, 'expirationWidget')
+        # Switch to the expirations_page when the experationWidget is clicked
+        self.main_menu_switch_exp.mouseReleaseEvent = partial(self.switch_page, dest="expirations_page")
+        self.main_menu_switch_users = self.main_menu_page.findChild(QtWidgets.QWidget, 'mainMenuToUsersWidget')
+        # Switch to the users_page when the mainMenuToUsersWidget is clicked
+        self.main_menu_switch_users.mouseReleaseEvent = partial(self.switch_page, dest="users_page")
+
+        # scan_page
         self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scanPage')
-        self.button = self.p1.findChild(QtWidgets.QPushButton, 'p1ChangePage2Button')
-        self.button.clicked.connect(self.switch_to_scan_page)
-        self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'changeImgButton')
-        self.button2.clicked.connect(self.change_image)
-        self.button2 = self.p1.findChild(QtWidgets.QPushButton, 'randomTestButton')
-        self.button2.clicked.connect(self.testLoop)
-        self.label = self.p1.findChild(QtWidgets.QLabel, 'label1')
-        self.table = self.scan_page.findChild(QtWidgets.QTableWidget, 'tableWidget')
-        self.button39 = self.scan_page.findChild(QtWidgets.QPushButton, 'pushButton39')
-        self.button39.clicked.connect(self.addItem)
+        self.scan_page_switch_main_menu = self.scan_page.findChild(QtWidgets.QWidget, 'scanToMainMenuWidget')
+        # Switch to the main_page when the scanToMainMenuWidget is clicked (also, disable the scanner, which runs on
+        # a worker)
+        self.scan_page_switch_main_menu.mouseReleaseEvent = partial(self.switch_page, dest="main_page",
+                                                                    disable_worker=True)
+        self.scan_page_send_to_fridge = self.scan_page.findChild(QtWidgets.QWidget, 'sendToFridgeWidget')
+        # Send products to the fridge when the sendToFridgeWidget is clicked
+        self.scan_page_send_to_fridge.mouseReleaseEvent = self.send_products_to_box
+        # Grab the hidden LineEdit, used to score the scanned EAN
+        self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
+        # ListView for scanned items
+        self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
+        # ??? self.scan_page_product_list_view.itemDoubleClicked.connect(self.deleteItem)
 
-        # Scan Page
-        self.scan_page_return_main_page_button = self.scan_page.findChild(QtWidgets.QWidget, 'mainMenuWidgetSwitch')
-        self.scan_page_return_main_page_button.mouseReleaseEvent=partial(self.switch_page,
-                                                                         dest="main_page",
-                                                                         disable_worker=True)
+        # inventory_page
+        self.inventory_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'inventoryPage')
+        self.inventory_page_switch_main_menu = self.inventory_page.findChild(QtWidgets.QWidget,
+                                                                             'inventoryToMainMenuWidget')
+        # Switch to the main_page when the inventoryToMainMenuWidget is clicked
+        self.inventory_page_switch_main_menu.mouseReleaseEvent = partial(self.switch_page, dest="main_page")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'fruitsWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                     dest="fruit_page",
+                                                                                                     category="fruit")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'vegetablesWidget').mouseReleaseEvent = partial(
+            self.switch_page, dest="vegetable_page", category="vegetable")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'dairiesWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                      dest="dairy_page",
+                                                                                                      category="dairy")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'meatsWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                    dest="meat_page",
+                                                                                                    category="meat")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'spreadsWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                      dest="spread_page",
+                                                                                                      category="spread")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'saucesWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                     dest="sauce_page",
+                                                                                                     category="sauce")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'drinksWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                     dest="drink_page",
+                                                                                                     category="drink")
+        self.inventory_page.findChild(QtWidgets.QWidget, 'othersWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                     dest="other_page",
+                                                                                                     category="other")
 
-        self.scan_page_send_products = self.scan_page.findChild(QtWidgets.QWidget, 'sendProductsWidgetSwitch')
-        self.scan_page_send_products.mouseReleaseEvent=self.send_products_to_box
-
-        self.inputLabel = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenLineEdit')
-        settings.word = self.inputLabel
-
-        # List View Trials
-        self.productListView = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
-        self.productListView.itemDoubleClicked.connect(self.deleteItem)
-
-        # Inventory full
-        self.inventory_screen = self.stacked_widget.findChild(QtWidgets.QWidget, 'allProductsPage')
-        self.fullInventoryListWidget = self.inventory_screen.findChild(QtWidgets.QListWidget, 'allProductsListWidget')
-        self.inventory_back_widget = self.inventory_screen.findChild(QtWidgets.QWidget, 'allProductsBackWidget')
-        self.inventory_back_widget.mouseReleaseEvent=partial(self.switch_page,
-                                                             dest="main_page")
+        # expiration_page
+        self.expirations_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'expirationsPage')
+        self.expirations_page_switch_main_menu = self.expirations_page.findChild(QtWidgets.QWidget,
+                                                                                 'expirationsToMainMenuPage')
+        self.exp_list_widget = self.expirations_page.findChild(QtWidgets.QListWidget, 'expListWidget')
 
         self.products = Products()
+        self.inventory_products = Products()
 
-        #self.showFullScreen()
+        # self.showFullScreen()
         self.show()
 
-    def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
+    def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
+                    category: str = None, clearable_list=None):
 
-        if PAGE_INDEXES[dest] == 3:
+        if category:
+            self.filter_products(category)
+        if load_box:
+            self.inventory_products = self.platform_api.get_products(load_box)
+        if clearable_list:
+            clearable_list.clear()
+        if PAGE_INDEXES[dest] == 13:
             self.scanning = True
-            self.worker = Worker(self.testLoop)
+            self.worker = Worker(self.scan_loop)
             self.threadpool.start(self.worker)
             self.event_stop.clear()
-        elif PAGE_INDEXES[dest] == 1 and disable_worker:
+        elif PAGE_INDEXES[dest] == 2 and disable_worker:
             self.event_stop.set()
             self.scanning = False
-            self.productListView.clear()
+            self.scan_page_product_list_view.clear()
             self.products.products.clear()
-        elif PAGE_INDEXES[dest] == 5:
-            self.inventory = self.platform_api.get_products(411)
-            self.update_inventory()
+        elif PAGE_INDEXES[dest] == 12:
+            self.soon_expired_products()
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
-    def update_inventory(self):
-        self.fullInventoryListWidget.clear()
+    def filter_products(self, category):
+
+        filtered_products = self.inventory_products.filter_category(category)
+
+        page = self.stacked_widget.findChild(QtWidgets.QWidget, category + "Page")
+        list = page.findChild(QtWidgets.QListWidget, category + "ListWidget")
         i = 0
-        for product in self.inventory.products:
+        for product in filtered_products:
+            product_item = QListWidgetItem(list)
+            product_item_widget = ProductWidget(product, self, i)
+            product_item.setSizeHint(product_item_widget.size())
+            list.addItem(product_item)
+            list.setItemWidget(product_item, product_item_widget)
+            i += 1
+        page.findChild(QtWidgets.QWidget, category + "BackWidget").mouseReleaseEvent = partial(self.switch_page,
+                                                                                               dest="inventory_page",
+                                                                                               clearable_list=list)
+
+    def soon_expired_products(self):
+
+        soon_expired_products = self.inventory_products.filter_exp(3)
+
+        i = 0
+        for product in soon_expired_products:
+            product_item = QListWidgetItem(self.exp_list_widget)
+            product_item_widget = ProductWidget(product, self, i)
+            product_item.setSizeHint(product_item_widget.size())
+            self.exp_list_widget.addItem(product_item)
+            self.exp_list_widget.setItemWidget(product_item, product_item_widget)
+            i += 1
+
+        self.expirations_page.findChild(QtWidgets.QWidget, "expirationBackWidget").mouseReleaseEvent = partial(self.switch_page,
+                                                                                               dest="main_page",
+                                                                                               clearable_list=self.exp_list_widget)
+
+
+    def update_inventory(self):
+        self.inventory_products_list_widget.clear()
+        i = 0
+        for product in self.inventory_products.products:
             product_item = QListWidgetItem(self.fullInventoryListWidget)
             product_item_widget = ProductWidget(product, self, i)
             product_item.setSizeHint(product_item_widget.size())
@@ -160,7 +229,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def switch_to_scan_page(self):
         self.stacked_widget.setCurrentIndex(3)
-        self.worker = Worker(self.testLoop)
+        self.worker = Worker(self.scan_loop)
         self.threadpool.start(self.worker)
         self.event_stop.clear()
 
@@ -170,7 +239,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def change_image(self):
         pixmap = QtGui.QPixmap("077G.png")
-        #self.label.setPixmap(pixmap)
+        # self.label.setPixmap(pixmap)
 
         url = 'http://www.google.com/images/srpr/logo1w.png'
         import urllib.request
@@ -185,16 +254,16 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def deleteItem(self, item):
-        id = self.productListView.currentRow()
-        self.productListView.takeItem(id)
+        id = self.scan_page_product_list_view.currentRow()
+        self.scan_page_product_list_view.takeItem(id)
 
     def addItem(self):
 
-        item = QListWidgetItem(self.productListView)
+        item = QListWidgetItem(self.scan_page_product_list_view)
         item_widget = ProductWidget()
         item.setSizeHint(item_widget.size())
-        self.productListView.addItem(item)
-        self.productListView.setItemWidget(item, item_widget)
+        self.scan_page_product_list_view.addItem(item)
+        self.scan_page_product_list_view.setItemWidget(item, item_widget)
 
     def add_to_table(self):
 
@@ -202,16 +271,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.products.add_product(product)
 
-        product_item = QListWidgetItem(self.productListView)
+        product_item = QListWidgetItem(self.scan_page_product_list_view)
         product_item_widget = ProductWidget(product, self)
         product_item.setSizeHint(product_item_widget.size())
-        self.productListView.addItem(product_item)
-        self.productListView.setItemWidget(product_item, product_item_widget)
+        self.scan_page_product_list_view.addItem(product_item)
+        self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
 
-        self.inputLabel.clear()
+        self.scan_page_input_label.clear()
 
         self.scanning = True
-        self.worker = Worker(self.testLoop)
+        self.worker = Worker(self.scan_loop)
         self.threadpool.start(self.worker)
         self.event_stop.clear()
 
@@ -220,24 +289,23 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.platform_api.add_products(self.products)
 
-        self.productListView.clear()
+        self.scan_page_product_list_view.clear()
         self.products.products.clear()
 
-    def testLoop(self):
+    def scan_loop(self):
         while self.scanning:
             self.event_stop.clear()
             while not self.event_stop.is_set():
 
-                self.inputLabel.setFocus()
+                self.scan_page_input_label.setFocus()
 
-                if len(self.inputLabel.text()) == 13:
+                if len(self.scan_page_input_label.text()) == 13:
                     self.scanning = False
                     self.event_stop.set()
 
-                    self.ean = self.inputLabel.text()
+                    self.ean = self.scan_page_input_label.text()
 
                     self.scanned.emit()
-
 
 
 class Scanner(QObject):
@@ -271,16 +339,19 @@ class Scanner(QObject):
 
 platform_api = PlatformWrapper(api_key="")
 settings.PLATFORM_API = platform_api
-datakick_api = DatakickWrapper()
 
 app = QtWidgets.QApplication(sys.argv)
-window = MainWindow(settings.PLATFORM_API, datakick_api)
+window = MainWindow(settings.PLATFORM_API)
 # window.showFullScreen()
 sys._excepthook = sys.excepthook
+
+
 def exception_hook(exctype, value, traceback):
     print(exctype, value, traceback)
     sys._excepthook(exctype, value, traceback)
     sys.exit(1)
+
+
 sys.excepthook = exception_hook
 
 app.exec_()
