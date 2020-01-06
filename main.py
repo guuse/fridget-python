@@ -117,8 +117,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.products = Products()
 
-        self.showFullScreen()
-        #self.show()
+        #self.showFullScreen()
+        self.show()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False):
 
