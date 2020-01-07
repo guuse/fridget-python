@@ -1,6 +1,7 @@
 import sys
 import threading
 from functools import partial
+import RPi.GPIO as GPIO
 
 import fridgetresources_rc
 
@@ -299,9 +300,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def scan_loop(self):
         while self.scanning:
             self.event_stop.clear()
-            while not self.event_stop.is_set():
+            GPIO.output(settings.IR_PIN, GPIO.HIGH)
+            sensor = GPIO.input(settings.IR_PIN)
+            while not self.event_stop.is_set() and sensor == 0:
 
                 self.scan_page_input_label.setFocus()
+                GPIO.output(settings.SCANNER_PIN, GPIO.LOW)
 
                 if len(self.scan_page_input_label.text()) == 13:
                     self.scanning = False
@@ -340,7 +344,9 @@ class Scanner(QObject):
 
                 x = self.scanned.emit()
 
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(settings.IR_PIN, GPIO.IN)
+GPIO.setup(settings.SCANNER_PIN, GPIO.OUT)
 platform_api = PlatformWrapper(api_key="")
 settings.PLATFORM_API = platform_api
 
