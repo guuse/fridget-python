@@ -45,10 +45,15 @@ class ProductWidget(QWidget, Ui_productWidget):
     def _delete_item(self):
 
         # TODO: Remove 1 item if more than 1 (PUT), completely delete if 1 (DEL)
-        #deleted = settings.PLATFORM_API.delete_product(self.product.product_id)
 
-        # This doesnt work, (index changes).....
-        self.delete_signal.emit(self.product, self.category)
+        if self.product.product_amount == 1:
+            succeeded = settings.PLATFORM_API.delete_product(self.product.product_id)
+        else:
+            succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
+                                                                 self.product.product_amount - 1)
+
+        if succeeded:
+            self.delete_signal.emit(self.product, self.category)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -150,7 +155,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.expirations_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'expirationsPage')
         self.expirations_page_switch_main_menu = self.expirations_page.findChild(QtWidgets.QWidget,
                                                                                  'expirationsToMainMenuPage')
-        self.exp_list_widget = self.expirations_page.findChild(QtWidgets.QListWidget, 'expListWidget')
+        self.exp_list_widget = self.expirations_page.findChild(QtWidgets.QListWidget, 'expirationsListWidget')
 
         self.products = Products()
         self.inventory_products = Products()
@@ -208,7 +213,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         for product in soon_expired_products:
             product_item = QListWidgetItem(self.exp_list_widget)
-            product_item_widget = ProductWidget(product, self, "")
+            product_item_widget = ProductWidget(product, self, "expirations")
             product_item.setSizeHint(product_item_widget.size())
             self.exp_list_widget.addItem(product_item)
             self.exp_list_widget.setItemWidget(product_item, product_item_widget)
@@ -240,13 +245,21 @@ class MainWindow(QtWidgets.QMainWindow):
         from PyQt5 import QtCore
         all_items = list.findItems('', QtCore.Qt.MatchRegExp)
         row = 0
+        widget = None
         for item in all_items:
+            widget = list.itemWidget(item)
             if list.itemWidget(item).product == product:
-                pass
+                break
+            row += 1
+
+        if widget and widget.product.product_amount == 1:
+            list.takeItem(row)
+        else:
+            widget.product.product_amount -= 1
+
+        widget.productAmountLabel.setText(widget.product.product_amount.__str__())
 
 
-
-        pass
 
     def unlock_device(self, event):
 

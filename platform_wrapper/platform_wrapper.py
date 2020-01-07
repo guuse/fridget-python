@@ -29,7 +29,6 @@ class PlatformWrapper(object):
 
         if response.status_code == 200 or response.status_code == 201:
             if object is Products:
-                print(response.json())
                 return create_products_from_json(response.json())
             elif object is Product:
                 product_data = response.json()
@@ -89,6 +88,17 @@ class PlatformWrapper(object):
             return self.parse_object_response(response, object_type)
         return self.parse_response(response)
 
+    def _put(self, url: str, json_body):
+        response = requests.put(
+            url=url,
+            headers=self.default_headers,
+            json=json_body
+        )
+
+        response.raise_for_status()
+
+        return self.parse_response(response)
+
     def _delete(self, url: str):
         response = requests.delete(
             url=url,
@@ -110,11 +120,7 @@ class PlatformWrapper(object):
         url = self.host + products_add_path
         json_body = products.to_json()
 
-        x = self._post(url, json_body, Products)
-
-        print(x.products_length())
-
-        return x
+        return self._post(url, json_body, Products)
 
     def get_products(self, box_id: int) -> Products:
         """Retrieves products from the fridge box
@@ -158,3 +164,10 @@ class PlatformWrapper(object):
         url = self.host + product_delete_path
 
         return self._delete(url)
+
+    def set_amount_product(self, product_id: int, amount: int):
+
+        product_amount_put_path = platform_paths.PRODUCTS_PUT_PATH.format(product_id.__str__())
+        url = self.host + product_amount_put_path
+
+        return self._put(url, {"amount": amount})
