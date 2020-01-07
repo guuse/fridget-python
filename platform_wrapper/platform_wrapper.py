@@ -27,8 +27,9 @@ class PlatformWrapper(object):
     @staticmethod
     def parse_object_response(response, object):
 
-        if response.status_code == 200:
+        if response.status_code == 200 or response.status_code == 201:
             if object is Products:
+                print(response.json())
                 return create_products_from_json(response.json())
             elif object is Product:
                 product_data = response.json()
@@ -75,7 +76,7 @@ class PlatformWrapper(object):
 
         return self.parse_object_response(response, object_type)
 
-    def _post(self, url: str, json_body):
+    def _post(self, url: str, json_body, object_type = None):
         response = requests.post(
             url=url,
             headers=self.default_headers,
@@ -84,6 +85,8 @@ class PlatformWrapper(object):
 
         response.raise_for_status()
 
+        if object_type:
+            return self.parse_object_response(response, object_type)
         return self.parse_response(response)
 
     def _delete(self, url: str):
@@ -96,18 +99,22 @@ class PlatformWrapper(object):
 
         return self.parse_response(response)
 
-    def add_products(self, products: Products) -> bool:
+    def add_products(self, products: Products) -> Products:
         """Inserts a list of products into the database
 
         :param products: list of Products
 
-        :returns: boolean (true if added, false if not)
+        :returns: list of products currently in box
         """
         products_add_path = platform_paths.PRODUCTS_ADD_PATH
         url = self.host + products_add_path
         json_body = products.to_json()
 
-        return self._post(url, json_body)
+        x = self._post(url, json_body, Products)
+
+        print(x.products_length())
+
+        return x
 
     def get_products(self, box_id: int) -> Products:
         """Retrieves products from the fridge box

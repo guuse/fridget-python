@@ -27,26 +27,28 @@ except ImportError:
 
 
 class ProductWidget(QWidget, Ui_productWidget):
-    delete_signal = pyqtSignal(int, int)
+    delete_signal = pyqtSignal(Product, str)
 
-    def __init__(self, product: Product, mainWindow, index=None, *args, **kwargs):
+    def __init__(self, product: Product, mainWindow, category: str, *args, **kwargs):
         QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
         self.productDescLabel.setText(product.product_desc)
         self.productAmountLabel.setText(product.product_amount.__str__())
         self.productExpInLabel.setText(product.product_exp.__str__())
-        self.product_id = product.product_id
+        self.product = product
         self.removeButton.clicked.connect(self._delete_item)
         self.main_window = mainWindow
         self.delete_signal.connect(mainWindow.delete_inventory_product)
-        self.index = index
+        self.category = category
 
     def _delete_item(self):
-        deleted = settings.PLATFORM_API.delete_product(self.product_id)
+
+        # TODO: Remove 1 item if more than 1 (PUT), completely delete if 1 (DEL)
+        #deleted = settings.PLATFORM_API.delete_product(self.product.product_id)
 
         # This doesnt work, (index changes).....
-        self.delete_signal.emit(self.index, self.product_id)
+        self.delete_signal.emit(self.product, self.category)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -190,14 +192,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         page = self.stacked_widget.findChild(QtWidgets.QWidget, category + "Page")
         list = page.findChild(QtWidgets.QListWidget, category + "ListWidget")
-        i = 0
         for product in filtered_products:
             product_item = QListWidgetItem(list)
-            product_item_widget = ProductWidget(product, self, i)
+            product_item_widget = ProductWidget(product, self, category)
             product_item.setSizeHint(product_item_widget.size())
             list.addItem(product_item)
             list.setItemWidget(product_item, product_item_widget)
-            i += 1
         page.findChild(QtWidgets.QWidget, category + "BackWidget").mouseReleaseEvent = partial(self.switch_page,
                                                                                                dest="inventory_page",
                                                                                                clearable_list=list)
@@ -206,19 +206,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
         soon_expired_products = self.inventory_products.filter_exp(3)
 
-        i = 0
         for product in soon_expired_products:
             product_item = QListWidgetItem(self.exp_list_widget)
-            product_item_widget = ProductWidget(product, self, i)
+            product_item_widget = ProductWidget(product, self, "")
             product_item.setSizeHint(product_item_widget.size())
             self.exp_list_widget.addItem(product_item)
             self.exp_list_widget.setItemWidget(product_item, product_item_widget)
-            i += 1
 
         self.expirations_page.findChild(QtWidgets.QWidget, "expirationBackWidget").mouseReleaseEvent = partial(self.switch_page,
                                                                                                dest="main_page",
                                                                                                clearable_list=self.exp_list_widget)
-
 
     def update_inventory(self):
         self.inventory_products_list_widget.clear()
@@ -231,10 +228,25 @@ class MainWindow(QtWidgets.QMainWindow):
             self.fullInventoryListWidget.setItemWidget(product_item, product_item_widget)
             i += 1
 
-    def delete_inventory_product(self, index: int, id: int):
-        self.fullInventoryListWidget.takeItem(index)
-        self.inventory.delete_item(id)
-        self.update_inventory()
+    def delete_inventory_product(self, product: Product, category: str):
+        # Deleted or just removed 1 item?
+        # Pick the correct widget
+        # self.fullInventoryListWidget.takeItem(index)
+        # self.inventory.delete_item(id)
+        # self.update_inventory()
+        page = self.stacked_widget.findChild(QtWidgets.QWidget, category + "Page")
+        list = page.findChild(QtWidgets.QListWidget, category + "ListWidget")
+
+        from PyQt5 import QtCore
+        all_items = list.findItems('', QtCore.Qt.MatchRegExp)
+        row = 0
+        for item in all_items:
+            if list.itemWidget(item).product == product:
+                pass
+
+
+
+        pass
 
     def unlock_device(self, event):
 
@@ -301,17 +313,19 @@ class MainWindow(QtWidgets.QMainWindow):
     def send_products_to_box(self, event=None):
         self.event_stop.set()
 
-        self.platform_api.add_products(self.products)
+        new_products = self.platform_api.add_products(self.products)
 
         self.scan_page_product_list_view.clear()
         self.products.products.clear()
+
+        self.products = new_products
 
     def scan_loop(self):
         time.sleep(1.5)
         while self.scanning:
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
-            while not self.event_stop.is_set() and GPIO.input(settings.IR_PIN) == 0:
+            while not self.event_stop.is_set():
 
                 self.scan_page_input_label.setFocus()
                 GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)

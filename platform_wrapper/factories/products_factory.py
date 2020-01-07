@@ -12,6 +12,11 @@ def create_products_from_json(json_array):
 
     products = Products()
 
+    # Certain endpoints return just an array, other return a dict like {'products': [....]}, so we need to check that
+    # and grab just the array of products
+    if isinstance(json_array, dict):
+        json_array = json_array.get('products')
+
     for product_json_object in json_array:
 
         product_object = Product(
