@@ -2,7 +2,6 @@ import sys
 import threading
 import time
 from functools import partial
-import RPi.GPIO as GPIO
 
 import fridgetresources_rc
 
@@ -17,6 +16,14 @@ from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
 from utils.worker import Worker
+
+import importlib.util
+try:
+    # Since RPi.GPIO doesn't work on windows we need to fake the library if we are developing on other OS
+    importlib.util.find_spec('RPi.GPIO')
+    import RPi.GPIO as GPIO
+except ImportError:
+    import FakeRPi.GPIO as GPIO
 
 
 class ProductWidget(QWidget, Ui_productWidget):
