@@ -285,6 +285,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.scan_page_input_label.clear()
 
+        time.sleep(1)
         self.scanning = True
         self.worker = Worker(self.scan_loop)
         self.threadpool.start(self.worker)
@@ -316,9 +317,6 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.ean = self.scan_page_input_label.text()
 
                     self.scanned.emit()
-
-                    print("Hier")
-                    time.sleep(1)
 
 
 class Scanner(QObject):
