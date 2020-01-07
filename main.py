@@ -300,6 +300,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.products.clear()
 
     def scan_loop(self):
+        time.sleep(1.5)
         while self.scanning:
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
