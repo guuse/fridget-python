@@ -301,13 +301,13 @@ class MainWindow(QtWidgets.QMainWindow):
         while self.scanning:
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
-            sensor = GPIO.input(settings.IR_PIN)
-            while not self.event_stop.is_set() and sensor == 0:
+            while not self.event_stop.is_set() and GPIO.input(settings.IR_PIN) == 0:
 
                 self.scan_page_input_label.setFocus()
                 GPIO.output(settings.SCANNER_PIN, GPIO.LOW)
 
                 if len(self.scan_page_input_label.text()) == 13:
+                    GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
                     self.scanning = False
                     self.event_stop.set()
 
