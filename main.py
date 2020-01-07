@@ -1,5 +1,6 @@
 import sys
 import threading
+import time
 from functools import partial
 import RPi.GPIO as GPIO
 
@@ -315,6 +316,9 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.ean = self.scan_page_input_label.text()
 
                     self.scanned.emit()
+
+                    print("Hier")
+                    time.sleep(1)
 
 
 class Scanner(QObject):
