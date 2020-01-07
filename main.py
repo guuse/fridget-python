@@ -300,7 +300,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def scan_loop(self):
         while self.scanning:
             self.event_stop.clear()
-            GPIO.output(settings.IR_PIN, GPIO.HIGH)
+            GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
             sensor = GPIO.input(settings.IR_PIN)
             while not self.event_stop.is_set() and sensor == 0:
 
