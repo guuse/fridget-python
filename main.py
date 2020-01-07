@@ -171,6 +171,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
+    def setup_widget_switch_on_click(self, parent, widget_name, destination):
+        parent.findChild(QtWidgets.QWidget, widget_name).mouseReleaseEvent = partial(self.switch_page,
+                                                                                     dest=destination)
+
     def filter_products(self, category):
 
         filtered_products = self.inventory_products.filter_category(category)
