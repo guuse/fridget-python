@@ -91,7 +91,7 @@ QScrollBar:horizontal {
      <bool>false</bool>
     </property>
     <property name="currentIndex">
-     <number>12</number>
+     <number>13</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -625,9 +625,9 @@ QListWidget#expListWidget::item:hover:!active {
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="scanPage">
+    <widget class="QWidget" name="scannerPage">
      <property name="styleSheet">
-      <string notr="true">QWidget#scanPage {
+      <string notr="true">QWidget#scannerPage {
 border-image: url(:/images/screen7_scanproducts_Tekengebied 1.png);
 }</string>
      </property>
@@ -676,7 +676,7 @@ border: 0px solid rgba(0,0,0,0);
 color: rgba(0,0,0,0);</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="productListWidget">
+     <widget class="QListWidget" name="scannerListWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -699,7 +699,7 @@ QListWidget#productListWidget::item:hover:!active {
      <zorder>noBarcodeWidget</zorder>
      <zorder>sendToFridgeWidget</zorder>
      <zorder>scanToMainMenuWidget</zorder>
-     <zorder>productListWidget</zorder>
+     <zorder>scannerListWidget</zorder>
     </widget>
     <widget class="QWidget" name="customProductPage">
      <property name="styleSheet">

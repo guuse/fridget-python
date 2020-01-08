@@ -33,15 +33,15 @@ class PlatformWrapper(object):
             elif object is Product:
                 product_data = response.json()
 
-                if product_data['expiresIn'] < 0:
-                    expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
-                else:
-                    expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
+                # if product_data['expiresIn'] < 0:
+                #     expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
+                # else:
+                #     expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
 
                 return Product(
                     product_name=product_data['name'],
                     product_category=product_data['category'],
-                    product_exp=expiresIn,
+                    product_exp=product_data['expiresIn'],
                     product_amount_unit=product_data['unit'],
                     product_desc=product_data['description']
                 )
@@ -75,7 +75,7 @@ class PlatformWrapper(object):
 
         return self.parse_object_response(response, object_type)
 
-    def _post(self, url: str, json_body, object_type = None):
+    def _post(self, url: str, json_body, object_type=None):
         response = requests.post(
             url=url,
             headers=self.default_headers,

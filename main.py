@@ -6,6 +6,7 @@ from functools import partial
 import fridgetresources_rc
 
 from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5 import QtCore
 from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject
 from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
 
@@ -27,9 +28,10 @@ except ImportError:
 
 
 class ProductWidget(QWidget, Ui_productWidget):
-    delete_signal = pyqtSignal(Product, str)
+    delete_signal = pyqtSignal(Product, str, bool, bool)
+    increase_signal = pyqtSignal(Product, str, bool, bool)
 
-    def __init__(self, product: Product, mainWindow, category: str, *args, **kwargs):
+    def __init__(self, product: Product, mainWindow, category: str, scanner: bool = False, *args, **kwargs):
         QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
@@ -38,22 +40,33 @@ class ProductWidget(QWidget, Ui_productWidget):
         self.productExpInLabel.setText(product.product_exp.__str__())
         self.product = product
         self.removeButton.clicked.connect(self._delete_item)
+        self.addButton.clicked.connect(self._add_item)
         self.main_window = mainWindow
-        self.delete_signal.connect(mainWindow.delete_inventory_product)
+        self.delete_signal.connect(mainWindow.update_products_widget)
+        self.increase_signal.connect(mainWindow.update_products_widget)
         self.category = category
+        self.is_scanner_page = scanner
+
+    def _add_item(self):
+        succeeded = True
+
+        if not self.is_scanner_page:
+            succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
+                                                 self.product.product_amount + 1)
+        if succeeded:
+            self.increase_signal.emit(self.product, self.category, True, self.is_scanner_page)
 
     def _delete_item(self):
+        succeeded = True
 
-        # TODO: Remove 1 item if more than 1 (PUT), completely delete if 1 (DEL)
-
-        if self.product.product_amount == 1:
+        if self.product.product_amount == 1 and not self.is_scanner_page:
             succeeded = settings.PLATFORM_API.delete_product(self.product.product_id)
-        else:
+        elif not self.is_scanner_page:
             succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
                                                                  self.product.product_amount - 1)
 
         if succeeded:
-            self.delete_signal.emit(self.product, self.category)
+            self.delete_signal.emit(self.product, self.category, False, self.is_scanner_page)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -76,7 +89,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.stacked_widget.setCurrentIndex(0)
 
         # Create a signal so that we can interact between 2 widgets
-        self.scanned.connect(self.add_to_table)
+        self.scanned.connect(self.add_to_scanned_list_table)
 
         # unlock_page
         self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
@@ -106,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main_menu_switch_users.mouseReleaseEvent = partial(self.switch_page, dest="users_page")
 
         # scan_page
-        self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scanPage')
+        self.scan_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'scannerPage')
         self.scan_page_switch_main_menu = self.scan_page.findChild(QtWidgets.QWidget, 'scanToMainMenuWidget')
         # Switch to the main_page when the scanToMainMenuWidget is clicked (also, disable the scanner, which runs on
         # a worker)
@@ -118,7 +131,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Grab the hidden LineEdit, used to score the scanned EAN
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
         # ListView for scanned items
-        self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'productListWidget')
+        self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
         # ??? self.scan_page_product_list_view.itemDoubleClicked.connect(self.deleteItem)
 
         # inventory_page
@@ -222,27 +235,10 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                                                dest="main_page",
                                                                                                clearable_list=self.exp_list_widget)
 
-    def update_inventory(self):
-        self.inventory_products_list_widget.clear()
-        i = 0
-        for product in self.inventory_products.products:
-            product_item = QListWidgetItem(self.fullInventoryListWidget)
-            product_item_widget = ProductWidget(product, self, i)
-            product_item.setSizeHint(product_item_widget.size())
-            self.fullInventoryListWidget.addItem(product_item)
-            self.fullInventoryListWidget.setItemWidget(product_item, product_item_widget)
-            i += 1
-
-    def delete_inventory_product(self, product: Product, category: str):
-        # Deleted or just removed 1 item?
-        # Pick the correct widget
-        # self.fullInventoryListWidget.takeItem(index)
-        # self.inventory.delete_item(id)
-        # self.update_inventory()
+    def update_products_widget(self, product: Product, category: str, increase: bool = True, scanner_page: bool = True):
         page = self.stacked_widget.findChild(QtWidgets.QWidget, category + "Page")
         list = page.findChild(QtWidgets.QListWidget, category + "ListWidget")
 
-        from PyQt5 import QtCore
         all_items = list.findItems('', QtCore.Qt.MatchRegExp)
         row = 0
         widget = None
@@ -252,14 +248,20 @@ class MainWindow(QtWidgets.QMainWindow):
                 break
             row += 1
 
-        if widget and widget.product.product_amount == 1:
-            list.takeItem(row)
+        if increase:
+            if widget:
+                widget.product.product_amount += 1
+                widget.productAmountLabel.setText(widget.product.product_amount.__str__())
         else:
-            widget.product.product_amount -= 1
-
-        widget.productAmountLabel.setText(widget.product.product_amount.__str__())
-
-
+            if widget and widget.product.product_amount == 1:
+                list.takeItem(row)
+                if scanner_page:
+                    self.products.products.remove(widget.product)
+                else:
+                    self.inventory_products.products.remove(widget.product)
+            else:
+                widget.product.product_amount -= 1
+                widget.productAmountLabel.setText(widget.product.product_amount.__str__())
 
     def unlock_device(self, event):
 
@@ -303,14 +305,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_product_list_view.addItem(item)
         self.scan_page_product_list_view.setItemWidget(item, item_widget)
 
-    def add_to_table(self):
+    def add_to_scanned_list_table(self):
 
         product = self.platform_api.get_product_from_ean(self.ean)
 
         self.products.add_product(product)
 
         product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(product, self)
+        product_item_widget = ProductWidget(product, self, "scanner", True)
         product_item.setSizeHint(product_item_widget.size())
         self.scan_page_product_list_view.addItem(product_item)
         self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
@@ -331,7 +333,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_product_list_view.clear()
         self.products.products.clear()
 
-        self.products = new_products
+        self.inventory_products = new_products
 
     def scan_loop(self):
         time.sleep(1.5)
