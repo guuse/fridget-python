@@ -3,7 +3,7 @@ import threading
 import time
 from functools import partial
 
-import fridgetresources_rc
+import fridgetresources
 
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5 import QtCore
@@ -173,8 +173,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products = Products()
         self.inventory_products = Products()
 
-        # self.showFullScreen()
-        self.show()
+        # customProductNamePage
+        custom_product_name_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductNamePage')
+        for key in settings.KEYBOARD_KEYS:
+            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(self.process_keypress, value=key)
+
+
+
+        self.showFullScreen()
+        #self.show()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -262,6 +269,9 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 widget.product.product_amount -= 1
                 widget.productAmountLabel.setText(widget.product.product_amount.__str__())
+
+    def process_keypress(self, event, value):
+        print(value)
 
     def unlock_device(self, event):
 

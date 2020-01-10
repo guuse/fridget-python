@@ -1180,21 +1180,18 @@ border-image: url(:/images/screen9_otherszc.png);
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page">
+    <widget class="QWidget" name="customProductNamePage">
      <property name="styleSheet">
-      <string notr="true">QWidget {
-	border: 1px solid black;
+      <string notr="true">QWidget#customProductNamePage {
+border-image: url(:/images/screen10_product name.png);
 }
-
-QWidget#keyboardWidget {
-	border: 5px solid green;
-}</string>
+</string>
      </property>
      <widget class="QWidget" name="keyboardWidget" native="true">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>280</y>
+        <y>540</y>
         <width>480</width>
         <height>161</height>
        </rect>
@@ -1212,6 +1209,9 @@ QWidget#keyboardWidget {
 	qproperty-alignment: 'AlignVCenter | AlignCenter';
 }
 
+QWidget {
+background-color: rgba(255, 255, 255, .1);
+}
 </string>
       </property>
       <widget class="QWidget" name="verticalLayoutWidget">
@@ -1227,14 +1227,14 @@ QWidget#keyboardWidget {
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="2">
-           <widget class="QWidget" name="widget_3" native="true">
+           <widget class="QWidget" name="eWidget" native="true">
             <widget class="QLabel" name="label_3">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1244,14 +1244,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="QWidget" name="widget_5" native="true">
+           <widget class="QWidget" name="tWidget" native="true">
             <widget class="QLabel" name="label_5">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1261,14 +1261,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QWidget" name="widget_2" native="true">
+           <widget class="QWidget" name="wWidget" native="true">
             <widget class="QLabel" name="label_2">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1278,14 +1278,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="6">
-           <widget class="QWidget" name="widget_7" native="true">
+           <widget class="QWidget" name="uWidget" native="true">
             <widget class="QLabel" name="label_7">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1295,14 +1295,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="5">
-           <widget class="QWidget" name="widget_6" native="true">
+           <widget class="QWidget" name="yWidget" native="true">
             <widget class="QLabel" name="label_6">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1312,20 +1312,20 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QWidget" name="widget" native="true">
+           <widget class="QWidget" name="qWidget" native="true">
             <widget class="QLabel" name="label">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="maximumSize">
               <size>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </size>
              </property>
              <property name="text">
@@ -1335,14 +1335,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QWidget" name="widget_4" native="true">
+           <widget class="QWidget" name="rWidget" native="true">
             <widget class="QLabel" name="label_4">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1352,14 +1352,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="7">
-           <widget class="QWidget" name="widget_8" native="true">
+           <widget class="QWidget" name="iWidget" native="true">
             <widget class="QLabel" name="label_8">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1369,14 +1369,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="9">
-           <widget class="QWidget" name="widget_10" native="true">
+           <widget class="QWidget" name="pWidget" native="true">
             <widget class="QLabel" name="label_10">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1386,14 +1386,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="8">
-           <widget class="QWidget" name="widget_9" native="true">
+           <widget class="QWidget" name="oWidget" native="true">
             <widget class="QLabel" name="label_9">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1410,14 +1410,14 @@ QWidget#keyboardWidget {
            <enum>QLayout::SetNoConstraint</enum>
           </property>
           <item row="0" column="8">
-           <widget class="QWidget" name="widget_15" native="true">
+           <widget class="QWidget" name="kWidget" native="true">
             <widget class="QLabel" name="label_18">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1427,14 +1427,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QWidget" name="widget_14" native="true">
+           <widget class="QWidget" name="sWidget" native="true">
             <widget class="QLabel" name="label_12">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1460,19 +1460,20 @@ QWidget#keyboardWidget {
             <property name="styleSheet">
              <string notr="true">QWidget {
 	border: 0;
+	background-color: 0;
 }</string>
             </property>
            </widget>
           </item>
           <item row="0" column="9">
-           <widget class="QWidget" name="widget_16" native="true">
+           <widget class="QWidget" name="lWidget" native="true">
             <widget class="QLabel" name="label_19">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1482,14 +1483,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QWidget" name="widget_12" native="true">
+           <widget class="QWidget" name="aWidget" native="true">
             <widget class="QLabel" name="label_11">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1499,14 +1500,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="6">
-           <widget class="QWidget" name="widget_20" native="true">
+           <widget class="QWidget" name="hWidget" native="true">
             <widget class="QLabel" name="label_16">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1516,14 +1517,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="7">
-           <widget class="QWidget" name="widget_19" native="true">
+           <widget class="QWidget" name="jWidget" native="true">
             <widget class="QLabel" name="label_17">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1549,19 +1550,20 @@ QWidget#keyboardWidget {
             <property name="styleSheet">
              <string notr="true">QWidget {
 	border: 0;
+	background-color: 0;
 }</string>
             </property>
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QWidget" name="widget_17" native="true">
+           <widget class="QWidget" name="dWidget" native="true">
             <widget class="QLabel" name="label_13">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1571,14 +1573,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="5">
-           <widget class="QWidget" name="widget_21" native="true">
+           <widget class="QWidget" name="gWidget" native="true">
             <widget class="QLabel" name="label_15">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1588,14 +1590,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="QWidget" name="widget_18" native="true">
+           <widget class="QWidget" name="fWidget" native="true">
             <widget class="QLabel" name="label_14">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1612,7 +1614,7 @@ QWidget#keyboardWidget {
            <enum>QLayout::SetNoConstraint</enum>
           </property>
           <item row="0" column="0">
-           <widget class="QWidget" name="widget_25" native="true">
+           <widget class="QWidget" name="spaceWidget" native="true">
             <property name="minimumSize">
              <size>
               <width>68</width>
@@ -1624,8 +1626,8 @@ QWidget#keyboardWidget {
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>70</width>
-               <height>49</height>
+               <width>68</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="styleSheet">
@@ -1638,14 +1640,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="5">
-           <widget class="QWidget" name="widget_26" native="true">
+           <widget class="QWidget" name="bWidget" native="true">
             <widget class="QLabel" name="label_24">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1655,14 +1657,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QWidget" name="widget_29" native="true">
+           <widget class="QWidget" name="zWidget" native="true">
             <widget class="QLabel" name="label_20">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1672,14 +1674,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QWidget" name="widget_31" native="true">
+           <widget class="QWidget" name="xWidget" native="true">
             <widget class="QLabel" name="label_21">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1689,14 +1691,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QWidget" name="widget_32" native="true">
+           <widget class="QWidget" name="cWidget" native="true">
             <widget class="QLabel" name="label_22">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1706,7 +1708,7 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="8">
-           <widget class="QWidget" name="widget_23" native="true">
+           <widget class="QWidget" name="backWidget" native="true">
             <property name="minimumSize">
              <size>
               <width>68</width>
@@ -1718,8 +1720,8 @@ QWidget#keyboardWidget {
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>70</width>
-               <height>49</height>
+               <width>68</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="styleSheet">
@@ -1732,14 +1734,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="QWidget" name="widget_30" native="true">
+           <widget class="QWidget" name="vWidget" native="true">
             <widget class="QLabel" name="label_23">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1749,14 +1751,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="7">
-           <widget class="QWidget" name="widget_28" native="true">
+           <widget class="QWidget" name="mWidget" native="true">
             <widget class="QLabel" name="label_26">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1766,14 +1768,14 @@ QWidget#keyboardWidget {
            </widget>
           </item>
           <item row="0" column="6">
-           <widget class="QWidget" name="widget_27" native="true">
+           <widget class="QWidget" name="nWidget" native="true">
             <widget class="QLabel" name="label_25">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>44</width>
-               <height>49</height>
+               <width>42</width>
+               <height>47</height>
               </rect>
              </property>
              <property name="text">
@@ -1786,6 +1788,31 @@ QWidget#keyboardWidget {
         </item>
        </layout>
       </widget>
+     </widget>
+     <widget class="QLabel" name="label_29">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>390</y>
+        <width>360</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Sans Serif</family>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(255, 255, 255, .3);</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="margin">
+       <number>5</number>
+      </property>
      </widget>
     </widget>
    </widget>

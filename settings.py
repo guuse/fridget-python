@@ -32,3 +32,5 @@ PLATFORM_API = None
 
 SCANNER_PIN = 27
 IR_PIN = 17
+
+KEYBOARD_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'space', 'back']
