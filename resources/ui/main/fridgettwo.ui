@@ -29,7 +29,53 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QListWidget,
+QListWidget::item:hover,
+QListWidget::item:disabled:hover,
+QListWidget::item:hover:!active {
+	background-color: rgba(0,0,0,0);
+	border: 0;
+}
+
+QScrollBar:vertical {
+  width: 10px;
+  background:red;
+
+}
+
+QScrollBar::handle:vertical {
+  background: rgba(64, 140, 143, 1);
+border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical {
+  border: 2px solid rgba(0,0,0,0);
+  background: rgba(0,0,0,0);
+}
+
+QScrollBar::sub-line:horizontal {
+  border: 2px solid rgba(0,0,0,0);
+  background: rgba(0,0,0,0);
+}
+
+QScrollBar::handle:hover:vertical {
+  background: rgba(0,0,0,0);
+}
+
+QScrollBar::right-arrow:vertical, QScrollBar::left-arrow:vertical
+{
+      border: none;
+      background: none;
+      color: none;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: none;
+    color: none;
+	height: 0;
+	width: 0;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="mainStackedWidget">
@@ -44,8 +90,11 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="currentIndex">
-     <number>12</number>
+     <number>23</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -280,6 +329,9 @@ QListWidget#fruitListWidget::item:hover:!active {
 }
 </string>
       </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="vegetablePage">
@@ -460,6 +512,12 @@ QListWidget#sauceListWidget::item:hover:!active {
 }
 </string>
       </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="drinkPage">
@@ -550,7 +608,7 @@ border-image: url(:/images/expiration.png);
        </rect>
       </property>
      </widget>
-     <widget class="QListWidget" name="expListWidget">
+     <widget class="QListWidget" name="expirationsListWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -570,9 +628,9 @@ QListWidget#expListWidget::item:hover:!active {
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="scanPage">
+    <widget class="QWidget" name="scannerPage">
      <property name="styleSheet">
-      <string notr="true">QWidget#scanPage {
+      <string notr="true">QWidget#scannerPage {
 border-image: url(:/images/screen7_scanproducts_Tekengebied 1.png);
 }</string>
      </property>
@@ -621,7 +679,7 @@ border: 0px solid rgba(0,0,0,0);
 color: rgba(0,0,0,0);</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="productListWidget">
+     <widget class="QListWidget" name="scannerListWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -644,7 +702,7 @@ QListWidget#productListWidget::item:hover:!active {
      <zorder>noBarcodeWidget</zorder>
      <zorder>sendToFridgeWidget</zorder>
      <zorder>scanToMainMenuWidget</zorder>
-     <zorder>productListWidget</zorder>
+     <zorder>scannerListWidget</zorder>
     </widget>
     <widget class="QWidget" name="customProductPage">
      <property name="styleSheet">
@@ -1119,6 +1177,641 @@ border-image: url(:/images/screen9_otherszc.png);
         <width>71</width>
         <height>71</height>
        </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="customProductNamePage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#customProductNamePage {
+border-image: url(:/images/screen10_product name.png);
+}
+</string>
+     </property>
+     <widget class="QWidget" name="keyboardWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>500</y>
+        <width>480</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	min-height: 47px;
+	min-width: 42px;
+	max-height: 47px;
+	max-width: 42px;
+	color: rgb(0, 0, 0);
+	font: 75 25pt &quot;MS Sans Serif&quot;;
+	font-weight: 900;
+	align: center;
+	qproperty-alignment: 'AlignVCenter | AlignCenter';
+}
+
+QWidget {
+background-color: rgba(255, 255, 255, .1);
+}
+</string>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>481</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="2">
+           <widget class="QWidget" name="eWidget" native="true">
+            <widget class="QLabel" name="label_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>E</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QWidget" name="tWidget" native="true">
+            <widget class="QLabel" name="label_5">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>T</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QWidget" name="wWidget" native="true">
+            <widget class="QLabel" name="label_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>W</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QWidget" name="uWidget" native="true">
+            <widget class="QLabel" name="label_7">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>U</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QWidget" name="yWidget" native="true">
+            <widget class="QLabel" name="label_6">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QWidget" name="qWidget" native="true">
+            <widget class="QLabel" name="label">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>42</width>
+               <height>47</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Q</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QWidget" name="rWidget" native="true">
+            <widget class="QLabel" name="label_4">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <widget class="QWidget" name="iWidget" native="true">
+            <widget class="QLabel" name="label_8">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>I</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="9">
+           <widget class="QWidget" name="pWidget" native="true">
+            <widget class="QLabel" name="label_10">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>P</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="8">
+           <widget class="QWidget" name="oWidget" native="true">
+            <widget class="QLabel" name="label_9">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>O</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetNoConstraint</enum>
+          </property>
+          <item row="0" column="8">
+           <widget class="QWidget" name="kWidget" native="true">
+            <widget class="QLabel" name="label_18">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>K</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QWidget" name="sWidget" native="true">
+            <widget class="QLabel" name="label_12">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>S</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QWidget" name="widget_11" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>20</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>20</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QWidget {
+	border: 0;
+	background-color: 0;
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="9">
+           <widget class="QWidget" name="lWidget" native="true">
+            <widget class="QLabel" name="label_19">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QWidget" name="aWidget" native="true">
+            <widget class="QLabel" name="label_11">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>A</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QWidget" name="hWidget" native="true">
+            <widget class="QLabel" name="label_16">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>H</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <widget class="QWidget" name="jWidget" native="true">
+            <widget class="QLabel" name="label_17">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>J</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="10">
+           <widget class="QWidget" name="widget_13" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>20</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>20</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QWidget {
+	border: 0;
+	background-color: 0;
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QWidget" name="dWidget" native="true">
+            <widget class="QLabel" name="label_13">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>D</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QWidget" name="gWidget" native="true">
+            <widget class="QLabel" name="label_15">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>G</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QWidget" name="fWidget" native="true">
+            <widget class="QLabel" name="label_14">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>F</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetNoConstraint</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QWidget" name="spaceWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>68</width>
+              <height>0</height>
+             </size>
+            </property>
+            <widget class="QLabel" name="label_27">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>68</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">width: 68px;</string>
+             </property>
+             <property name="text">
+              <string>␣</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QWidget" name="bWidget" native="true">
+            <widget class="QLabel" name="label_24">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>B</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QWidget" name="zWidget" native="true">
+            <widget class="QLabel" name="label_20">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QWidget" name="xWidget" native="true">
+            <widget class="QLabel" name="label_21">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QWidget" name="cWidget" native="true">
+            <widget class="QLabel" name="label_22">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>C</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="8">
+           <widget class="QWidget" name="deleteWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>68</width>
+              <height>0</height>
+             </size>
+            </property>
+            <widget class="QLabel" name="label_28">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>68</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">width: 68px;</string>
+             </property>
+             <property name="text">
+              <string>←</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QWidget" name="vWidget" native="true">
+            <widget class="QLabel" name="label_23">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>V</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <widget class="QWidget" name="mWidget" native="true">
+            <widget class="QLabel" name="label_26">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>M</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QWidget" name="nWidget" native="true">
+            <widget class="QLabel" name="label_25">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>42</width>
+               <height>47</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>N</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="productNameLabel">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>360</y>
+        <width>360</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Sans Serif</family>
+        <pointsize>22</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(255, 255, 255, .3);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="margin">
+       <number>5</number>
       </property>
      </widget>
     </widget>

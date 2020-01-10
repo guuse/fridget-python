@@ -27,21 +27,21 @@ class PlatformWrapper(object):
     @staticmethod
     def parse_object_response(response, object):
 
-        if response.status_code == 200:
+        if response.status_code == 200 or response.status_code == 201:
             if object is Products:
                 return create_products_from_json(response.json())
             elif object is Product:
                 product_data = response.json()
 
-                if product_data['expiresIn'] < 0:
-                    expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
-                else:
-                    expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
+                # if product_data['expiresIn'] < 0:
+                #     expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
+                # else:
+                #     expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
 
                 return Product(
                     product_name=product_data['name'],
                     product_category=product_data['category'],
-                    product_exp=expiresIn,
+                    product_exp=product_data['expiresIn'],
                     product_amount_unit=product_data['unit'],
                     product_desc=product_data['description']
                 )
@@ -75,8 +75,21 @@ class PlatformWrapper(object):
 
         return self.parse_object_response(response, object_type)
 
-    def _post(self, url: str, json_body):
+    def _post(self, url: str, json_body, object_type=None):
         response = requests.post(
+            url=url,
+            headers=self.default_headers,
+            json=json_body
+        )
+
+        response.raise_for_status()
+
+        if object_type:
+            return self.parse_object_response(response, object_type)
+        return self.parse_response(response)
+
+    def _put(self, url: str, json_body):
+        response = requests.put(
             url=url,
             headers=self.default_headers,
             json=json_body
@@ -96,18 +109,18 @@ class PlatformWrapper(object):
 
         return self.parse_response(response)
 
-    def add_products(self, products: Products) -> bool:
+    def add_products(self, products: Products) -> Products:
         """Inserts a list of products into the database
 
         :param products: list of Products
 
-        :returns: boolean (true if added, false if not)
+        :returns: list of products currently in box
         """
         products_add_path = platform_paths.PRODUCTS_ADD_PATH
         url = self.host + products_add_path
         json_body = products.to_json()
 
-        return self._post(url, json_body)
+        return self._post(url, json_body, Products)
 
     def get_products(self, box_id: int) -> Products:
         """Retrieves products from the fridge box
@@ -151,3 +164,10 @@ class PlatformWrapper(object):
         url = self.host + product_delete_path
 
         return self._delete(url)
+
+    def set_amount_product(self, product_id: int, amount: int):
+
+        product_amount_put_path = platform_paths.PRODUCTS_PUT_PATH.format(product_id.__str__())
+        url = self.host + product_amount_put_path
+
+        return self._put(url, {"amount": amount})
