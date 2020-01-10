@@ -16,6 +16,7 @@ from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
+from utils.label_utils import process_keypress_label
 from utils.worker import Worker
 
 import importlib.util
@@ -77,6 +78,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.test_string = ""
+
         self.threadpool = QThreadPool()
         self.event_stop = threading.Event()
 
@@ -86,7 +89,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Grab the main stacked widget, this stacked widget contains our different pages.
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'mainStackedWidget')
-        self.stacked_widget.setCurrentIndex(23)
+        self.stacked_widget.setCurrentIndex(0)
 
         # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_scanned_list_table)
@@ -175,13 +178,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # customProductNamePage
         custom_product_name_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductNamePage')
+        label = self.stacked_widget.findChild(QtWidgets.QLabel, 'productNameLabel')
+        self.custom_product_name_label = ""
         for key in settings.KEYBOARD_KEYS:
-            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(self.process_keypress, value=key)
+            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(process_keypress_label, label=label, value=key)
 
-
-
-        self.showFullScreen()
-        #self.show()
+        #self.showFullScreen()
+        self.show()
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -269,9 +272,6 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 widget.product.product_amount -= 1
                 widget.productAmountLabel.setText(widget.product.product_amount.__str__())
-
-    def process_keypress(self, event, value):
-        print(value)
 
     def unlock_device(self, event):
 
