@@ -86,7 +86,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Grab the main stacked widget, this stacked widget contains our different pages.
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'mainStackedWidget')
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(23)
 
         # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_scanned_list_table)
