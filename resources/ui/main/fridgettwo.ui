@@ -94,7 +94,7 @@ QScrollBar:horizontal {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>25</number>
+     <number>12</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -616,6 +616,12 @@ border-image: url(:/images/expiration.png);
         <width>480</width>
         <height>400</height>
        </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="tabletTracking">
+       <bool>true</bool>
       </property>
       <property name="styleSheet">
        <string notr="true">QListWidget#expListWidget,

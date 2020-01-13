@@ -338,7 +338,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.custom_product_label.clear()
         self.expiration_calender.setSelectedDate(QDate.currentDate())
 
-
         self.switch_page(event=None, dest="scan_page")
 
     def unlock_device(self, event):
