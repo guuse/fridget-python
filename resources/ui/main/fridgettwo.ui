@@ -94,7 +94,7 @@ QScrollBar:horizontal {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>23</number>
+     <number>25</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -1814,10 +1814,23 @@ background-color: rgba(255, 255, 255, .1);
        <number>5</number>
       </property>
      </widget>
-     <widget class="QWidget" name="backWidget" native="true">
+     <widget class="QWidget" name="backNameWidget" native="true">
       <property name="geometry">
        <rect>
         <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="nextNameWidget" native="true">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>389</x>
         <y>710</y>
         <width>71</width>
         <height>71</height>
@@ -1843,6 +1856,123 @@ border-image: url(:/images/screen11_expiration date V2.png);
       </property>
       <property name="styleSheet">
        <string notr="true"/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="backExpWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="nextExpWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>389</x>
+        <y>710</y>
+        <width>71</width>
+        <height>80</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="customProductCategoryPage">
+     <property name="styleSheet">
+      <string notr="true">QWidget#customProductCategoryPage {
+	border-image: url(:/images/screen12_category.png);
+}</string>
+     </property>
+     <widget class="QWidget" name="fruitCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>319</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="meatCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>470</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="vegetableCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="dairyCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>310</y>
+        <width>121</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="spreadCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>470</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="sauceCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>470</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="drinkCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>610</y>
+        <width>120</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="otherCustomCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>620</y>
+        <width>120</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="backCategoryWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>710</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
       </property>
      </widget>
     </widget>

@@ -22,12 +22,11 @@ class Product:
 
         returns Dict
         """
-        #TODO: REMOVE DAYS
         serialized_dict = {
             'name': self.product_name,
             'desc': self.product_desc,
             'amount': self.product_amount,
-            'expires': self.product_exp.__str__() + " days",
+            'expires': self.product_exp.__str__(),
             'unit': self.product_amount_unit,
             'category': self.product_category
         }

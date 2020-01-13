@@ -7,7 +7,7 @@ import fridgetresources
 
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5 import QtCore
-from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject
+from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject, QDateTime, QDate
 from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
 
 import settings
@@ -179,19 +179,46 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products = Products()
         self.inventory_products = Products()
 
-        # customProductNamePage
-        custom_product_name_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductNamePage')
-        label = self.stacked_widget.findChild(QtWidgets.QLabel, 'productNameLabel')
+        # custom_product_page
+        custom_product_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductNamePage')
+        self.custom_product_label = self.stacked_widget.findChild(QtWidgets.QLabel, 'productNameLabel')
         self.custom_product_name_label = ""
+        next_widget = custom_product_page.findChild(QtWidgets.QWidget, 'nextNameWidget')
         for key in settings.KEYBOARD_KEYS:
-            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(self.update_custom_product_label, label=label, key=key)
-        custom_product_name_page.findChild(QtWidgets.QWidget, 'backWidget').mouseReleaseEvent = partial(self.switch_page,
-                                                                                                        dest="scan_page")
+            custom_product_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(self.update_custom_product_label, label=self.custom_product_label, key=key, next_widget=next_widget)
+        custom_product_page.findChild(QtWidgets.QWidget, 'backNameWidget').mouseReleaseEvent = partial(
+            self.switch_page,
+            dest="scan_page")
+        next_widget.mouseReleaseEvent = partial(
+            self.switch_page,
+            dest="custom_product_expiration_page")
+
+        # custom_product_expiration_page
+        custom_product_expiration_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductExpirationPage')
+        custom_product_expiration_page.findChild(QtWidgets.QWidget, 'backExpWidget').mouseReleaseEvent = partial(
+            self.switch_page,
+            dest="custom_product_page")
+        self.expiration_calender = custom_product_expiration_page.findChild(QtWidgets.QCalendarWidget,
+                                                                            'productExpirationCalenderWidget')
+        custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
+            self.switch_page,
+            dest="custom_product_category_page"
+        )
+
+        # custom_product_category_page
+        custom_product_category_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'customProductCategoryPage')
+        for category in settings.CATEGORIES:
+            custom_product_category_page.findChild(QtWidgets.QWidget, category + 'CustomCategoryWidget').mouseReleaseEvent = partial(
+                self.insert_custom_product,
+                category=category)
+        custom_product_category_page.findChild(QtWidgets.QWidget, 'backCategoryWidget').mouseReleaseEvent = partial(
+            self.switch_page,
+            dest="custom_product_expiration_page")
 
 
-        self.showFullScreen()
-        #self.show()
-        self.setCursor(Qt.BlankCursor)
+        #self.showFullScreen()
+        self.show()
+        #self.setCursor(Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -282,12 +309,37 @@ class MainWindow(QtWidgets.QMainWindow):
                 widget.product.product_amount -= 1
                 widget.productAmountLabel.setText(widget.product.product_amount.__str__())
 
-    def update_custom_product_label(self, event, label, key):
+    def update_custom_product_label(self, event, label, key, next_widget):
 
         self.custom_product_name_label = process_keypress_label(event=event, label=label, value=key)
 
-        print(self.custom_product_name_label)
+        if len(self.custom_product_name_label) > 0:
+            next_widget.setEnabled(True)
+        else:
+            next_widget.setEnabled(False)
 
+    def insert_custom_product(self, event, category):
+        custom_product = Product(
+            product_name=self.custom_product_name_label,
+            product_exp=QDate.currentDate().daysTo(self.expiration_calender.selectedDate()),
+            product_category=category
+        )
+
+        self.products.products.append(custom_product)
+
+        product_item = QListWidgetItem(self.scan_page_product_list_view)
+        product_item_widget = ProductWidget(custom_product, self, "scanner", True)
+        product_item.setSizeHint(product_item_widget.size())
+        self.scan_page_product_list_view.addItem(product_item)
+        self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
+
+        # Clear the used variables
+        self.custom_product_name_label = ""
+        self.custom_product_label.clear()
+        self.expiration_calender.setSelectedDate(QDate.currentDate())
+
+
+        self.switch_page(event=None, dest="scan_page")
 
     def unlock_device(self, event):
 
