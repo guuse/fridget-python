@@ -39,7 +39,7 @@ QListWidget::item:hover:!active {
 
 QScrollBar:vertical {
   width: 10px;
-  background:red;
+  background: rgba(64, 140, 143, .3);
 
 }
 
