@@ -223,6 +223,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
 
+        """Switch page
+
+        :event event: an event
+        :dest string: the destination page, see settings.py
+        :disable_worker bool: whether or not the main worker, used for the scanner, should be halted
+        :load_box int: which box should be loaded
+        :category string: the category, used when filtering
+        clearable_list: list which should be cleared
+        """
+
         if category:
             self.filter_products(category)
         if load_box:
@@ -246,11 +256,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
-    def setup_widget_switch_on_click(self, parent, widget_name, destination):
-        parent.findChild(QtWidgets.QWidget, widget_name).mouseReleaseEvent = partial(self.switch_page,
-                                                                                     dest=destination)
-
     def filter_products(self, category):
+        """Filter the inventory by a category and fill the ListWidget
+
+        We use generic page and ListWidget names, based on category.
+        Example, the page for Dairy is called dairyPage, the ListWidget is called dairyListWidget, etc.
+
+        :category string: string category
+        """
 
         filtered_products = self.inventory_products.filter_category(category)
 
@@ -267,6 +280,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                                                clearable_list=list)
 
     def soon_expired_products(self):
+        """Filter the inventory by expiration days and fill the ListWidget"""
 
         soon_expired_products = self.inventory_products.filter_exp(3)
 
@@ -282,6 +296,16 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                                                clearable_list=self.exp_list_widget)
 
     def update_products_widget(self, product: Product, category: str, increase: bool = True, scanner_page: bool = True):
+        """Update a product ListWidget
+
+        Used when the amount of a product is changed and the ListWidget and product require updating
+
+        :product Product: the Product object in question
+        :category string: the category (used to pick the right page and ListWidget)
+        :increase boolean: whether the amount has been increased or not
+        :scanner_page boolean: whether we are updating the inventory or simply the list of scanned products
+        """
+
         page = self.stacked_widget.findChild(QtWidgets.QWidget, category + "Page")
         list = page.findChild(QtWidgets.QListWidget, category + "ListWidget")
 
@@ -310,6 +334,14 @@ class MainWindow(QtWidgets.QMainWindow):
                 widget.productAmountLabel.setText(widget.product.product_amount.__str__())
 
     def update_custom_product_label(self, event, label, key, next_widget):
+        """Update the display value of the custom product label, used for naming a custom product
+
+        :event event: an event
+        :label QtLabel: the label
+        :key string: which key has been clicked
+        :next_widget: the widget that goes to the next page, disabled when the length is 0 (so that the user
+        cannot go to the next page with an empty name)
+        """
 
         self.custom_product_name_label = process_keypress_label(event=event, label=label, value=key)
 
@@ -339,48 +371,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.expiration_calender.setSelectedDate(QDate.currentDate())
 
         self.switch_page(event=None, dest="scan_page")
-
-    def unlock_device(self, event):
-
-        self.stacked_widget.setCurrentIndex(1)
-
-    def switch_to_scan_page(self):
-        self.stacked_widget.setCurrentIndex(3)
-        self.worker = Worker(self.scan_loop)
-        self.threadpool.start(self.worker)
-        self.event_stop.clear()
-
-    def switch_to_first_screen(self):
-        self.event_stop.set()
-        self.stacked_widget.setCurrentIndex(1)
-
-    def change_image(self):
-        pixmap = QtGui.QPixmap("077G.png")
-        # self.label.setPixmap(pixmap)
-
-        url = 'http://www.google.com/images/srpr/logo1w.png'
-        import urllib.request
-        data = urllib.request.urlopen(url).read()
-
-        image = QtGui.QImage()
-        image.loadFromData(data)
-
-        self.label.setPixmap(QtGui.QPixmap(image))
-
-    def add_to_list(self, product_ean):
-        pass
-
-    def deleteItem(self, item):
-        id = self.scan_page_product_list_view.currentRow()
-        self.scan_page_product_list_view.takeItem(id)
-
-    def addItem(self):
-
-        item = QListWidgetItem(self.scan_page_product_list_view)
-        item_widget = ProductWidget()
-        item.setSizeHint(item_widget.size())
-        self.scan_page_product_list_view.addItem(item)
-        self.scan_page_product_list_view.setItemWidget(item, item_widget)
 
     def add_to_scanned_list_table(self):
 
@@ -418,7 +408,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
             while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
-                print("!!!")
 
                 self.scan_page_input_label.setFocus()
                 GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
