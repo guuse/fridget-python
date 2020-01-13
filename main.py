@@ -135,7 +135,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
         # ListView for scanned items
         self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
-        # ??? self.scan_page_product_list_view.itemDoubleClicked.connect(self.deleteItem)
+        # Custom Products
+        self.scan_page.findChild(QtWidgets.QWidget, 'noBarcodeWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                   dest="custom_product_page",
+                                                                                                   disable_worker=True)
 
         # inventory_page
         self.inventory_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'inventoryPage')
@@ -181,10 +184,14 @@ class MainWindow(QtWidgets.QMainWindow):
         label = self.stacked_widget.findChild(QtWidgets.QLabel, 'productNameLabel')
         self.custom_product_name_label = ""
         for key in settings.KEYBOARD_KEYS:
-            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(process_keypress_label, label=label, value=key)
+            custom_product_name_page.findChild(QtWidgets.QWidget, key + 'Widget').mouseReleaseEvent = partial(self.update_custom_product_label, label=label, key=key)
+        custom_product_name_page.findChild(QtWidgets.QWidget, 'backWidget').mouseReleaseEvent = partial(self.switch_page,
+                                                                                                        dest="scan_page")
 
-        #self.showFullScreen()
-        self.show()
+
+        self.showFullScreen()
+        #self.show()
+        self.setCursor(Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -201,12 +208,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.threadpool.start(self.worker)
             self.event_stop.clear()
         elif PAGE_INDEXES[dest] == 2 and disable_worker:
-            self.event_stop.set()
-            self.scanning = False
             self.scan_page_product_list_view.clear()
             self.products.products.clear()
         elif PAGE_INDEXES[dest] == 12:
             self.soon_expired_products()
+
+        if disable_worker:
+            self.event_stop.set()
+            self.scanning = False
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
@@ -272,6 +281,13 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 widget.product.product_amount -= 1
                 widget.productAmountLabel.setText(widget.product.product_amount.__str__())
+
+    def update_custom_product_label(self, event, label, key):
+
+        self.custom_product_name_label = process_keypress_label(event=event, label=label, value=key)
+
+        print(self.custom_product_name_label)
+
 
     def unlock_device(self, event):
 
@@ -351,6 +367,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
             while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
+                print("!!!")
 
                 self.scan_page_input_label.setFocus()
                 GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)

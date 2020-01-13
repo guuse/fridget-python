@@ -17,15 +17,8 @@ PAGE_INDEXES = {
     "other_page": 11,
     "expirations_page": 12,
     "scan_page": 13,
-    "custom_product_page": 14,
-    "custom_fruit_page": 15,
-    "custom_vegetable_page": 16,
-    "custom_dairy_page": 17,
-    "custom_meat_page": 18,
-    "custom_spread_page": 19,
-    "custom_sauce_page": 20,
-    "custom_drink_page": 21,
-    "custom_other_page": 22,
+    "custom_product_page": 23,
+    "custom_product_expiration_page": 24,
 }
 
 PLATFORM_API = None
