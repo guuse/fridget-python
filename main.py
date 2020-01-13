@@ -8,7 +8,7 @@ import fridgetresources
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5 import QtCore
 from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject, QDateTime, QDate
-from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget
+from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget, QScrollerProperties, QScroller
 
 import settings
 from customwidget import Ui_productWidget
@@ -175,6 +175,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.expirations_page_switch_main_menu = self.expirations_page.findChild(QtWidgets.QWidget,
                                                                                  'expirationsToMainMenuPage')
         self.exp_list_widget = self.expirations_page.findChild(QtWidgets.QListWidget, 'expirationsListWidget')
+
+        self.sp = QScrollerProperties()
+        self.sp.setScrollMetric(QScrollerProperties.DragVelocitySmoothingFactor, 0.6)
+        self.sp.setScrollMetric(QScrollerProperties.MinimumVelocity, 0.0)
+        self.sp.setScrollMetric(QScrollerProperties.MaximumVelocity, 0.2)
+        self.sp.setScrollMetric(QScrollerProperties.AcceleratingFlickMaximumTime, 0.1)
+        self.sp.setScrollMetric(QScrollerProperties.AcceleratingFlickSpeedupFactor, 1.2)
+        self.sp.setScrollMetric(QScrollerProperties.SnapPositionRatio, 0.2)
+        self.sp.setScrollMetric(QScrollerProperties.MaximumClickThroughVelocity, 1)
+        self.sp.setScrollMetric(QScrollerProperties.DragStartDistance, 0.001)
+        self.sp.setScrollMetric(QScrollerProperties.MousePressEventDelay, 0.5)
+
+        self.scroller = QScroller.scroller(self.exp_list_widget.viewport())
+        self.scroller.setScrollerProperties(self.sp)
+        self.scroller.grabGesture(self.exp_list_widget.viewport(), QScroller.LeftMouseButtonGesture)
 
         self.products = Products()
         self.inventory_products = Products()

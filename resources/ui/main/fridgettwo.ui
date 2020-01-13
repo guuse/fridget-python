@@ -632,6 +632,9 @@ QListWidget#expListWidget::item:hover:!active {
 }
 </string>
       </property>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="scannerPage">
