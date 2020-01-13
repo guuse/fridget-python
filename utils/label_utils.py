@@ -7,6 +7,7 @@ def process_keypress_label(event, label, value: str, max_length: int = 16):
     :param label: Reference to the QLabel
     :param value: The value of the keypress
     :param max_length: The max length of the text of the label, default 16
+    :returns: the new value of the label (for optional use)
     """
     if value == 'space' and len(label.text()) < max_length:
         label.setText(label.text() + " ")
@@ -14,3 +15,5 @@ def process_keypress_label(event, label, value: str, max_length: int = 16):
         label.setText(label.text() + value)
     elif value == 'delete' and len(label.text()) > 0:
         label.setText(label.text()[:-1])
+
+    return label.text()
