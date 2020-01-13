@@ -41,6 +41,7 @@ QScrollBar:vertical {
   width: 20px;
   background: rgba(64, 140, 143, .3);
 margin-right: 10px;
+	border-radius: 5px;
 }
 
 QScrollBar::handle:vertical {
@@ -53,14 +54,13 @@ QScrollBar:horizontal,
 QScrollBar::sub-line:horizontal,
 QScrollBar::add-line:horizontal, 
 QScrollBar::sub-line:vertical,
-QScrollBar::add-line:vertica,
-QScrollBar::handle:hover:verticall,
+QScrollBar::add-line:vertical,
+QScrollBar::handle:hover:vertical,
 QScrollBar::right-arrow:vertical,
-QScrollBar::left-arrow:vertica,
-QScrollBar::handle:hover:verticall {
+QScrollBar::left-arrow:vertical,
+QScrollBar::handle:hover:vertical {
 	 border: 2px solid rgba(0,0,0,0);
  	background: rgba(0,0,0,0);
-	color: none;
 	height: 0px;
 	width: 0px;
 }</string>

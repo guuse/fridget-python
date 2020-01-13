@@ -232,10 +232,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.switch_page,
             dest="custom_product_expiration_page")
 
-
-        #self.showFullScreen()
-        self.show()
-        #self.setCursor(Qt.BlankCursor)
+        # self.show()
+        self.showFullScreen()
+        self.setCursor(Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
