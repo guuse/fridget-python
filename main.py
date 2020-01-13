@@ -186,6 +186,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sp.setScrollMetric(QScrollerProperties.MaximumClickThroughVelocity, 1)
         self.sp.setScrollMetric(QScrollerProperties.DragStartDistance, 0.001)
         self.sp.setScrollMetric(QScrollerProperties.MousePressEventDelay, 0.5)
+        self.sp.setScrollMetric(QScrollerProperties.HorizontalOvershootPolicy, 1)
+        self.sp.setScrollMetric(QScrollerProperties.VerticalOvershootPolicy, 1)
 
         self.scroller = QScroller.scroller(self.exp_list_widget.viewport())
         self.scroller.setScrollerProperties(self.sp)
@@ -231,9 +233,9 @@ class MainWindow(QtWidgets.QMainWindow):
             dest="custom_product_expiration_page")
 
 
-        self.showFullScreen()
-        #self.show()
-        self.setCursor(Qt.BlankCursor)
+        #self.showFullScreen()
+        self.show()
+        #self.setCursor(Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):

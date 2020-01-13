@@ -38,12 +38,13 @@ QListWidget::item:hover:!active {
 }
 
 QScrollBar:vertical {
-  width: 18px;
+  width: 20px;
   background: rgba(64, 140, 143, .3);
-margin-right: 8px;
+margin-right: 10px;
 }
 
 QScrollBar::handle:vertical {
+width: 10px;
 	background: rgba(64, 140, 143, 1);
 	border-radius: 5px;
 }
