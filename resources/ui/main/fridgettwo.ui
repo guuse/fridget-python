@@ -38,43 +38,30 @@ QListWidget::item:hover:!active {
 }
 
 QScrollBar:vertical {
-  width: 10px;
+  width: 18px;
   background: rgba(64, 140, 143, .3);
-
+margin-right: 8px;
 }
 
 QScrollBar::handle:vertical {
-  background: rgba(64, 140, 143, 1);
-border-radius: 5px;
+	background: rgba(64, 140, 143, 1);
+	border-radius: 5px;
 }
 
-QScrollBar::add-line:vertical {
-  border: 2px solid rgba(0,0,0,0);
-  background: rgba(0,0,0,0);
-}
-
-QScrollBar::sub-line:horizontal {
-  border: 2px solid rgba(0,0,0,0);
-  background: rgba(0,0,0,0);
-}
-
-QScrollBar::handle:hover:vertical {
-  background: rgba(0,0,0,0);
-}
-
-QScrollBar::right-arrow:vertical, QScrollBar::left-arrow:vertical
-{
-      border: none;
-      background: none;
-      color: none;
-}
-
-QScrollBar:horizontal {
-    border: none;
-    background: none;
-    color: none;
-	height: 0;
-	width: 0;
+QScrollBar:horizontal,
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-line:horizontal, 
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:vertica,
+QScrollBar::handle:hover:verticall,
+QScrollBar::right-arrow:vertical,
+QScrollBar::left-arrow:vertica,
+QScrollBar::handle:hover:verticall {
+	 border: 2px solid rgba(0,0,0,0);
+ 	background: rgba(0,0,0,0);
+	color: none;
+	height: 0px;
+	width: 0px;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
