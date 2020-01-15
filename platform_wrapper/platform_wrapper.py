@@ -33,11 +33,6 @@ class PlatformWrapper(object):
             elif object is Product:
                 product_data = response.json()
 
-                # if product_data['expiresIn'] < 0:
-                #     expiresIn = (datetime.now() - timedelta(abs(product_data['expiresIn']))).date()
-                # else:
-                #     expiresIn = (datetime.now() + timedelta(product_data['expiresIn'])).date()
-
                 return Product(
                     product_name=product_data['name'],
                     product_category=product_data['category'],
@@ -82,7 +77,6 @@ class PlatformWrapper(object):
             json=json_body
         )
 
-        print(response.json())
         response.raise_for_status()
 
         if object_type:
