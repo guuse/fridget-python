@@ -38,8 +38,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.test_string = ""
-
         self.threadpool = QThreadPool()
         self.event_stop = threading.Event()
 
