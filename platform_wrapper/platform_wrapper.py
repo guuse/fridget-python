@@ -77,7 +77,6 @@ class PlatformWrapper(object):
             json=json_body
         )
 
-        print(response.json())
         response.raise_for_status()
 
         if object_type:

@@ -5,13 +5,12 @@ from functools import partial
 
 import fridgetresources
 
-from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
-from PyQt5.QtCore import QThreadPool, Qt, pyqtSignal, QObject, QDateTime, QDate
-from PyQt5.QtWidgets import QTableWidgetItem, QListWidgetItem, QWidget, QScrollerProperties, QScroller
+from PyQt5.QtCore import QThreadPool, pyqtSignal, QDate
+from PyQt5.QtWidgets import QListWidgetItem, QScrollerProperties, QScroller
 
 import settings
-from customwidget import Ui_productWidget
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
@@ -20,54 +19,15 @@ from utils.label_utils import process_keypress_label
 from utils.worker import Worker
 
 import importlib.util
+
+from widgets.ProductWidget import ProductWidget
+
 try:
     # Since RPi.GPIO doesn't work on windows we need to fake the library if we are developing on other OS
     importlib.util.find_spec('RPi.GPIO')
     import RPi.GPIO as GPIO
 except ImportError:
     import FakeRPi.GPIO as GPIO
-
-
-class ProductWidget(QWidget, Ui_productWidget):
-    delete_signal = pyqtSignal(Product, str, bool, bool)
-    increase_signal = pyqtSignal(Product, str, bool, bool)
-
-    def __init__(self, product: Product, mainWindow, category: str, scanner: bool = False, *args, **kwargs):
-        QWidget.__init__(self, *args, **kwargs)
-        self.setupUi(self)
-        self.productNameLabel.setText(product.product_name)
-        self.productDescLabel.setText(product.product_desc)
-        self.productAmountLabel.setText(product.product_amount.__str__())
-        self.productExpInLabel.setText(product.product_exp.__str__())
-        self.product = product
-        self.removeButton.clicked.connect(self._delete_item)
-        self.addButton.clicked.connect(self._add_item)
-        self.main_window = mainWindow
-        self.delete_signal.connect(mainWindow.update_products_widget)
-        self.increase_signal.connect(mainWindow.update_products_widget)
-        self.category = category
-        self.is_scanner_page = scanner
-
-    def _add_item(self):
-        succeeded = True
-
-        if not self.is_scanner_page:
-            succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
-                                                 self.product.product_amount + 1)
-        if succeeded:
-            self.increase_signal.emit(self.product, self.category, True, self.is_scanner_page)
-
-    def _delete_item(self):
-        succeeded = True
-
-        if self.product.product_amount == 1 and not self.is_scanner_page:
-            succeeded = settings.PLATFORM_API.delete_product(self.product.product_id)
-        elif not self.is_scanner_page:
-            succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
-                                                                 self.product.product_amount - 1)
-
-        if succeeded:
-            self.delete_signal.emit(self.product, self.category, False, self.is_scanner_page)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -176,23 +136,6 @@ class MainWindow(QtWidgets.QMainWindow):
                                                                                  'expirationsToMainMenuPage')
         self.exp_list_widget = self.expirations_page.findChild(QtWidgets.QListWidget, 'expirationsListWidget')
 
-        self.sp = QScrollerProperties()
-        self.sp.setScrollMetric(QScrollerProperties.DragVelocitySmoothingFactor, 0.6)
-        self.sp.setScrollMetric(QScrollerProperties.MinimumVelocity, 0.0)
-        self.sp.setScrollMetric(QScrollerProperties.MaximumVelocity, 0.2)
-        self.sp.setScrollMetric(QScrollerProperties.AcceleratingFlickMaximumTime, 0.1)
-        self.sp.setScrollMetric(QScrollerProperties.AcceleratingFlickSpeedupFactor, 1.2)
-        self.sp.setScrollMetric(QScrollerProperties.SnapPositionRatio, 0.2)
-        self.sp.setScrollMetric(QScrollerProperties.MaximumClickThroughVelocity, 1)
-        self.sp.setScrollMetric(QScrollerProperties.DragStartDistance, 0.001)
-        self.sp.setScrollMetric(QScrollerProperties.MousePressEventDelay, 0.5)
-        self.sp.setScrollMetric(QScrollerProperties.HorizontalOvershootPolicy, 1)
-        self.sp.setScrollMetric(QScrollerProperties.VerticalOvershootPolicy, 1)
-
-        self.scroller = QScroller.scroller(self.exp_list_widget.viewport())
-        self.scroller.setScrollerProperties(self.sp)
-        self.scroller.grabGesture(self.exp_list_widget.viewport(), QScroller.LeftMouseButtonGesture)
-
         self.products = Products()
         self.inventory_products = Products()
 
@@ -232,9 +175,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.switch_page,
             dest="custom_product_expiration_page")
 
-        # self.show()
-        self.showFullScreen()
-        self.setCursor(Qt.BlankCursor)
+        self._setup_scroll_bars()
+
+        self.show()
+        #self.showFullScreen()
+        #self.setCursor(Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -389,6 +334,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.switch_page(event=None, dest="scan_page")
 
     def add_to_scanned_list_table(self):
+        """Add a scanned product to the list
+
+        """
 
         product = self.platform_api.get_product_from_ean(self.ean)
 
@@ -409,6 +357,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.event_stop.clear()
 
     def send_products_to_box(self, event=None):
+        """Send the scanned products to the box
+
+        """
+
+        # Pause the scanning thread (e.g. prevent the scanner from being able to trigger)
         self.event_stop.set()
 
         new_products = self.platform_api.add_products(self.products)
@@ -438,34 +391,34 @@ class MainWindow(QtWidgets.QMainWindow):
 
                     self.scanned.emit()
 
+    def _setup_scroll_bars(self):
+        """Set the properties of all scroll bars
 
-class Scanner(QObject):
+        Scroll bars are selected based on a unique prefix and a common suffix.
+        Example: dairy + ListWidget, where the 'ListWidget' suffix is the same for all other list widgets.
 
-    def __init__(self):
-        super().__init__()
-        self.threadpool = QThreadPool()
-        self.event_stop = threading.Event()
-        self.worker = Worker(self.scan_loop())
-        self.threadpool.start(self.worker)
-        self.event_stop.set()
+        """
+        for widget_prefix in settings.ALL_SCROLLABLE_LIST_WIDGETS_PREFIXES:
 
-    def start_worker(self):
-        self.event_stop.clear()
+            list_widget = self.stacked_widget.findChild(QtWidgets.QWidget, widget_prefix + "Page")\
+                .findChild(QtWidgets.QListWidget, widget_prefix + "ListWidget")
 
-    def stop_worker(self):
-        self.event_stop.set()
+            sp = QScrollerProperties()
+            sp.setScrollMetric(QScrollerProperties.DragVelocitySmoothingFactor, 0.6)
+            sp.setScrollMetric(QScrollerProperties.MinimumVelocity, 0.0)
+            sp.setScrollMetric(QScrollerProperties.MaximumVelocity, 0.2)
+            sp.setScrollMetric(QScrollerProperties.AcceleratingFlickMaximumTime, 0.1)
+            sp.setScrollMetric(QScrollerProperties.AcceleratingFlickSpeedupFactor, 1.2)
+            sp.setScrollMetric(QScrollerProperties.SnapPositionRatio, 0.2)
+            sp.setScrollMetric(QScrollerProperties.MaximumClickThroughVelocity, 1)
+            sp.setScrollMetric(QScrollerProperties.DragStartDistance, 0.001)
+            sp.setScrollMetric(QScrollerProperties.HorizontalOvershootPolicy, 1)
+            sp.setScrollMetric(QScrollerProperties.VerticalOvershootPolicy, 1)
 
-    def scan_loop(self):
-        while not self.event_stop.is_set():
+            scroller = QScroller.scroller(list_widget.viewport())
+            scroller.setScrollerProperties(sp)
+            scroller.grabGesture(list_widget.viewport(), QScroller.LeftMouseButtonGesture)
 
-            settings.word.setFocus()
-
-            if len(settings.word.text()) == 2:
-                self.event_stop.set()
-
-                self.ean = settings.word
-
-                x = self.scanned.emit()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(settings.IR_PIN, GPIO.IN)

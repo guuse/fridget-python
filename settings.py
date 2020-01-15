@@ -17,9 +17,9 @@ PAGE_INDEXES = {
     "other_page": 11,
     "expirations_page": 12,
     "scan_page": 13,
-    "custom_product_page": 23,
-    "custom_product_expiration_page": 24,
-    "custom_product_category_page": 25,
+    "custom_product_page": 14,
+    "custom_product_expiration_page": 15,
+    "custom_product_category_page": 16,
 }
 
 PLATFORM_API = None
@@ -39,3 +39,10 @@ CATEGORIES = [
     "drink",
     "other"
 ]
+
+OTHER_LIST_WIDGETS_PREFIXES = [
+    "expirations",
+    "scanner"
+]
+
+ALL_SCROLLABLE_LIST_WIDGETS_PREFIXES = CATEGORIES + OTHER_LIST_WIDGETS_PREFIXES
