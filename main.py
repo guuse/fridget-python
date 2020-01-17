@@ -319,7 +319,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.products.append(custom_product)
 
         product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(custom_product, self, "scanner", True)
+        product_item_widget = ProductWidget(custom_product, self, "scanner", local=True)
         product_item.setSizeHint(product_item_widget.size())
         self.scan_page_product_list_view.addItem(product_item)
         self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
@@ -341,7 +341,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.add_product(product)
 
         product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(product, self, "scanner", True)
+        product_item_widget = ProductWidget(product, self, "scanner", local=True)
         product_item.setSizeHint(product_item_widget.size())
         self.scan_page_product_list_view.addItem(product_item)
         self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)

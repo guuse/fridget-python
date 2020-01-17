@@ -2,15 +2,23 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 import settings
-from customwidget import Ui_productWidget
+from widgets.ProductWidgetUI import Ui_productWidget
 from platform_wrapper.models.product import Product
 
 
 class ProductWidget(QWidget, Ui_productWidget):
+    """Custom widget for displaying product information
+
+    Constructor arguments:
+    :param product: a product object
+    :param main_window: reference to the mainWindow (so that we can update the ListWidget)
+    :param category: a string of the category (used for finding the correct ListWidget/page)
+    :param local: whether or not this item is local or also stored remote
+    """
     delete_signal = pyqtSignal(Product, str, bool, bool)
     increase_signal = pyqtSignal(Product, str, bool, bool)
 
-    def __init__(self, product: Product, mainWindow, category: str, scanner: bool = False, *args, **kwargs):
+    def __init__(self, product: Product, main_window, category: str, local: bool = False, *args, **kwargs):
         QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.productNameLabel.setText(product.product_name)
@@ -20,29 +28,29 @@ class ProductWidget(QWidget, Ui_productWidget):
         self.product = product
         self.removeButton.clicked.connect(self._delete_item)
         self.addButton.clicked.connect(self._add_item)
-        self.main_window = mainWindow
-        self.delete_signal.connect(mainWindow.update_products_widget)
-        self.increase_signal.connect(mainWindow.update_products_widget)
+        self.main_window = main_window
+        self.delete_signal.connect(main_window.update_products_widget)
+        self.increase_signal.connect(main_window.update_products_widget)
         self.category = category
-        self.is_scanner_page = scanner
+        self.local_only = local
 
     def _add_item(self):
         succeeded = True
 
-        if not self.is_scanner_page:
+        if not self.local_only:
             succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
                                                  self.product.product_amount + 1)
         if succeeded:
-            self.increase_signal.emit(self.product, self.category, True, self.is_scanner_page)
+            self.increase_signal.emit(self.product, self.category, True, self.local_only)
 
     def _delete_item(self):
         succeeded = True
 
-        if self.product.product_amount == 1 and not self.is_scanner_page:
+        if self.product.product_amount == 1 and not self.local_only:
             succeeded = settings.PLATFORM_API.delete_product(self.product.product_id)
-        elif not self.is_scanner_page:
+        elif not self.local_only:
             succeeded = settings.PLATFORM_API.set_amount_product(self.product.product_id,
                                                                  self.product.product_amount - 1)
 
         if succeeded:
-            self.delete_signal.emit(self.product, self.category, False, self.is_scanner_page)
+            self.delete_signal.emit(self.product, self.category, False, self.local_only)
