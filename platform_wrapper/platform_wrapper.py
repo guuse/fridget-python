@@ -32,6 +32,9 @@ class PlatformWrapper(object):
                 return create_products_from_json(response.json())
             elif object is Product:
 
+                print("JSON")
+                print(response.json())
+
                 if response.json() is None:
                     return None
 
