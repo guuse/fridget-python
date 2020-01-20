@@ -162,7 +162,6 @@ class MainWindow(QtWidgets.QMainWindow):
             fmt = self.expiration_calender.weekdayTextFormat(d)
             fmt.setForeground(QtCore.Qt.black)
             self.expiration_calender.setWeekdayTextFormat(d, fmt)
-        self.expiration_calender.setAttribute(QtCore.Qt.WA_TranslucentBackground, True)
 
         custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
             self.switch_page,
@@ -181,9 +180,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._setup_scroll_bars()
 
-        self.show()
-        #self.showFullScreen()
-        #self.setCursor(Qt.BlankCursor)
+        #self.show()
+        self.showFullScreen()
+        self.setCursor(QtCore.Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -344,13 +343,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         product = self.platform_api.get_product_from_ean(self.ean)
 
-        self.products.add_product(product)
+        if product is not None:
 
-        product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(product, self, "scanner", local=True)
-        product_item.setSizeHint(product_item_widget.size())
-        self.scan_page_product_list_view.addItem(product_item)
-        self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
+            self.products.add_product(product)
+
+            product_item = QListWidgetItem(self.scan_page_product_list_view)
+            product_item_widget = ProductWidget(product, self, "scanner", local=True)
+            product_item.setSizeHint(product_item_widget.size())
+            self.scan_page_product_list_view.addItem(product_item)
+            self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
 
         self.scan_page_input_label.clear()
 
@@ -435,6 +436,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def _setup_calendar(self):
         """Set the properties of our expiration calendar
         """
+        for d in (QtCore.Qt.Saturday, QtCore.Qt.Sunday):
+            fmt = self.expiration_calender.weekdayTextFormat(d)
+            fmt.setForeground(QtCore.Qt.black)
+            self.expiration_calender.setWeekdayTextFormat(d, fmt)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(settings.IR_PIN, GPIO.IN)

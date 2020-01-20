@@ -31,6 +31,10 @@ class PlatformWrapper(object):
             if object is Products:
                 return create_products_from_json(response.json())
             elif object is Product:
+
+                if response.json() is None:
+                    return None
+
                 product_data = response.json()
 
                 return Product(
@@ -64,7 +68,6 @@ class PlatformWrapper(object):
             url=url,
             headers=self.default_headers
         )
-
         # Raise Exceptions if they occur
         response.raise_for_status()
 
