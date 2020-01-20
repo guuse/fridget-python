@@ -158,6 +158,12 @@ class MainWindow(QtWidgets.QMainWindow):
             dest="custom_product_page")
         self.expiration_calender = custom_product_expiration_page.findChild(QtWidgets.QCalendarWidget,
                                                                             'productExpirationCalenderWidget')
+        for d in (QtCore.Qt.Saturday, QtCore.Qt.Sunday):
+            fmt = self.expiration_calender.weekdayTextFormat(d)
+            fmt.setForeground(QtCore.Qt.black)
+            self.expiration_calender.setWeekdayTextFormat(d, fmt)
+        self.expiration_calender.setAttribute(QtCore.Qt.WA_TranslucentBackground, True)
+
         custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
             self.switch_page,
             dest="custom_product_category_page"
@@ -426,6 +432,9 @@ class MainWindow(QtWidgets.QMainWindow):
             scroller.setScrollerProperties(sp)
             scroller.grabGesture(list_widget.viewport(), QScroller.LeftMouseButtonGesture)
 
+    def _setup_calendar(self):
+        """Set the properties of our expiration calendar
+        """
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(settings.IR_PIN, GPIO.IN)

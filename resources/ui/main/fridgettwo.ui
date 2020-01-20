@@ -76,7 +76,7 @@ QScrollBar::handle:hover:vertical {
      </rect>
     </property>
     <property name="autoFillBackground">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -1497,16 +1497,103 @@ border-image: url(:/images/screen11_expiration date V2.png);
 </string>
      </property>
      <widget class="QCalendarWidget" name="productExpirationCalenderWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>330</y>
+        <y>280</y>
         <width>481</width>
-        <height>271</height>
+        <height>401</height>
        </rect>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QCalendarWidget QAbstractItemView
+{ 
+	selection-background-color: rgba(56, 135, 145, 0.5); 
+	selection-color: white;
+	selection-border:10px solid red;
+}
+
+
+QCalendarWidget QWidget 
+{
+	color:black;
+	font-weight: 900;
+	font-size: 18px;
+}
+
+QCalendarWidget QTableView
+{ 
+background-color: rgb(155, 200, 190);
+}
+
+QCalendarWidget QWidget {
+	alternate-background-color: rgba(0,0,0,0); 
+}
+
+QCalendarWidget QToolButton {
+  	background-color: rgba(0,0,0,0);
+	font-size: 25px;
+  }
+
+QCalendarWidget QWidget#qt_calendar_navigationbar
+{ 
+  background-color: rgba(0,0,0,0); 
+}
+
+QCalendarWidget QWidget#qt_calendar_nextmonth,
+QCalendarWidget QWidget#qt_calendar_prevmonth
+{ 
+  font-size: 30px;
+}
+
+QCalendarWidget QAbstractItemView:disabled 
+{ 
+color: gray;
+}
+
+QCalendarWidget QWidget#qt_calendar_prevmonth
+{
+   qproperty-icon: url();
+	border-image: url(:/images/back-icon.png) 0 0 0 0 stretch;
+	width: 35px;
+	margin-left: 10px;
+}
+
+QCalendarWidget QWidget#qt_calendar_nextmonth
+{
+   qproperty-icon: url();
+	border-image: url(:/images/next-icon.png) 0 0 0 0 stretch;
+	width: 35px;
+	margin-right: 10px;
+}
+</string>
+      </property>
+      <property name="firstDayOfWeek">
+       <enum>Qt::Monday</enum>
+      </property>
+      <property name="gridVisible">
+       <bool>false</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QCalendarWidget::SingleSelection</enum>
+      </property>
+      <property name="horizontalHeaderFormat">
+       <enum>QCalendarWidget::ShortDayNames</enum>
+      </property>
+      <property name="verticalHeaderFormat">
+       <enum>QCalendarWidget::NoVerticalHeader</enum>
+      </property>
+      <property name="navigationBarVisible">
+       <bool>true</bool>
+      </property>
+      <property name="dateEditEnabled">
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QWidget" name="backExpWidget" native="true">

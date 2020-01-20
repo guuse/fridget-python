@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="images">
+    <file>Calendar_background.png</file>
+    <file>next-icon.png</file>
+    <file>back-icon.png</file>
     <file>screen9_dairyzc.png</file>
     <file>screen9_drinkszc.png</file>
     <file>screen9_fruitzc.png</file>
