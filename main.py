@@ -393,6 +393,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while self.scanning:
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
+            self.scan_page_input_label.clear()
             while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
 
                 self.scan_page_input_label.setFocus()
