@@ -34,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow):
     scanning = True
 
     scanned = pyqtSignal()
+    clear_label_signal = pyqtSignal()
 
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,6 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_scanned_list_table)
+        self.clear_label_signal(self._clear_ean_label)
 
         # unlock_page
         self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
@@ -382,6 +384,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.inventory_products = new_products
 
+    def _clear_ean_label(self):
+        self.scan_page_input_label.clear()
+
     def scan_loop(self):
         """Function which runs our scan loop.
 
@@ -398,7 +403,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.event_stop.clear()
             GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
             print("[SCAN LOOP]Clearing label...")
-            self.scan_page_input_label.clear()
+            self.clear_label_signal.emit()
             while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
                 print("[SCAN LOOP]Focusing")
                 self.scan_page_input_label.setFocus()
