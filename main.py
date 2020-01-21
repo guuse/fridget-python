@@ -52,7 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_scanned_list_table)
-        self.clear_label_signal(self._clear_ean_label)
+        self.clear_label_signal.connect(self._clear_ean_label)
 
         # unlock_page
         self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
