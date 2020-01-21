@@ -82,7 +82,7 @@ QScrollBar::handle:hover:vertical {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>15</number>
+     <number>8</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
