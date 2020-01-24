@@ -18,16 +18,13 @@ from settings import PAGE_INDEXES
 from utils.label_utils import process_keypress_label
 from utils.worker import Worker
 
-import importlib.util
-
 from widgets.ProductWidget import ProductWidget
 
 try:
     # Since RPi.GPIO doesn't work on windows we need to fake the library if we are developing on other OS
-    importlib.util.find_spec('RPi.GPIO')
-    import RPi.GPIO as GPIO
-except ImportError:
-    import FakeRPi.GPIO as GPIO
+    import RPi.GPIO
+except (RuntimeError, ModuleNotFoundError):
+    import fake_rpigpio.RPi as RPi
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -182,9 +179,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._setup_scroll_bars()
 
-        #self.show()
-        self.showFullScreen()
-        self.setCursor(QtCore.Qt.BlankCursor)
+        self.show()
+        #self.showFullScreen()
+        #self.setCursor(QtCore.Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -401,17 +398,17 @@ class MainWindow(QtWidgets.QMainWindow):
         while self.scanning:
             print("[SCAN LOOP]Clearing event_stop")
             self.event_stop.clear()
-            GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
+            RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
             print("[SCAN LOOP]Clearing label...")
             self.clear_label_signal.emit()
-            while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
+            while not self.event_stop.is_set() and not RPi.GPIO.input(settings.IR_PIN):
                 print("[SCAN LOOP]Focusing")
                 self.scan_page_input_label.setFocus()
-                GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
-                GPIO.output(settings.SCANNER_PIN, GPIO.LOW)
+                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
+                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
                 print("[SCAN LOOP]Checking length")
                 if len(self.scan_page_input_label.text()) == 13:
-                    GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
+                    RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     print("[SCAN LOOP]Settings false")
                     self.scanning = False
                     print("[SCAN LOOP]Settings event stop")
@@ -458,9 +455,9 @@ class MainWindow(QtWidgets.QMainWindow):
             fmt.setForeground(QtCore.Qt.black)
             self.expiration_calender.setWeekdayTextFormat(d, fmt)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(settings.IR_PIN, GPIO.IN)
-GPIO.setup(settings.SCANNER_PIN, GPIO.OUT)
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
+RPi.GPIO.setup(settings.SCANNER_PIN, RPi.GPIO.OUT)
 platform_api = PlatformWrapper(api_key="")
 settings.PLATFORM_API = platform_api
 
