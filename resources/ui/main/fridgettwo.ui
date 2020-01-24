@@ -82,7 +82,7 @@ QScrollBar::handle:hover:vertical {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>13</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -133,7 +133,7 @@ border-image: url(:/images/screen2_userscreen.png);
        <rect>
         <x>20</x>
         <y>180</y>
-        <width>201</width>
+        <width>451</width>
         <height>221</height>
        </rect>
       </property>
