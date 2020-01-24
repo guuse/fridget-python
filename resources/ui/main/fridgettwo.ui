@@ -779,21 +779,6 @@ border-image: url(:/images/screen7_scanproductsv2.png);
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="hiddenEanLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>120</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(0,0,0,0);
-border: 0px solid rgba(0,0,0,0);
-color: rgba(0,0,0,0);</string>
-      </property>
-     </widget>
      <widget class="QListWidget" name="scannerListWidget">
       <property name="geometry">
        <rect>
@@ -825,11 +810,21 @@ QListWidget#productListWidget::item:hover:!active {
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
      </widget>
-     <zorder>hiddenEanLineEdit</zorder>
-     <zorder>noBarcodeWidget</zorder>
-     <zorder>sendToFridgeWidget</zorder>
-     <zorder>scanToMainMenuWidget</zorder>
-     <zorder>scannerListWidget</zorder>
+     <widget class="QLineEdit" name="hiddenEanLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>-10</x>
+        <y>0</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(0,0,0,0);
+border: 0px solid rgba(0,0,0,0);
+color: rgba(0,0,0,0);</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="customProductNamePage">
      <property name="styleSheet">
