@@ -82,7 +82,7 @@ QScrollBar::handle:hover:vertical {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>8</number>
+     <number>13</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -324,7 +324,7 @@ QListWidget#fruitListWidget::item:hover:!active {
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOn</enum>
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -746,7 +746,7 @@ QListWidget#expListWidget::item:hover:active {
     <widget class="QWidget" name="scannerPage">
      <property name="styleSheet">
       <string notr="true">QWidget#scannerPage {
-border-image: url(:/images/screen7_scanproducts_Tekengebied 1.png);
+border-image: url(:/images/screen7_scanproductsv2.png);
 }</string>
      </property>
      <widget class="QWidget" name="noBarcodeWidget" native="true">

@@ -30,7 +30,7 @@ except (RuntimeError, ModuleNotFoundError):
 class MainWindow(QtWidgets.QMainWindow):
     scanning = True
 
-    scanned = pyqtSignal()
+    scanned = pyqtSignal(str)
     clear_label_signal = pyqtSignal()
 
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
@@ -335,12 +335,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.switch_page(event=None, dest="scan_page")
 
-    def add_to_scanned_list_table(self):
+    def add_to_scanned_list_table(self, ean: str):
         """Add a scanned product to the list
 
+        :ean string: the scanned ean
         """
-        print(print("[PROD]Retrieving"))
-        product = self.platform_api.get_product_from_ean(self.ean)
+        product = self.platform_api.get_product_from_ean(ean)
 
 
         if product is not None:
@@ -355,6 +355,7 @@ class MainWindow(QtWidgets.QMainWindow):
             print(print("[PROD]Added to front end"))
         print(print("[PROD]Clearing label"))
         self.scan_page_input_label.clear()
+        self.scan_page_product_list_view.scrollToBottom()
 
         time.sleep(1)
         print(print("[PROD]Scanning true"))
@@ -407,16 +408,17 @@ class MainWindow(QtWidgets.QMainWindow):
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
                 print("[SCAN LOOP]Checking length")
-                if len(self.scan_page_input_label.text()) == 13:
+                scanned_ean = self.scan_page_input_label.text()
+                if len(scanned_ean) == 13:
+                    print("!!! LABEL LENGTH")
+                    print(self.scan_page_input_label.text())
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     print("[SCAN LOOP]Settings false")
                     self.scanning = False
                     print("[SCAN LOOP]Settings event stop")
                     self.event_stop.set()
-                    print("[SCAN LOOP]Setting EAN")
-                    self.ean = self.scan_page_input_label.text()
                     print("[SCAN LOOP]Emitting signal")
-                    self.scanned.emit()
+                    self.scanned.emit(scanned_ean)
                     print("[SCAN LOOP]Emitted")
 
     def _setup_scroll_bars(self):

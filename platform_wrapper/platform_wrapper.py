@@ -72,6 +72,9 @@ class PlatformWrapper(object):
             headers=self.default_headers
         )
         # Raise Exceptions if they occur
+
+        print(response.json())
+
         response.raise_for_status()
 
         return self.parse_object_response(response, object_type)
@@ -144,6 +147,9 @@ class PlatformWrapper(object):
         """
         get_product_from_ean_path = platform_paths.EAN_GET.format(ean)
         url = self.host + get_product_from_ean_path
+
+        print("URL")
+        print(url)
 
         return self._get(url, Product)
 
