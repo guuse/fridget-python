@@ -344,7 +344,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
         if product is not None:
-            print(print("[PROD]Adding to front end"))
             self.products.add_product(product)
 
             product_item = QListWidgetItem(self.scan_page_product_list_view)
@@ -352,19 +351,13 @@ class MainWindow(QtWidgets.QMainWindow):
             product_item.setSizeHint(product_item_widget.size())
             self.scan_page_product_list_view.addItem(product_item)
             self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
-            print(print("[PROD]Added to front end"))
-        print(print("[PROD]Clearing label"))
         self.scan_page_input_label.clear()
         self.scan_page_product_list_view.scrollToBottom()
 
         time.sleep(1)
-        print(print("[PROD]Scanning true"))
         self.scanning = True
-        print(print("[PROD]Worker"))
         self.worker = Worker(self.scan_loop)
-        print(print("[PROD]Threadpool starting"))
         self.threadpool.start(self.worker)
-        print(print("[PROD]Clear event stop"))
         self.event_stop.clear()
 
     def send_products_to_box(self, event=None):
@@ -397,29 +390,19 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         time.sleep(1.5)
         while self.scanning:
-            print("[SCAN LOOP]Clearing event_stop")
             self.event_stop.clear()
             RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-            print("[SCAN LOOP]Clearing label...")
             self.clear_label_signal.emit()
             while not self.event_stop.is_set() and not RPi.GPIO.input(settings.IR_PIN):
-                print("[SCAN LOOP]Focusing")
                 self.scan_page_input_label.setFocus()
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
-                print("[SCAN LOOP]Checking length")
                 scanned_ean = self.scan_page_input_label.text()
                 if len(scanned_ean) == 13:
-                    print("!!! LABEL LENGTH")
-                    print(self.scan_page_input_label.text())
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                    print("[SCAN LOOP]Settings false")
                     self.scanning = False
-                    print("[SCAN LOOP]Settings event stop")
                     self.event_stop.set()
-                    print("[SCAN LOOP]Emitting signal")
                     self.scanned.emit(scanned_ean)
-                    print("[SCAN LOOP]Emitted")
 
     def _setup_scroll_bars(self):
         """Set the properties of all scroll bars

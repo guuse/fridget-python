@@ -32,9 +32,6 @@ class PlatformWrapper(object):
                 return create_products_from_json(response.json())
             elif object is Product:
 
-                print("JSON")
-                print(response.json())
-
                 if response.json() is None:
                     return None
 
@@ -62,7 +59,7 @@ class PlatformWrapper(object):
         """
         if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
             # TODO 3: Implement what will happen if the API fails/did not add
-            raise NotImplementedError()
+            return False
         else:
             return True
 
@@ -72,9 +69,6 @@ class PlatformWrapper(object):
             headers=self.default_headers
         )
         # Raise Exceptions if they occur
-
-        print(response.json())
-
         response.raise_for_status()
 
         return self.parse_object_response(response, object_type)
@@ -147,9 +141,6 @@ class PlatformWrapper(object):
         """
         get_product_from_ean_path = platform_paths.EAN_GET.format(ean)
         url = self.host + get_product_from_ean_path
-
-        print("URL")
-        print(url)
 
         return self._get(url, Product)
 
