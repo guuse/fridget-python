@@ -31,6 +31,10 @@ class PlatformWrapper(object):
             if object is Products:
                 return create_products_from_json(response.json())
             elif object is Product:
+
+                if response.json() is None:
+                    return None
+
                 product_data = response.json()
 
                 return Product(
@@ -55,7 +59,7 @@ class PlatformWrapper(object):
         """
         if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
             # TODO 3: Implement what will happen if the API fails/did not add
-            raise NotImplementedError()
+            return False
         else:
             return True
 
@@ -64,7 +68,6 @@ class PlatformWrapper(object):
             url=url,
             headers=self.default_headers
         )
-
         # Raise Exceptions if they occur
         response.raise_for_status()
 

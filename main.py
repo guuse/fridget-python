@@ -18,22 +18,20 @@ from settings import PAGE_INDEXES
 from utils.label_utils import process_keypress_label
 from utils.worker import Worker
 
-import importlib.util
-
 from widgets.ProductWidget import ProductWidget
 
 try:
     # Since RPi.GPIO doesn't work on windows we need to fake the library if we are developing on other OS
-    importlib.util.find_spec('RPi.GPIO')
-    import RPi.GPIO as GPIO
-except ImportError:
-    import FakeRPi.GPIO as GPIO
+    import RPi.GPIO
+except (RuntimeError, ModuleNotFoundError):
+    import fake_rpigpio.RPi as RPi
 
 
 class MainWindow(QtWidgets.QMainWindow):
     scanning = True
 
-    scanned = pyqtSignal()
+    scanned = pyqtSignal(str)
+    clear_label_signal = pyqtSignal()
 
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,6 +49,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Create a signal so that we can interact between 2 widgets
         self.scanned.connect(self.add_to_scanned_list_table)
+        self.clear_label_signal.connect(self._clear_ean_label)
 
         # unlock_page
         self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
@@ -158,6 +157,11 @@ class MainWindow(QtWidgets.QMainWindow):
             dest="custom_product_page")
         self.expiration_calender = custom_product_expiration_page.findChild(QtWidgets.QCalendarWidget,
                                                                             'productExpirationCalenderWidget')
+        for d in (QtCore.Qt.Saturday, QtCore.Qt.Sunday):
+            fmt = self.expiration_calender.weekdayTextFormat(d)
+            fmt.setForeground(QtCore.Qt.black)
+            self.expiration_calender.setWeekdayTextFormat(d, fmt)
+
         custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
             self.switch_page,
             dest="custom_product_category_page"
@@ -177,7 +181,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.show()
         #self.showFullScreen()
-        #self.setCursor(Qt.BlankCursor)
+        #self.setCursor(QtCore.Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
@@ -319,7 +323,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.products.append(custom_product)
 
         product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(custom_product, self, "scanner", True)
+        product_item_widget = ProductWidget(custom_product, self, "scanner", local=True)
         product_item.setSizeHint(product_item_widget.size())
         self.scan_page_product_list_view.addItem(product_item)
         self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
@@ -331,22 +335,24 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.switch_page(event=None, dest="scan_page")
 
-    def add_to_scanned_list_table(self):
+    def add_to_scanned_list_table(self, ean: str):
         """Add a scanned product to the list
 
+        :ean string: the scanned ean
         """
+        product = self.platform_api.get_product_from_ean(ean)
 
-        product = self.platform_api.get_product_from_ean(self.ean)
 
-        self.products.add_product(product)
+        if product is not None:
+            self.products.add_product(product)
 
-        product_item = QListWidgetItem(self.scan_page_product_list_view)
-        product_item_widget = ProductWidget(product, self, "scanner", True)
-        product_item.setSizeHint(product_item_widget.size())
-        self.scan_page_product_list_view.addItem(product_item)
-        self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
-
+            product_item = QListWidgetItem(self.scan_page_product_list_view)
+            product_item_widget = ProductWidget(product, self, "scanner", local=True)
+            product_item.setSizeHint(product_item_widget.size())
+            self.scan_page_product_list_view.addItem(product_item)
+            self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
         self.scan_page_input_label.clear()
+        self.scan_page_product_list_view.scrollToBottom()
 
         time.sleep(1)
         self.scanning = True
@@ -369,6 +375,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.inventory_products = new_products
 
+    def _clear_ean_label(self):
+        self.scan_page_input_label.clear()
+
     def scan_loop(self):
         """Function which runs our scan loop.
 
@@ -382,21 +391,18 @@ class MainWindow(QtWidgets.QMainWindow):
         time.sleep(1.5)
         while self.scanning:
             self.event_stop.clear()
-            GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
-            while not self.event_stop.is_set() and not GPIO.input(settings.IR_PIN):
-
+            RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
+            self.clear_label_signal.emit()
+            while not self.event_stop.is_set() and not RPi.GPIO.input(settings.IR_PIN):
                 self.scan_page_input_label.setFocus()
-                GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
-                GPIO.output(settings.SCANNER_PIN, GPIO.LOW)
-
-                if len(self.scan_page_input_label.text()) == 13:
-                    GPIO.output(settings.SCANNER_PIN, GPIO.HIGH)
+                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
+                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
+                scanned_ean = self.scan_page_input_label.text()
+                if len(scanned_ean) == 13:
+                    RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     self.scanning = False
                     self.event_stop.set()
-
-                    self.ean = self.scan_page_input_label.text()
-
-                    self.scanned.emit()
+                    self.scanned.emit(scanned_ean)
 
     def _setup_scroll_bars(self):
         """Set the properties of all scroll bars
@@ -426,10 +432,17 @@ class MainWindow(QtWidgets.QMainWindow):
             scroller.setScrollerProperties(sp)
             scroller.grabGesture(list_widget.viewport(), QScroller.LeftMouseButtonGesture)
 
+    def _setup_calendar(self):
+        """Set the properties of our expiration calendar
+        """
+        for d in (QtCore.Qt.Saturday, QtCore.Qt.Sunday):
+            fmt = self.expiration_calender.weekdayTextFormat(d)
+            fmt.setForeground(QtCore.Qt.black)
+            self.expiration_calender.setWeekdayTextFormat(d, fmt)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(settings.IR_PIN, GPIO.IN)
-GPIO.setup(settings.SCANNER_PIN, GPIO.OUT)
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
+RPi.GPIO.setup(settings.SCANNER_PIN, RPi.GPIO.OUT)
 platform_api = PlatformWrapper(api_key="")
 settings.PLATFORM_API = platform_api
 
