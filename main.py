@@ -159,10 +159,8 @@ class MainWindow(QtWidgets.QMainWindow):
             dest="custom_product_page")
         self.expiration_calender = custom_product_expiration_page.findChild(QtWidgets.QCalendarWidget,
                                                                             'productExpirationCalenderWidget')
-        for d in (QtCore.Qt.Saturday, QtCore.Qt.Sunday):
-            fmt = self.expiration_calender.weekdayTextFormat(d)
-            fmt.setForeground(QtCore.Qt.black)
-            self.expiration_calender.setWeekdayTextFormat(d, fmt)
+
+        self._setup_calendar()
 
         custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
             self.switch_page,
