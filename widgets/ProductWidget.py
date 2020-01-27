@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
@@ -26,15 +28,15 @@ class ProductWidget(QWidget, Ui_productWidget):
         self.productAmountLabel.setText(product.product_amount.__str__())
         self.productExpInLabel.setText(product.product_exp.__str__())
         self.product = product
-        self.removeButton.clicked.connect(self._delete_item)
-        self.addButton.clicked.connect(self._add_item)
+        self.removeButton.mouseReleaseEvent = partial(self._delete_item)
+        self.addButton.mouseReleaseEvent = partial(self._add_item)
         self.main_window = main_window
         self.delete_signal.connect(main_window.update_products_widget)
         self.increase_signal.connect(main_window.update_products_widget)
         self.category = category
         self.local_only = local
 
-    def _add_item(self):
+    def _add_item(self, event):
         succeeded = True
 
         if not self.local_only:
@@ -43,7 +45,7 @@ class ProductWidget(QWidget, Ui_productWidget):
         if succeeded:
             self.increase_signal.emit(self.product, self.category, True, self.local_only)
 
-    def _delete_item(self):
+    def _delete_item(self, event):
         succeeded = True
 
         if self.product.product_amount == 1 and not self.local_only:

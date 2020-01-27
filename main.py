@@ -11,6 +11,7 @@ from PyQt5.QtCore import QThreadPool, pyqtSignal, QDate
 from PyQt5.QtWidgets import QListWidgetItem, QScrollerProperties, QScroller
 
 import settings
+from ScanLoopThread import ScanLoopThread
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
@@ -90,6 +91,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_send_to_fridge.mouseReleaseEvent = self.send_products_to_box
         # Grab the hidden LineEdit, used to score the scanned EAN
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
+        self.scan_page_input_label.textChanged.connect(self._update_thread)
         # ListView for scanned items
         self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
         # Custom Products
@@ -179,6 +181,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._setup_scroll_bars()
 
+        self.scanner_thread = ScanLoopThread()
+        self.scanner_thread.clear_label_signal.connect(self._clear_ean_label)
+        self.scanner_thread.scanned_signal.connect(self.add_to_scanned_list_table)
+        self.scanner_thread.set_focus_signal.connect(self._set_focus)
+
         self.show()
         #self.showFullScreen()
         #self.setCursor(QtCore.Qt.BlankCursor)
@@ -204,9 +211,7 @@ class MainWindow(QtWidgets.QMainWindow):
             clearable_list.clear()
         if PAGE_INDEXES[dest] == 13:
             self.scanning = True
-            self.worker = Worker(self.scan_loop)
-            self.threadpool.start(self.worker)
-            self.event_stop.clear()
+            self.scanner_thread.start()
         elif PAGE_INDEXES[dest] == 2 and disable_worker:
             self.scan_page_product_list_view.clear()
             self.products.products.clear()
@@ -214,8 +219,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.soon_expired_products()
 
         if disable_worker:
-            self.event_stop.set()
-            self.scanning = False
+            self.scanner_thread.terminate()
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
@@ -340,8 +344,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         :ean string: the scanned ean
         """
-        product = self.platform_api.get_product_from_ean(ean)
 
+        print("PAUSED")
+        product = self.platform_api.get_product_from_ean(ean)
 
         if product is not None:
             self.products.add_product(product)
@@ -356,9 +361,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         time.sleep(1)
         self.scanning = True
-        self.worker = Worker(self.scan_loop)
-        self.threadpool.start(self.worker)
-        self.event_stop.clear()
+        self.scanner_thread.start()
 
     def send_products_to_box(self, event=None):
         """Send the scanned products to the box
@@ -377,32 +380,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _clear_ean_label(self):
         self.scan_page_input_label.clear()
-
-    def scan_loop(self):
-        """Function which runs our scan loop.
-
-        This functions needs to run in a different thread.
-        It starts looking for a signal from our IR sensor, when found it will send a signal
-        to the scanner to activate.
-
-        Once it has scanned a barcode it emit a signal to talk with a different thread (the UI thread)
-        so that the newly scanned item can be added to the ListWidget.
-        """
-        time.sleep(1.5)
-        while self.scanning:
-            self.event_stop.clear()
-            RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-            self.clear_label_signal.emit()
-            while not self.event_stop.is_set() and not RPi.GPIO.input(settings.IR_PIN):
-                self.scan_page_input_label.setFocus()
-                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
-                scanned_ean = self.scan_page_input_label.text()
-                if len(scanned_ean) == 13:
-                    RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                    self.scanning = False
-                    self.event_stop.set()
-                    self.scanned.emit(scanned_ean)
 
     def _setup_scroll_bars(self):
         """Set the properties of all scroll bars
@@ -439,6 +416,12 @@ class MainWindow(QtWidgets.QMainWindow):
             fmt = self.expiration_calender.weekdayTextFormat(d)
             fmt.setForeground(QtCore.Qt.black)
             self.expiration_calender.setWeekdayTextFormat(d, fmt)
+
+    def _update_thread(self):
+        self.scanner_thread.ean = self.scan_page_input_label.text()
+
+    def _set_focus(self):
+        self.scan_page_input_label.setFocus()
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
 RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
