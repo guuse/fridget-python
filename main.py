@@ -177,9 +177,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._setup_scroll_bars()
 
-        self.show()
-        #self.showFullScreen()
-        #self.setCursor(QtCore.Qt.BlankCursor)
+        #self.show()
+        self.showFullScreen()
+        self.setCursor(QtCore.Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
