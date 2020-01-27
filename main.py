@@ -91,6 +91,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_send_to_fridge.mouseReleaseEvent = self.send_products_to_box
         # Grab the hidden LineEdit, used to score the scanned EAN
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
+        # When the text has changed update the value of the scanner thread
         self.scan_page_input_label.textChanged.connect(self._update_thread)
         # ListView for scanned items
         self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
@@ -160,8 +161,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.expiration_calender = custom_product_expiration_page.findChild(QtWidgets.QCalendarWidget,
                                                                             'productExpirationCalenderWidget')
 
-        self._setup_calendar()
-
         custom_product_expiration_page.findChild(QtWidgets.QWidget, 'nextExpWidget').mouseReleaseEvent = partial(
             self.switch_page,
             dest="custom_product_category_page"
@@ -177,8 +176,10 @@ class MainWindow(QtWidgets.QMainWindow):
             self.switch_page,
             dest="custom_product_expiration_page")
 
+        self._setup_calendar()
         self._setup_scroll_bars()
 
+        # Configure the scanner thread
         self.scanner_thread = ScanLoopThread()
         self.scanner_thread.clear_label_signal.connect(self._clear_ean_label)
         self.scanner_thread.scanned_signal.connect(self.add_to_scanned_list_table)
@@ -198,7 +199,7 @@ class MainWindow(QtWidgets.QMainWindow):
         :disable_worker bool: whether or not the main worker, used for the scanner, should be halted
         :load_box int: which box should be loaded
         :category string: the category, used when filtering
-        clearable_list: list which should be cleared
+        :clearable_list: list which should be cleared
         """
 
         if category:
@@ -376,9 +377,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.inventory_products = new_products
 
-    def _clear_ean_label(self):
-        self.scan_page_input_label.clear()
-
     def _setup_scroll_bars(self):
         """Set the properties of all scroll bars
 
@@ -415,10 +413,19 @@ class MainWindow(QtWidgets.QMainWindow):
             fmt.setForeground(QtCore.Qt.black)
             self.expiration_calender.setWeekdayTextFormat(d, fmt)
 
+    def _clear_ean_label(self):
+        """Clear the input label used by our barcode scanner
+        """
+        self.scan_page_input_label.clear()
+
     def _update_thread(self):
+        """Update the scanner thread ean value when it is changed in the main thread
+        """
         self.scanner_thread.ean = self.scan_page_input_label.text()
 
     def _set_focus(self):
+        """Set focus on the input label
+        """
         self.scan_page_input_label.setFocus()
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)

@@ -7,6 +7,13 @@ import settings
 
 
 class ScanLoopThread(QThread):
+    """Class which runs our scan loop.
+    This needs to run in a different thread.
+    It starts looking for a signal from our IR sensor, when found it will send a signal
+    to the scanner to activate.
+    Once it has scanned a barcode it emit a signal to talk with a different thread (the UI thread)
+    so that the newly scanned item can be added to the ListWidget.
+    """
     scanned_signal = pyqtSignal(str)
     clear_label_signal = pyqtSignal()
     set_focus_signal = pyqtSignal()
