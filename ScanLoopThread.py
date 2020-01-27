@@ -1,13 +1,19 @@
 import time
 
 from PyQt5.QtCore import QThread, pyqtSignal
-from fake_rpigpio import RPi
 
 import settings
+
+try:
+    # Since RPi.GPIO doesn't work on windows we need to fake the library if we are developing on other OS
+    import RPi.GPIO
+except (RuntimeError, ModuleNotFoundError):
+    import fake_rpigpio.RPi as RPi
 
 
 class ScanLoopThread(QThread):
     """Class which runs our scan loop.
+
     This needs to run in a different thread.
     It starts looking for a signal from our IR sensor, when found it will send a signal
     to the scanner to activate.

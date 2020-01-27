@@ -209,7 +209,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if clearable_list:
             clearable_list.clear()
         if PAGE_INDEXES[dest] == 13:
-            self.scanning = True
             self.scanner_thread.start()
         elif PAGE_INDEXES[dest] == 2 and disable_worker:
             self.scan_page_product_list_view.clear()
@@ -359,7 +358,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_product_list_view.scrollToBottom()
 
         time.sleep(1)
-        self.scanning = True
         self.scanner_thread.start()
 
     def send_products_to_box(self, event=None):
