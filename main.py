@@ -217,8 +217,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.soon_expired_products()
 
         if disable_worker:
+            print("DISABLING")
             self.scanner_thread.terminate()
+            print("TERMINATED")
             self.scanner_thread.wait()
+            print("WAITED")
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
