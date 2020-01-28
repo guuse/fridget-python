@@ -35,7 +35,7 @@ class ScanLoopThread(QThread):
     def stop(self):
         self.scanning = False
         print("SET TO FALSE")
-        self.wait(2000)
+        self.wait(1)
 
     def _loop(self):
         time.sleep(1.5)
