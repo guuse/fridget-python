@@ -218,6 +218,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if disable_worker:
             self.scanner_thread.terminate()
+            self.scanner_thread.wait()
 
         self.stacked_widget.setCurrentIndex(PAGE_INDEXES[dest])
 
