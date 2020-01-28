@@ -27,8 +27,13 @@ class ScanLoopThread(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.ean = ""
+        self.scanning = True
 
     def __del__(self):
+        self.wait()
+
+    def stop(self):
+        self.scanning = False
         self.wait()
 
     def _loop(self):
@@ -46,7 +51,7 @@ class ScanLoopThread(QThread):
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
                 self.scanned_ean = self.ean
                 print(self.scanned_ean)
-                if len(self.scanned_ean) == 13:
+                if len(self.scanned_ean) == 13 and self.scanning:
                     print("EAN FOUND")
                     print(self.scanned_ean)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
