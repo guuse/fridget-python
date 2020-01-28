@@ -344,7 +344,8 @@ class MainWindow(QtWidgets.QMainWindow):
         :ean string: the scanned ean
         """
 
-        print("PAUSED")
+        self.scanner_thread.stop()
+        self.scanner_thread.exit()
         product = self.platform_api.get_product_from_ean(ean)
 
         if product is not None:
