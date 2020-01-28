@@ -61,7 +61,9 @@ class ScanLoopThread(QThread):
                     print("EAN FOUND: " + scanned_ean)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     self.scanning = False
-                    return scanned_ean
+                    print("Scanning false.")
+
+        return scanned_ean
 
     def run(self):
         """Run method of the thread.
