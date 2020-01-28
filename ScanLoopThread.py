@@ -58,11 +58,14 @@ class ScanLoopThread(QThread):
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     self.scanning = False
 
-        return self.scanned_ean
+                    return self.scanned_ean
+
+        return None
 
     def run(self):
         ean = self._loop()
         print("DEZE EAN")
         print(ean)
-        self.scanned_signal.emit(ean)
+        if ean:
+            self.scanned_signal.emit(ean)
 
