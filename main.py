@@ -359,7 +359,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label.clear()
         self.scan_page_product_list_view.scrollToBottom()
 
-        time.sleep(1)
         self.scanner_thread.start()
 
     def send_products_to_box(self, event=None):

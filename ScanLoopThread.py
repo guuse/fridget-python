@@ -38,7 +38,7 @@ class ScanLoopThread(QThread):
         self.wait(1)
 
     def _loop(self):
-        time.sleep(1.5)
+        time.sleep(2)
         self.scanned_ean = ""
         self.scanning = True
         while self.scanning:
@@ -60,6 +60,7 @@ class ScanLoopThread(QThread):
         return None
 
     def run(self):
+        print("Starting thread again")
         ean = self._loop()
         print("DEZE EAN")
         print(ean)
