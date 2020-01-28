@@ -366,8 +366,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         """
 
-        # Pause the scanning thread (e.g. prevent the scanner from being able to trigger)
-        self.event_stop.set()
+        self.scanner_thread.stop()
+        self.scanner_thread.exit()
 
         new_products = self.platform_api.add_products(self.products)
 
@@ -375,6 +375,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.products.products.clear()
 
         self.inventory_products = new_products
+
+        self.scanner_thread.start()
 
     def _setup_scroll_bars(self):
         """Set the properties of all scroll bars
