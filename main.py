@@ -429,32 +429,26 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.scan_page_input_label.setFocus()
 
-try:
-    RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
-    RPi.GPIO.setup(settings.SCANNER_PIN, RPi.GPIO.OUT)
-    platform_api = PlatformWrapper(api_key="")
-    settings.PLATFORM_API = platform_api
 
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow(settings.PLATFORM_API)
-    # window.showFullScreen()
-    sys._excepthook = sys.excepthook
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
+RPi.GPIO.setup(settings.SCANNER_PIN, RPi.GPIO.OUT)
+platform_api = PlatformWrapper(api_key="")
+settings.PLATFORM_API = platform_api
 
-
-    def exception_hook(exctype, value, traceback):
-        print("WE ZITTEN HIER OOK")
-        print(exctype, value, traceback)
-        sys._excepthook(exctype, value, traceback)
-        sys.exit(1)
+app = QtWidgets.QApplication(sys.argv)
+window = MainWindow(settings.PLATFORM_API)
+# window.showFullScreen()
+sys._excepthook = sys.excepthook
 
 
-    sys.excepthook = exception_hook
-
-    app.exec_()
-except KeyboardInterrupt:
-    print("KEYBOARD INTERRUPTION")
-except:
-    print("OTHER EXCEPTION")
-finally:
+def exception_hook(exctype, value, traceback):
     RPi.GPIO.cleanup()
+    print(exctype, value, traceback)
+    sys._excepthook(exctype, value, traceback)
+    sys.exit(1)
+
+
+sys.excepthook = exception_hook
+
+app.exec_()
