@@ -42,6 +42,7 @@ class ScanLoopThread(QThread):
         self.scanned_ean = ""
         self.scanning = True
         while self.scanning:
+            print("SCANNING")
             self.clear_label_signal.emit()
             RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
             while not RPi.GPIO.input(settings.IR_PIN) and self.scanning:
