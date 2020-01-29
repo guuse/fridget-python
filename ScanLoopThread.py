@@ -48,6 +48,7 @@ class ScanLoopThread(QThread):
                 self.set_focus_signal.emit()
                 self.clear_label_signal.emit()
                 time.sleep(0.5)
+                print("ACTIVATING SCANNER")
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
                 self.scanned_ean = self.ean
