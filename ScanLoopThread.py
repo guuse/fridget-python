@@ -48,9 +48,12 @@ class ScanLoopThread(QThread):
                 print("IR ACTIVE")
                 self.set_focus_signal.emit()
                 self.clear_label_signal.emit()
+                time.sleep(0.2)
                 print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
+                time.sleep(0.1)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
+                time.sleep(0.2)
                 self.scanned_ean = self.ean
                 if len(self.scanned_ean) == 13:
                     print("EAN FOUND")
