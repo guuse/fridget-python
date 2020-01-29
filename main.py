@@ -443,6 +443,7 @@ try:
 
 
     def exception_hook(exctype, value, traceback):
+        print("WE ZITTEN HIER OOK")
         print(exctype, value, traceback)
         sys._excepthook(exctype, value, traceback)
         sys.exit(1)
