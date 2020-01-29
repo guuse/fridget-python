@@ -48,7 +48,7 @@ class ScanLoopThread(QThread):
                 print("IR ACTIVE")
                 self.set_focus_signal.emit()
                 self.clear_label_signal.emit()
-                #time.sleep(0.2)
+                time.sleep(0.2)
                 print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
