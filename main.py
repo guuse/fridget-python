@@ -92,7 +92,12 @@ class MainWindow(QtWidgets.QMainWindow):
         # Grab the hidden LineEdit, used to score the scanned EAN
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
         # When the text has changed update the value of the scanner thread
-        self.scan_page_input_label.textChanged.connect(self._update_thread)
+        #self.scan_page_input_label.textChanged.connect(self._update_thread)
+
+        self.scan_page_input_label.returnPressed.connect(
+            self.update_scanned_ean)  # here is where I want to delete the previous entry without backspacing by hand
+        #self.scan_page_input_label.textChanged.connect(self.delete_previous)
+
         # ListView for scanned items
         self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
         # Custom Products
@@ -344,6 +349,7 @@ class MainWindow(QtWidgets.QMainWindow):
         :ean string: the scanned ean
         """
 
+        # TODO: Make function to stop thread
         self.scanner_thread.stop()
         self.scanner_thread.exit()
         product = self.platform_api.get_product_from_ean(ean)
@@ -359,6 +365,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label.clear()
         self.scan_page_product_list_view.scrollToBottom()
 
+        # Set the label clear again
+        self.scan_page_input_label.clear()
+        # And start the scanner again
         self.scanner_thread.start()
 
     def send_products_to_box(self, event=None):
@@ -428,6 +437,15 @@ class MainWindow(QtWidgets.QMainWindow):
         """Set focus on the input label
         """
         self.scan_page_input_label.setFocus()
+
+    def _update_scanned_ean(self):
+        # TODO: Check this?
+        # TODO: Nadenken of hij misschien 2x kan scannen, dus iets van max length 13 instellen zodat er nooit
+        # meer dan 13 chars in de string kunnen staan
+        if not self.scanner_thread.ean_scanned:
+            self.scanner_thread.ean_scanned = True
+            print("_updated_scanned_ean: " + self.scan_page_input_label.text())
+            self.scanner_thread.ean = self.scan_page_input_label.text()
 
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)

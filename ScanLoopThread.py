@@ -28,6 +28,7 @@ class ScanLoopThread(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.ean = ""
+        self.ean_scanned = False
         self.scanning = True
 
     def __del__(self):
@@ -45,18 +46,13 @@ class ScanLoopThread(QThread):
         while self.scanning:
             RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
             while not RPi.GPIO.input(settings.IR_PIN) and self.scanning:
-                print("IR ACTIVE")
                 self.set_focus_signal.emit()
-                self.clear_label_signal.emit()
-                time.sleep(0.2)
                 print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
-                time.sleep(0.2)
-                self.scanned_ean = self.ean
-                if len(self.scanned_ean) == 13:
-                    print("EAN FOUND")
-                    print(self.scanned_ean)
+                if self.ean_scanned:
+                    self.scanned_ean = self.ean
+                    print("EAN FOUND: " + self.scanned_ean)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     self.scanning = False
 
@@ -65,10 +61,10 @@ class ScanLoopThread(QThread):
         return None
 
     def run(self):
+        self.ean_scanned = False
+        self.scanning = True
         print("Starting thread again")
         ean = self._loop()
-        print("DEZE EAN")
-        print(ean)
         if ean:
             self.scanned_signal.emit(ean)
 
