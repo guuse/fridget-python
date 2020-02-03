@@ -453,6 +453,7 @@ class MainWindow(QtWidgets.QMainWindow):
         print("exiting")
         RPi.GPIO.cleanup()
         app.exit()
+        sys.exit()
 
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
