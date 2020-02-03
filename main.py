@@ -368,6 +368,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label.clear()
         # And start the scanner again
         self.scanner_thread.scanning = True
+        print("Done! Added")
 
     def send_products_to_box(self, event=None):
         """Send the scanned products to the box
@@ -464,7 +465,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).keyPressEvent(event)
 
         from PyQt5.QtCore import Qt
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key_Return and self.scanner_thread.scanning:
             print("Enter Event")
             ## WEER NAAR TRUE ALS HET NIET 13 IS EN DAN CLEAREN
             self.scanner_thread.scanning = False

@@ -51,10 +51,8 @@ class ScanLoopThread(QThread):
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
 
-
     def run(self):
         self.keep_thread_alive = True
         self.scanning = True
         print("Starting thread again")
         self._loop()
-
