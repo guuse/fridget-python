@@ -439,12 +439,14 @@ class MainWindow(QtWidgets.QMainWindow):
         import random
         print("ENTER PRESSED " + random.randint(0,40).__str__())
         if self.scanner_thread.scanning and len(self.scan_page_input_label.text()) == 13:
-            print("Setting ean")
-            self.scanner_thread.scanning = False
             print("_updated_scanned_ean: " + self.scan_page_input_label.text())
             scanned_ean = self.scan_page_input_label.text()
 
             self.add_to_scanned_list_table(scanned_ean)
+        else:
+            print("Else:")
+            self.scan_page_input_label.clear()
+            self.scanning = True
 
     def closeEvent(self, *args, **kwargs):
         print("exiting")
@@ -460,6 +462,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         from PyQt5.QtCore import Qt
         if event.key() == Qt.Key_Return:
+            print("Enter Event")
+            ## WEER NAAR TRUE ALS HET NIET 13 IS EN DAN CLEAREN
+            self.scanner_thread.scanning = False
             self._update_scanned_ean()
 
 
