@@ -94,8 +94,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # When the text has changed update the value of the scanner thread
         #self.scan_page_input_label.textChanged.connect(self._update_thread)
 
-        self.scan_page_input_label.textEdited.connect(
-            self._update_scanned_ean)
+        # self.scan_page_input_label.returnPressed.connect(
+        #     self._update_scanned_ean)
         #self.scan_page_input_label.textChanged.connect(self.delete_previous)
 
         # ListView for scanned items
@@ -451,6 +451,16 @@ class MainWindow(QtWidgets.QMainWindow):
         RPi.GPIO.cleanup()
         app.exit()
         sys.exit()
+
+    def keyPressEvent(self, event, *args, **kwargs):
+
+        print(event.key())
+
+        super(MainWindow, self).keyPressEvent(event)
+
+        from PyQt5.QtCore import Qt
+        if event.key() == Qt.Key_Return:
+            self._update_scanned_ean()
 
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
