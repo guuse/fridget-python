@@ -358,7 +358,7 @@ class MainWindow(QtWidgets.QMainWindow):
             product_item_widget = ProductWidget(product, self, "scanner", local=True)
             product_item.setSizeHint(product_item_widget.size())
             self.scan_page_product_list_view.addItem(product_item)
-            self.scan_page_prosduct_list_view.setItemWidget(product_item, product_item_widget)
+            self.scan_page_product_list_view.setItemWidget(product_item, product_item_widget)
         self.scan_page_input_label.clear()
         self.scan_page_product_list_view.scrollToBottom()
 
