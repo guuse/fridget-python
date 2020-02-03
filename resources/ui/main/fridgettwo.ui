@@ -82,7 +82,7 @@ QScrollBar::handle:hover:vertical {
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>13</number>
     </property>
     <widget class="QWidget" name="unlockPage">
      <property name="styleSheet">
@@ -809,6 +809,9 @@ QListWidget#productListWidget::item:hover:!active {
       <property name="verticalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
+      <property name="horizontalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
+      </property>
      </widget>
      <widget class="QLineEdit" name="hiddenEanLineEdit">
       <property name="geometry">
@@ -823,6 +826,9 @@ QListWidget#productListWidget::item:hover:!active {
        <string notr="true">background-color: rgba(0,0,0,0);
 border: 0px solid rgba(0,0,0,0);
 color: rgba(0,0,0,0);</string>
+      </property>
+      <property name="maxLength">
+       <number>13</number>
       </property>
      </widget>
     </widget>
