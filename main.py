@@ -95,7 +95,7 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.scan_page_input_label.textChanged.connect(self._update_thread)
 
         self.scan_page_input_label.returnPressed.connect(
-            self.update_scanned_ean)  # here is where I want to delete the previous entry without backspacing by hand
+            self._update_scanned_ean)  # here is where I want to delete the previous entry without backspacing by hand
         #self.scan_page_input_label.textChanged.connect(self.delete_previous)
 
         # ListView for scanned items
