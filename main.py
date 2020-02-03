@@ -365,7 +365,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the label clear again
         self.scan_page_input_label.clear()
         # And start the scanner again
-        self.scanning = True
+        self.scanner_thread.scanning = True
 
     def send_products_to_box(self, event=None):
         """Send the scanned products to the box
