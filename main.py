@@ -368,7 +368,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the label clear again
         self.scan_page_input_label.clear()
         # And start the scanner again
-        self.scanner_thread.start()
+        self.scanning = True
 
     def send_products_to_box(self, event=None):
         """Send the scanned products to the box
@@ -443,11 +443,13 @@ class MainWindow(QtWidgets.QMainWindow):
         # TODO: Nadenken of hij misschien 2x kan scannen, dus iets van max length 13 instellen zodat er nooit
         # meer dan 13 chars in de string kunnen staan
         print("ENTER PRESSED")
-        if not self.scanner_thread.ean_scanned and len(self.scan_page_input_label.text()) == 13:
+        if self.scanner_thread.scanning and len(self.scan_page_input_label.text()) == 13:
             print("Setting ean")
-            self.scanner_thread.ean_scanned = True
+            self.scanner_thread.scanning = False
             print("_updated_scanned_ean: " + self.scan_page_input_label.text())
-            self.scanner_thread.ean = self.scan_page_input_label.text()
+            scanned_ean = self.scan_page_input_label.text()
+
+            self.add_to_scanned_list_table(scanned_ean)
 
     def closeEvent(self, *args, **kwargs):
         print("exiting")

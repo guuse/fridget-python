@@ -36,40 +36,25 @@ class ScanLoopThread(QThread):
 
     def stop(self):
         self.scanning = False
+        self.keep_thread_alive = False
         print("SET TO FALSE")
         self.wait(1)
 
     def _loop(self):
         time.sleep(2)
-        self.scanned_ean = ""
-        self.scanning = True
-        while self.scanning:
-            RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-            while not RPi.GPIO.input(settings.IR_PIN) and self.scanning and not self.ean_scanned:
-                self.set_focus_signal.emit()
-                #print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
+        while self.keep_thread_alive:
+            while self.scanning:
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
-                time.sleep()
-            if self.ean_scanned and self.scanning:
-                self.scanned_ean = self.ean
-
-                if self.scanned_ean:
-                    print("EAN FOUND: " + self.scanned_ean)
+                while not RPi.GPIO.input(settings.IR_PIN) and self.scanning:
+                    self.set_focus_signal.emit()
+                    #print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                    self.scanning = False
+                    RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
 
-                    return self.scanned_ean
-                else:
-                    self.ean_scanned = False
-
-        return None
 
     def run(self):
-        self.ean_scanned = False
+        self.keep_thread_alive = True
         self.scanning = True
         print("Starting thread again")
-        ean = self._loop()
-        if ean:
-            self.scanned_signal.emit(ean)
+        self._loop()
 
