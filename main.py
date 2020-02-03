@@ -190,9 +190,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scanner_thread.scanned_signal.connect(self.add_to_scanned_list_table)
         self.scanner_thread.set_focus_signal.connect(self._set_focus)
 
-        self.show()
-        #self.showFullScreen()
-        #self.setCursor(QtCore.Qt.BlankCursor)
+        #self.show()
+        self.showFullScreen()
+        self.setCursor(QtCore.Qt.BlankCursor)
 
     def switch_page(self, event=None, dest: str = None, disable_worker: bool = False, load_box: int = None,
                     category: str = None, clearable_list=None):
