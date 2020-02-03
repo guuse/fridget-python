@@ -50,6 +50,7 @@ class ScanLoopThread(QThread):
                 #print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
+                time.sleep()
             if self.ean_scanned and self.scanning:
                 self.scanned_ean = self.ean
 

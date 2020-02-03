@@ -443,7 +443,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # TODO: Nadenken of hij misschien 2x kan scannen, dus iets van max length 13 instellen zodat er nooit
         # meer dan 13 chars in de string kunnen staan
         print("ENTER PRESSED")
-        if not self.scanner_thread.ean_scanned:
+        if not self.scanner_thread.ean_scanned and len(self.scan_page_input_label.text()) == 13:
             print("Setting ean")
             self.scanner_thread.ean_scanned = True
             print("_updated_scanned_ean: " + self.scan_page_input_label.text())
