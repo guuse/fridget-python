@@ -436,10 +436,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label.setFocus()
 
     def _update_scanned_ean(self):
-        # TODO: Check this?
-        # TODO: Nadenken of hij misschien 2x kan scannen, dus iets van max length 13 instellen zodat er nooit
-        # meer dan 13 chars in de string kunnen staan
-        print("ENTER PRESSED")
+        import random
+        print("ENTER PRESSED " + +random.randint(0,40).__str__())
         if self.scanner_thread.scanning and len(self.scan_page_input_label.text()) == 13:
             print("Setting ean")
             self.scanner_thread.scanning = False
