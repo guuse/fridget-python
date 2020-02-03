@@ -30,6 +30,7 @@ class ScanLoopThread(QThread):
         self.ean = ""
         self.ean_scanned = False
         self.scanning = True
+        self.keep_thread_alive = True
 
     def __del__(self):
         self.wait()
@@ -37,7 +38,6 @@ class ScanLoopThread(QThread):
     def stop(self):
         self.scanning = False
         self.keep_thread_alive = False
-        print("SET TO FALSE")
         self.wait(1)
 
     def _loop(self):
@@ -47,13 +47,11 @@ class ScanLoopThread(QThread):
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 while not RPi.GPIO.input(settings.IR_PIN) and self.scanning:
                     self.set_focus_signal.emit()
-                    print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
-                    time.sleep(0.5)
+                    time.sleep(1.5)
 
     def run(self):
         self.keep_thread_alive = True
         self.scanning = True
-        print("Starting thread again")
         self._loop()
