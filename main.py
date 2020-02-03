@@ -449,6 +449,11 @@ class MainWindow(QtWidgets.QMainWindow):
             print("_updated_scanned_ean: " + self.scan_page_input_label.text())
             self.scanner_thread.ean = self.scan_page_input_label.text()
 
+    def closeEvent(self, *args, **kwargs):
+        print("exiting")
+        RPi.GPIO.cleanup()
+        app.exit()
+
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
 RPi.GPIO.setup(settings.IR_PIN, RPi.GPIO.IN)
