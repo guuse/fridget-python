@@ -41,7 +41,6 @@ class ScanLoopThread(QThread):
         self.wait(1)
 
     def _loop(self):
-        time.sleep(2)
         while self.keep_thread_alive:
             while self.scanning:
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
