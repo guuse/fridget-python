@@ -95,7 +95,7 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.scan_page_input_label.textChanged.connect(self._update_thread)
 
         self.scan_page_input_label.returnPressed.connect(
-            self._update_scanned_ean)  # here is where I want to delete the previous entry without backspacing by hand
+            self._update_scanned_ean)
         #self.scan_page_input_label.textChanged.connect(self.delete_previous)
 
         # ListView for scanned items
@@ -442,7 +442,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # TODO: Check this?
         # TODO: Nadenken of hij misschien 2x kan scannen, dus iets van max length 13 instellen zodat er nooit
         # meer dan 13 chars in de string kunnen staan
+        print("ENTER PRESSED")
         if not self.scanner_thread.ean_scanned:
+            print("Setting ean")
             self.scanner_thread.ean_scanned = True
             print("_updated_scanned_ean: " + self.scan_page_input_label.text())
             self.scanner_thread.ean = self.scan_page_input_label.text()
