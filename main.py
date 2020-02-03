@@ -351,6 +351,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         product = self.platform_api.get_product_from_ean(ean)
 
+        print(product.product_name)
+
         if product is not None:
             self.products.add_product(product)
 
