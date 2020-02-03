@@ -351,7 +351,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         product = self.platform_api.get_product_from_ean(ean)
 
-        print(product.product_name)
+        print(product.product_name + " " + self.scanner_thread.scanning.__str__())
 
         if product is not None:
             self.products.add_product(product)
@@ -368,7 +368,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_input_label.clear()
         # And start the scanner again
         self.scanner_thread.scanning = True
-        print("Done! Added")
+        print("Done! Added " + self.scanner_thread.scanning.__str__())
 
     def send_products_to_box(self, event=None):
         """Send the scanned products to the box
@@ -440,10 +440,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _update_scanned_ean(self):
         import random
-        print("ENTER PRESSED " + random.randint(0,40).__str__())
-        print("scanned value: " + self.scan_page_input_label.text())
+        print("ENTER PRESSED " + random.randint(0,40).__str__() + " - " + self.scanner_thread.scanning.__str__())
+        print("scanned value: " + self.scan_page_input_label.text() + " " + self.scanner_thread.scanning.__str__())
         if len(self.scan_page_input_label.text()) == 13:
-            print("_updated_scanned_ean: " + self.scan_page_input_label.text())
+            print("_updated_scanned_ean: " + self.scan_page_input_label.text() + " " + self.scanner_thread.scanning.__str__())
             scanned_ean = self.scan_page_input_label.text()
 
             self.add_to_scanned_list_table(scanned_ean)
