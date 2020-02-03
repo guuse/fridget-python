@@ -52,11 +52,15 @@ class ScanLoopThread(QThread):
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
             if self.ean_scanned and self.scanning:
                 self.scanned_ean = self.ean
-                print("EAN FOUND: " + self.scanned_ean)
-                RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
-                self.scanning = False
 
-                return self.scanned_ean
+                if self.scanned_ean:
+                    print("EAN FOUND: " + self.scanned_ean)
+                    RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
+                    self.scanning = False
+
+                    return self.scanned_ean
+                else:
+                    self.ean_scanned = False
 
         return None
 
