@@ -437,7 +437,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _update_scanned_ean(self):
         import random
-        print("ENTER PRESSED " + +random.randint(0,40).__str__())
+        print("ENTER PRESSED " + random.randint(0,40).__str__())
         if self.scanner_thread.scanning and len(self.scan_page_input_label.text()) == 13:
             print("Setting ean")
             self.scanner_thread.scanning = False
