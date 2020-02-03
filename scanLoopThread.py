@@ -21,8 +21,6 @@ class ScanLoopThread(QThread):
     Once it has scanned a barcode it emit a signal to talk with a different thread (the UI thread)
     so that the newly scanned item can be added to the ListWidget.
     """
-    scanned_signal = pyqtSignal(str)
-    clear_label_signal = pyqtSignal()
     set_focus_signal = pyqtSignal()
 
     def __init__(self):
@@ -41,6 +39,15 @@ class ScanLoopThread(QThread):
         self.wait(1)
 
     def _loop(self):
+        """Scan loop function
+
+        This function runs a loop, ensures that the barcode scanner is off by sending a singal to the scanner pin.
+        The inner loop is active as long as the IR pin is active (e.g. sees something).
+        We must set focus on the hidden input field (the scanner literally inserts its scanned value into an active
+        field, so we must ensure the hidden field is active).
+
+        The scanning variable (self.scanning) is set to false when a ean has read, this is done by the main thread.
+        """
         while self.keep_thread_alive:
             while self.scanning:
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)

@@ -1,23 +1,21 @@
 import sys
 import threading
-import time
 from functools import partial
 
 import fridgetresources
 
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
-from PyQt5.QtCore import QThreadPool, pyqtSignal, QDate
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QListWidgetItem, QScrollerProperties, QScroller
 
 import settings
-from ScanLoopThread import ScanLoopThread
+from scanLoopThread import ScanLoopThread
 from platform_wrapper.models.product import Product
 from platform_wrapper.models.products import Products
 from platform_wrapper.platform_wrapper import PlatformWrapper
 from settings import PAGE_INDEXES
 from utils.label_utils import process_keypress_label
-from utils.worker import Worker
 
 from widgets.ProductWidget import ProductWidget
 
@@ -29,16 +27,9 @@ except (RuntimeError, ModuleNotFoundError):
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    scanning = True
-
-    scanned = pyqtSignal(str)
-    clear_label_signal = pyqtSignal()
 
     def __init__(self, platform_api: PlatformWrapper, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.threadpool = QThreadPool()
-        self.event_stop = threading.Event()
 
         uic.loadUi("resources/ui/main/fridgettwo.ui", self)
 
@@ -47,10 +38,6 @@ class MainWindow(QtWidgets.QMainWindow):
         # Grab the main stacked widget, this stacked widget contains our different pages.
         self.stacked_widget = self.findChild(QtWidgets.QStackedWidget, 'mainStackedWidget')
         self.stacked_widget.setCurrentIndex(0)
-
-        # Create a signal so that we can interact between 2 widgets
-        self.scanned.connect(self.add_to_scanned_list_table)
-        self.clear_label_signal.connect(self._clear_ean_label)
 
         # unlock_page
         self.unlock_page = self.stacked_widget.findChild(QtWidgets.QWidget, 'unlockPage')
@@ -91,12 +78,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scan_page_send_to_fridge.mouseReleaseEvent = self.send_products_to_box
         # Grab the hidden LineEdit, used to score the scanned EAN
         self.scan_page_input_label = self.scan_page.findChild(QtWidgets.QLineEdit, 'hiddenEanLineEdit')
-        # When the text has changed update the value of the scanner thread
-        #self.scan_page_input_label.textChanged.connect(self._update_thread)
-
-        # self.scan_page_input_label.returnPressed.connect(
-        #     self._update_scanned_ean)
-        #self.scan_page_input_label.textChanged.connect(self.delete_previous)
 
         # ListView for scanned items
         self.scan_page_product_list_view = self.scan_page.findChild(QtWidgets.QListWidget, 'scannerListWidget')
@@ -186,8 +167,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Configure the scanner thread
         self.scanner_thread = ScanLoopThread()
-        self.scanner_thread.clear_label_signal.connect(self._clear_ean_label)
-        self.scanner_thread.scanned_signal.connect(self.add_to_scanned_list_table)
         self.scanner_thread.set_focus_signal.connect(self._set_focus)
 
         #self.show()
@@ -425,38 +404,38 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.scan_page_input_label.clear()
 
-    def _update_thread(self):
-        """Update the scanner thread ean value when it is changed in the main thread
-        """
-        self.scanner_thread.ean = self.scan_page_input_label.text()
-
     def _set_focus(self):
         """Set focus on the input label
         """
         self.scan_page_input_label.setFocus()
 
-    def _update_scanned_ean(self):
+    def _processed_scanned_ean(self):
+        """Process an EAN which has been scanned
+        """
         if len(self.scan_page_input_label.text()) == 13:
             scanned_ean = self.scan_page_input_label.text()
 
             self.add_to_scanned_list_table(scanned_ean)
         else:
             self.scan_page_input_label.clear()
-            self.scanning = True
+            self.scanner_thread.scanning = True
 
     def closeEvent(self, *args, **kwargs):
-        print("exiting")
+        """Override the closeEvent method, we clean up GPIO and exit the app
+        """
         RPi.GPIO.cleanup()
         app.exit()
         sys.exit()
 
     def keyPressEvent(self, event, *args, **kwargs):
+        """Override the keyPressEvent method, if enter is pressed we know an EAN has been scanned
+        """
         super(MainWindow, self).keyPressEvent(event)
 
         from PyQt5.QtCore import Qt
         if event.key() == Qt.Key_Return and self.scanner_thread.scanning:
             self.scanner_thread.scanning = False
-            self._update_scanned_ean()
+            self._processed_scanned_ean()
 
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
