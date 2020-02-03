@@ -47,9 +47,10 @@ class ScanLoopThread(QThread):
                 RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                 while not RPi.GPIO.input(settings.IR_PIN) and self.scanning:
                     self.set_focus_signal.emit()
-                    #print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
+                    print("ACTIVATING SCANNER"+random.randint(0,40).__str__())
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.HIGH)
                     RPi.GPIO.output(settings.SCANNER_PIN, RPi.GPIO.LOW)
+                    time.sleep(0.1)
 
     def run(self):
         self.keep_thread_alive = True
