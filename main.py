@@ -94,7 +94,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # When the text has changed update the value of the scanner thread
         #self.scan_page_input_label.textChanged.connect(self._update_thread)
 
-        self.scan_page_input_label.returnPressed.connect(
+        self.scan_page_input_label.textEdited.connect(
             self._update_scanned_ean)
         #self.scan_page_input_label.textChanged.connect(self.delete_previous)
 
